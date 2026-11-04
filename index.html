@@ -1,0 +1,1159 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="slate">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Paul Gibson — Industrial & Systems Engineering & AI Systems</title>
+  <meta name="description" content="Portfolio of Paul Gibson — Georgia Tech Industrial & Systems Engineering student specializing in optimization, quantitative modeling, time-series forecasting, and autonomous AI systems." />
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    /* ==========================================================================
+       DESIGN SYSTEM: SLATE MATTE (DARK) & REFINED LIGHT THEME
+       ========================================================================== */
+    :root,
+    html[data-theme="slate"] {
+      --bg-page: #0f1218;
+      --bg-header: rgba(15, 18, 24, 0.88);
+      --bg-ribbon: #141822;
+      --bg-card: #171c26;
+      --bg-card-alt: #1c2331;
+      --bg-card-hover: #222a3a;
+      --bg-highlight: #1d2535;
+      --border-subtle: #242c3d;
+      --border-strong: #333e54;
+
+      --text-primary: #eef2f8;
+      --text-secondary: #9fabc0;
+      --text-muted: #6e7c94;
+
+      --accent-primary: #60a5fa;
+      --accent-primary-bg: rgba(96, 165, 250, 0.12);
+      --accent-primary-border: rgba(96, 165, 250, 0.28);
+
+      --pos: #34d399;
+      --pos-bg: rgba(52, 211, 153, 0.12);
+      --pos-border: rgba(52, 211, 153, 0.28);
+
+      --amber: #fbbf24;
+      --amber-bg: rgba(251, 191, 36, 0.12);
+      --amber-border: rgba(251, 191, 36, 0.28);
+
+      --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.3);
+      --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.35);
+      --shadow-lg: 0 10px 30px rgba(0, 0, 0, 0.45);
+    }
+
+    html[data-theme="light"] {
+      --bg-page: #f8fafc;
+      --bg-header: rgba(248, 250, 252, 0.92);
+      --bg-ribbon: #edf2f7;
+      --bg-card: #ffffff;
+      --bg-card-alt: #f1f5f9;
+      --bg-card-hover: #e2e8f0;
+      --bg-highlight: #e0e7ff;
+      --border-subtle: #e2e8f0;
+      --border-strong: #cbd5e1;
+
+      --text-primary: #0f172a;
+      --text-secondary: #475569;
+      --text-muted: #64748b;
+
+      --accent-primary: #2563eb;
+      --accent-primary-bg: rgba(37, 99, 235, 0.08);
+      --accent-primary-border: rgba(37, 99, 235, 0.2);
+
+      --pos: #059669;
+      --pos-bg: rgba(5, 150, 105, 0.08);
+      --pos-border: rgba(5, 150, 105, 0.2);
+
+      --amber: #d97706;
+      --amber-bg: rgba(217, 119, 6, 0.08);
+      --amber-border: rgba(217, 119, 6, 0.2);
+
+      --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
+      --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.08);
+      --shadow-lg: 0 10px 30px rgba(0, 0, 0, 0.1);
+    }
+
+    /* Reset & Base */
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: var(--bg-page);
+      color: var(--text-primary);
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+      transition: background-color 0.25s ease, color 0.25s ease;
+    }
+
+    h1, h2, h3, h4 {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-weight: 700;
+      color: var(--text-primary);
+      letter-spacing: -0.02em;
+    }
+
+    .font-mono {
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    a {
+      color: var(--accent-primary);
+      text-decoration: none;
+      transition: all 0.15s ease;
+    }
+    a:hover {
+      opacity: 0.9;
+    }
+
+    .container {
+      max-width: 1140px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    /* ==========================================================================
+       HEADER & NAVIGATION (WITH MULTI-PROJECT TABS)
+       ========================================================================== */
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: var(--bg-header);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      border-bottom: 1px solid var(--border-subtle);
+    }
+
+    .nav-wrap {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 72px;
+      gap: 16px;
+    }
+
+    .logo-area {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      text-decoration: none;
+    }
+
+    .gt-badge {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 38px;
+      height: 38px;
+      background: linear-gradient(135deg, #B3A369 0%, #877138 100%);
+      color: #003057;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-weight: 800;
+      font-size: 15px;
+      border-radius: 10px;
+      box-shadow: 0 2px 8px rgba(179, 163, 105, 0.3);
+    }
+
+    .logo-text {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .logo-name {
+      font-size: 17px;
+      font-weight: 800;
+      color: var(--text-primary);
+    }
+
+    .logo-sub {
+      font-size: 11px;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      font-weight: 600;
+    }
+
+    /* Navigation Project Tabs */
+    .nav-tabs {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      background: var(--bg-ribbon);
+      padding: 4px;
+      border-radius: 12px;
+      border: 1px solid var(--border-subtle);
+    }
+
+    .nav-tab {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 14px;
+      border-radius: 8px;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text-secondary);
+      transition: all 0.2s ease;
+      text-decoration: none;
+    }
+
+    .nav-tab:hover {
+      color: var(--text-primary);
+      background: var(--bg-card-alt);
+    }
+
+    .nav-tab.active {
+      background: var(--bg-card);
+      color: var(--text-primary);
+      box-shadow: var(--shadow-sm);
+      border: 1px solid var(--border-strong);
+    }
+
+    .status-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--pos);
+      box-shadow: 0 0 8px var(--pos);
+      display: inline-block;
+      animation: pulse 2s infinite ease-in-out;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.4; transform: scale(0.9); }
+    }
+
+    .nav-actions {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .theme-toggle {
+      background: var(--bg-ribbon);
+      border: 1px solid var(--border-subtle);
+      color: var(--text-secondary);
+      border-radius: 9px;
+      width: 38px;
+      height: 38px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .theme-toggle:hover {
+      color: var(--text-primary);
+      border-color: var(--border-strong);
+    }
+
+    /* ==========================================================================
+       HERO SECTION
+       ========================================================================== */
+    .hero-section {
+      padding: 64px 0 48px;
+      border-bottom: 1px solid var(--border-subtle);
+      background: radial-gradient(circle at 85% 15%, rgba(96, 165, 250, 0.08) 0%, transparent 60%);
+    }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 1.25fr 0.75fr;
+      gap: 40px;
+      align-items: center;
+    }
+
+    .badge-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--accent-primary-bg);
+      border: 1px solid var(--accent-primary-border);
+      color: var(--accent-primary);
+      font-size: 12px;
+      font-weight: 600;
+      padding: 6px 14px;
+      border-radius: 20px;
+      margin-bottom: 20px;
+    }
+
+    .hero-title {
+      font-size: 42px;
+      line-height: 1.15;
+      margin-bottom: 18px;
+      font-weight: 800;
+    }
+
+    .hero-title span {
+      background: linear-gradient(135deg, #60a5fa 0%, #a78bfa 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .hero-desc {
+      font-size: 17px;
+      color: var(--text-secondary);
+      margin-bottom: 28px;
+      max-width: 620px;
+    }
+
+    .hero-ctas {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 14px;
+      align-items: center;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 11px 22px;
+      border-radius: 10px;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      text-decoration: none;
+    }
+
+    .btn-primary {
+      background: var(--accent-primary);
+      color: #ffffff;
+      box-shadow: 0 4px 14px rgba(96, 165, 250, 0.3);
+    }
+    .btn-primary:hover {
+      opacity: 0.95;
+      transform: translateY(-1px);
+    }
+
+    .btn-secondary {
+      background: var(--bg-card);
+      color: var(--text-primary);
+      border: 1px solid var(--border-strong);
+    }
+    .btn-secondary:hover {
+      background: var(--bg-card-hover);
+      transform: translateY(-1px);
+    }
+
+    /* Hero Stat Cards */
+    .hero-stats {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+    }
+
+    .stat-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      border-radius: 14px;
+      padding: 20px;
+      box-shadow: var(--shadow-sm);
+      transition: all 0.2s ease;
+    }
+    .stat-card:hover {
+      border-color: var(--border-strong);
+      transform: translateY(-2px);
+    }
+
+    .stat-card-val {
+      font-size: 26px;
+      font-weight: 800;
+      color: var(--text-primary);
+      font-family: 'JetBrains Mono', monospace;
+      margin-bottom: 4px;
+    }
+
+    .stat-card-lbl {
+      font-size: 12px;
+      color: var(--text-muted);
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    /* ==========================================================================
+       SECTION HEADERS
+       ========================================================================== */
+    .section-wrap {
+      padding: 64px 0;
+      border-bottom: 1px solid var(--border-subtle);
+    }
+
+    .section-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      margin-bottom: 36px;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+
+    .section-subtitle {
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--accent-primary);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-bottom: 6px;
+    }
+
+    .section-title {
+      font-size: 28px;
+      font-weight: 800;
+    }
+
+    /* ==========================================================================
+       FEATURED PROJECTS GRID
+       ========================================================================== */
+    .projects-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(520px, 1fr));
+      gap: 24px;
+    }
+
+    .project-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      border-radius: 16px;
+      padding: 28px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      position: relative;
+      transition: all 0.25s ease;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .project-card:hover {
+      border-color: var(--border-strong);
+      transform: translateY(-3px);
+      box-shadow: var(--shadow-md);
+    }
+
+    .project-card.featured-star {
+      border: 1px solid var(--accent-primary-border);
+      background: linear-gradient(180deg, var(--bg-card) 0%, var(--bg-card-alt) 100%);
+    }
+
+    .card-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 16px;
+    }
+
+    .card-tag {
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      padding: 4px 10px;
+      border-radius: 6px;
+    }
+
+    .tag-live {
+      background: var(--pos-bg);
+      color: var(--pos);
+      border: 1px solid var(--pos-border);
+    }
+
+    .tag-dev {
+      background: var(--amber-bg);
+      color: var(--amber);
+      border: 1px solid var(--amber-border);
+    }
+
+    .tag-research {
+      background: var(--accent-primary-bg);
+      color: var(--accent-primary);
+      border: 1px solid var(--accent-primary-border);
+    }
+
+    .project-title {
+      font-size: 21px;
+      margin-bottom: 8px;
+      font-weight: 700;
+    }
+
+    .project-summary {
+      font-size: 14.5px;
+      color: var(--text-secondary);
+      margin-bottom: 20px;
+      line-height: 1.6;
+    }
+
+    .project-highlights {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      margin-bottom: 24px;
+      font-size: 13.5px;
+      color: var(--text-secondary);
+    }
+
+    .highlight-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 8px;
+    }
+
+    .highlight-icon {
+      color: var(--pos);
+      font-weight: bold;
+    }
+
+    .tech-pills {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-bottom: 24px;
+    }
+
+    .tech-pill {
+      font-size: 11.5px;
+      font-family: 'JetBrains Mono', monospace;
+      background: var(--bg-card-alt);
+      border: 1px solid var(--border-subtle);
+      color: var(--text-muted);
+      padding: 3px 9px;
+      border-radius: 6px;
+    }
+
+    .card-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding-top: 18px;
+      border-top: 1px solid var(--border-subtle);
+    }
+
+    /* ==========================================================================
+       EDUCATION & EXPERIENCE TABS / TIMELINE
+       ========================================================================== */
+    .edu-exp-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 28px;
+    }
+
+    .timeline-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      border-radius: 14px;
+      padding: 24px;
+      margin-bottom: 18px;
+      position: relative;
+    }
+
+    .timeline-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 6px;
+    }
+
+    .timeline-title {
+      font-size: 17px;
+      font-weight: 700;
+    }
+
+    .timeline-date {
+      font-size: 12px;
+      font-family: 'JetBrains Mono', monospace;
+      color: var(--text-muted);
+    }
+
+    .timeline-org {
+      font-size: 14px;
+      color: var(--accent-primary);
+      font-weight: 600;
+      margin-bottom: 12px;
+    }
+
+    .timeline-desc {
+      font-size: 13.5px;
+      color: var(--text-secondary);
+      line-height: 1.6;
+    }
+
+    .timeline-list {
+      list-style: none;
+      margin-top: 10px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .timeline-list li {
+      font-size: 13px;
+      color: var(--text-secondary);
+      padding-left: 18px;
+      position: relative;
+    }
+
+    .timeline-list li::before {
+      content: "•";
+      position: absolute;
+      left: 0;
+      color: var(--accent-primary);
+      font-size: 16px;
+      line-height: 1;
+    }
+
+    /* ==========================================================================
+       TECHNICAL SKILLS MATRIX
+       ========================================================================== */
+    .skills-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+    }
+
+    .skill-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      border-radius: 14px;
+      padding: 22px;
+    }
+
+    .skill-category {
+      font-size: 15px;
+      font-weight: 700;
+      margin-bottom: 14px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .skill-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .skill-badge {
+      font-size: 12.5px;
+      background: var(--bg-card-alt);
+      border: 1px solid var(--border-subtle);
+      color: var(--text-secondary);
+      padding: 5px 12px;
+      border-radius: 8px;
+    }
+
+    /* ==========================================================================
+       FOOTER
+       ========================================================================== */
+    footer {
+      background: var(--bg-page);
+      border-top: 1px solid var(--border-subtle);
+      padding: 48px 0;
+    }
+
+    .footer-wrap {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 20px;
+    }
+
+    .footer-links {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+    }
+
+    .footer-link {
+      font-size: 14px;
+      color: var(--text-muted);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    .footer-link:hover {
+      color: var(--text-primary);
+    }
+
+    /* Responsive */
+    @media (max-width: 900px) {
+      .hero-grid {
+        grid-template-columns: 1fr;
+      }
+      .projects-grid {
+        grid-template-columns: 1fr;
+      }
+      .edu-exp-grid {
+        grid-template-columns: 1fr;
+      }
+      .skills-grid {
+        grid-template-columns: 1fr;
+      }
+      .nav-tabs {
+        display: none; /* Mobile navigation simplified */
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ==========================================================================
+       TOP NAVIGATION & MULTI-PROJECT SWITCHER TABS
+       ========================================================================== -->
+  <header>
+    <div class="container">
+      <div class="nav-wrap">
+        <a href="#" class="logo-area">
+          <div class="gt-badge">GT</div>
+          <div class="logo-text">
+            <span class="logo-name">Paul Gibson</span>
+            <span class="logo-sub">Georgia Tech ISyE</span>
+          </div>
+        </a>
+
+        <!-- Interactive Global Project Switcher Tabs -->
+        <nav class="nav-tabs" aria-label="Projects Navigation">
+          <a href="#" class="nav-tab active">
+            <span>Portfolio</span>
+          </a>
+          <a href="https://pdub1101.github.io/market-insight/" class="nav-tab" target="_blank" rel="noopener">
+            <span class="status-dot"></span>
+            <span>📈 Market Insight</span>
+          </a>
+          <a href="#dealscout" class="nav-tab">
+            <span style="font-size: 11px; opacity: 0.7;">⚙️</span>
+            <span>✈️ DealScout</span>
+          </a>
+        </nav>
+
+        <div class="nav-actions">
+          <a href="Paul_Gibson_Resume.pdf" target="_blank" class="btn btn-secondary" style="padding: 7px 14px; font-size: 12.5px;">
+            📄 Resume
+          </a>
+          <button id="themeToggle" class="theme-toggle" title="Toggle Light/Dark Theme" aria-label="Toggle theme">
+            🌓
+          </button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- ==========================================================================
+       HERO SECTION
+       ========================================================================== */
+  <section class="hero-section">
+    <div class="container">
+      <div class="hero-grid">
+        <div class="hero-content">
+          <div class="badge-pill">
+            <span class="status-dot"></span> Georgia Institute of Technology • ISyE '28
+          </div>
+          <h1 class="hero-title">
+            Engineering <span>Optimization</span>, Data Science & Autonomous AI.
+          </h1>
+          <p class="hero-desc">
+            Hi, I’m <strong>Paul Gibson</strong>. I study Industrial and Systems Engineering at Georgia Tech, specializing in mathematical optimization, time-series forecasting, and building autonomous agentic AI software that delivers measurable real-world outcomes.
+          </p>
+          <div class="hero-ctas">
+            <a href="https://pdub1101.github.io/market-insight/" target="_blank" rel="noopener" class="btn btn-primary">
+              📈 Explore $7K Stock Model
+            </a>
+            <a href="#projects" class="btn btn-secondary">
+              View All Projects ↓
+            </a>
+            <a href="mailto:pgibson34@gatech.edu" class="btn btn-secondary">
+              ✉️ Contact Me
+            </a>
+          </div>
+        </div>
+
+        <div class="hero-stats">
+          <div class="stat-card">
+            <div class="stat-card-val">3.55</div>
+            <div class="stat-card-lbl">Georgia Tech GPA</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-card-val">Daily</div>
+            <div class="stat-card-lbl">Autonomous AI Updates</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-card-val">$60.9K</div>
+            <div class="stat-card-lbl">Operations Budget Managed</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-card-val">0%</div>
+            <div class="stat-card-lbl">Budget Overrun Track Record</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==========================================================================
+       FEATURED PROJECTS SECTION
+       ========================================================================== -->
+  <section id="projects" class="section-wrap">
+    <div class="container">
+      <div class="section-header">
+        <div>
+          <div class="section-subtitle">Systems & Applications</div>
+          <h2 class="section-title">Featured Projects</h2>
+        </div>
+        <p style="font-size: 14px; color: var(--text-muted); max-width: 440px;">
+          Live production tools, autonomous agent workflows, and quantitative modeling simulations.
+        </p>
+      </div>
+
+      <div class="projects-grid">
+
+        <!-- PROJECT 1: Market Insight (STAR LIVE PROJECT) -->
+        <div class="project-card featured-star">
+          <div>
+            <div class="card-top">
+              <span class="card-tag tag-live">● Live on GitHub Pages</span>
+              <span class="font-mono" style="font-size: 12px; color: var(--accent-primary); font-weight: 600;">Autonomous Cron</span>
+            </div>
+            <h3 class="project-title">Market Insight: $7,000 Self-Learning AI Stock Model</h3>
+            <p class="project-summary">
+              An autonomous forward-testing paper-trading simulation and interactive analytics dashboard that executes daily after market close. Combines quantitative technical indicators with Google Gemini qualitative risk audits.
+            </p>
+            <div class="project-highlights">
+              <div class="highlight-item">
+                <span class="highlight-icon">✓</span>
+                <span><strong>Hybrid Quant + LLM Engine:</strong> Evaluates 20d/50d moving averages, RSI swing zones, and Gemini news catalyst checks.</span>
+              </div>
+              <div class="highlight-item">
+                <span class="highlight-icon">✓</span>
+                <span><strong>Self-Learning Memory:</strong> Audits past trade accuracy, dynamically adjusts factor weights, and enforces cooldown penalties on lagging picks.</span>
+              </div>
+              <div class="highlight-item">
+                <span class="highlight-icon">✓</span>
+                <span><strong>8-Option Benchmark Leaderboard:</strong> Benchmarks against S&P 500, Nasdaq-100, 60/40 Portfolio, Gold, and 4.5% High-Yield Cash.</span>
+              </div>
+            </div>
+          </div>
+
+          <div>
+            <div class="tech-pills">
+              <span class="tech-pill">Python</span>
+              <span class="tech-pill">Google Gemini API</span>
+              <span class="tech-pill">yfinance</span>
+              <span class="tech-pill">GitHub Actions</span>
+              <span class="tech-pill">Tailwind/JS</span>
+            </div>
+            <div class="card-footer">
+              <span class="font-mono" style="font-size: 12px; color: var(--text-muted);">pdub1101.github.io/market-insight/</span>
+              <a href="https://pdub1101.github.io/market-insight/" target="_blank" rel="noopener" class="btn btn-primary" style="padding: 8px 16px; font-size: 13px;">
+                Launch Live Dashboard ↗
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <!-- PROJECT 2: DealScout (UPCOMING RADAR) -->
+        <div id="dealscout" class="project-card">
+          <div>
+            <div class="card-top">
+              <span class="card-tag tag-dev">⚙️ In Development</span>
+              <span class="font-mono" style="font-size: 12px; color: var(--amber); font-weight: 600;">Next Deployment</span>
+            </div>
+            <h3 class="project-title">DealScout: Autonomous Flight & Gear Price Intelligence</h3>
+            <p class="project-summary">
+              A personal price tracking engine and live flight radar dashboard that cuts through fake marketing discounts. Combines 90-day historical percentile distributions with Gemini qualitative audits to eliminate fine-print gotchas (hidden baggage fees, bad layovers).
+            </p>
+            <div class="project-highlights">
+              <div class="highlight-item">
+                <span class="highlight-icon">✓</span>
+                <span><strong>Historical Percentile Engine:</strong> Calculates mathematical price scores across 90-day envelopes to isolate true bottom 10–15% outliers.</span>
+              </div>
+              <div class="highlight-item">
+                <span class="highlight-icon">✓</span>
+                <span><strong>Gemini Gotcha & Value Audit:</strong> Screens airline baggage restrictions, flight durations, and seller legitimacy before issuing a "BUY NOW" verdict.</span>
+              </div>
+              <div class="highlight-item">
+                <span class="highlight-icon">✓</span>
+                <span><strong>Total Dollars Saved Ledger:</strong> Live dashboard tracking cumulative user savings over time with zero server hosting costs.</span>
+              </div>
+            </div>
+          </div>
+
+          <div>
+            <div class="tech-pills">
+              <span class="tech-pill">Python</span>
+              <span class="tech-pill">Amadeus API</span>
+              <span class="tech-pill">Gemini 2.5 Flash</span>
+              <span class="tech-pill">Statistics</span>
+              <span class="tech-pill">GitHub Pages</span>
+            </div>
+            <div class="card-footer">
+              <span class="font-mono" style="font-size: 12px; color: var(--text-muted);">Repository Scaffolding In Progress</span>
+              <span class="card-tag tag-dev">Integrating Soon</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- PROJECT 3: GA Flu Nowcasting -->
+        <div class="project-card">
+          <div>
+            <div class="card-top">
+              <span class="card-tag tag-research">📊 Research & Analytics</span>
+              <span class="font-mono" style="font-size: 12px; color: var(--text-muted);">ISyE Time Series</span>
+            </div>
+            <h3 class="project-title">Georgia Flu Nowcasting & Epidemiological Modeling</h3>
+            <p class="project-summary">
+              Real-time statistical nowcasting system for influenza-like illness (ILI) trajectories across Georgia. Combines expanding training windows with NOAA climate anomaly data.
+            </p>
+            <div class="project-highlights">
+              <div class="highlight-item">
+                <span class="highlight-icon">✓</span>
+                <span>Multi-source ingestion of NOAA weather stations and CDC FluSight surveillance data.</span>
+              </div>
+              <div class="highlight-item">
+                <span class="highlight-icon">✓</span>
+                <span>Analyzed seasonal heteroskedasticity and retrospective forecast error distributions.</span>
+              </div>
+            </div>
+          </div>
+
+          <div>
+            <div class="tech-pills">
+              <span class="tech-pill">Python</span>
+              <span class="tech-pill">pandas</span>
+              <span class="tech-pill">Time-Series Regression</span>
+              <span class="tech-pill">NOAA API</span>
+            </div>
+            <div class="card-footer">
+              <span class="font-mono" style="font-size: 12px; color: var(--text-muted);">github.com/PDub1101/georgia-flu-nowcasting</span>
+              <a href="https://github.com/PDub1101/georgia-flu-nowcasting" target="_blank" rel="noopener" class="btn btn-secondary" style="padding: 7px 14px; font-size: 12.5px;">
+                View Source ↗
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <!-- PROJECT 4: NBA Win Prediction Analysis -->
+        <div class="project-card">
+          <div>
+            <div class="card-top">
+              <span class="card-tag tag-research">🏀 Sports Analytics</span>
+              <span class="font-mono" style="font-size: 12px; color: var(--text-muted);">CS 2316</span>
+            </div>
+            <h3 class="project-title">NBA Outcome & Team Metric Predictive Modeling</h3>
+            <p class="project-summary">
+              End-to-end data pipeline benchmarking offensive vs. defensive efficiency predictors on NBA game outcomes, combining data extracted across nba_api and Basketball-Reference.
+            </p>
+            <div class="project-highlights">
+              <div class="highlight-item">
+                <span class="highlight-icon">✓</span>
+                <span>Trained multivariate regression models; discovered r = 0.67 correlation for 3-point accuracy vs. win rate.</span>
+              </div>
+              <div class="highlight-item">
+                <span class="highlight-icon">✓</span>
+                <span>Quantified resource allocation trade-offs (+0.028 offensive vs. -0.027 defensive efficiency coefficients).</span>
+              </div>
+            </div>
+          </div>
+
+          <div>
+            <div class="tech-pills">
+              <span class="tech-pill">Python</span>
+              <span class="tech-pill">nba_api</span>
+              <span class="tech-pill">scikit-learn</span>
+              <span class="tech-pill">Statistical Modeling</span>
+            </div>
+            <div class="card-footer">
+              <span class="font-mono" style="font-size: 12px; color: var(--text-muted);">github.com/PDub1101/nba-win-prediction-analysis</span>
+              <a href="https://github.com/PDub1101/nba-win-prediction-analysis" target="_blank" rel="noopener" class="btn btn-secondary" style="padding: 7px 14px; font-size: 12.5px;">
+                View Source ↗
+              </a>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ==========================================================================
+       EDUCATION & EXPERIENCE SECTION
+       ========================================================================== -->
+  <section class="section-wrap">
+    <div class="container">
+      <div class="section-header">
+        <div>
+          <div class="section-subtitle">Background & Leadership</div>
+          <h2 class="section-title">Education & Experience</h2>
+        </div>
+      </div>
+
+      <div class="edu-exp-grid">
+        <!-- Education Column -->
+        <div>
+          <h3 style="font-size: 18px; margin-bottom: 16px; color: var(--accent-primary);">🎓 Academic Background</h3>
+          
+          <div class="timeline-card">
+            <div class="timeline-header">
+              <span class="timeline-title">Georgia Institute of Technology</span>
+              <span class="timeline-date">Expected May 2028</span>
+            </div>
+            <div class="timeline-org">B.S. in Industrial and Systems Engineering • GPA: 3.55 / 4.00</div>
+            <div class="timeline-desc">
+              Focus areas in engineering optimization, stochastic systems modeling, and predictive analytics.
+            </div>
+            <ul class="timeline-list">
+              <li><strong>Engineering Optimization:</strong> Formulate linear, integer, and network flow optimization models.</li>
+              <li><strong>Stochastic Systems:</strong> Queueing network dynamics, inventory policies, and supply chains.</li>
+              <li><strong>Regression & Forecasting:</strong> Multivariate linear regression and time-series forecasting models.</li>
+              <li><strong>Database Systems:</strong> Relational schema design, normalization, and SQL data queries.</li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- Experience & Leadership Column -->
+        <div>
+          <h3 style="font-size: 18px; margin-bottom: 16px; color: var(--accent-primary);">💼 Experience & Operations</h3>
+
+          <div class="timeline-card">
+            <div class="timeline-header">
+              <span class="timeline-title">Warehouse Operations Intern</span>
+              <span class="timeline-date">Jun 2025 – Aug 2025</span>
+            </div>
+            <div class="timeline-org">Second Harvest of South Georgia — Valdosta, GA</div>
+            <ul class="timeline-list">
+              <li>Audited and staged up to 15 bulk palletized orders daily in regional distribution center.</li>
+              <li>Managed inventory transactions in digital portal, performing SKU cycle counts to minimize shrinkage.</li>
+              <li>Collaborated on dock-door staging and pick-path sequencing to optimize floor throughput.</li>
+            </ul>
+          </div>
+
+          <div class="timeline-card">
+            <div class="timeline-header">
+              <span class="timeline-title">Head Social Chair</span>
+              <span class="timeline-date">Aug 2025 – May 2026</span>
+            </div>
+            <div class="timeline-org">Tau Kappa Epsilon Fraternity — Atlanta, GA</div>
+            <ul class="timeline-list">
+              <li>Direct chapter event operations, managing a <strong>$60,900 operating budget</strong> with <strong>0% budget overrun</strong>.</li>
+              <li>Negotiated contracts with vendors, security, and venues while coordinating logistics for 200+ attendees.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==========================================================================
+       TECHNICAL SKILLS SECTION
+       ========================================================================== -->
+  <section class="section-wrap">
+    <div class="container">
+      <div class="section-header">
+        <div>
+          <div class="section-subtitle">Technical Toolkit</div>
+          <h2 class="section-title">Skills & Competencies</h2>
+        </div>
+      </div>
+
+      <div class="skills-grid">
+        <div class="skill-card">
+          <div class="skill-category">
+            <span>💻</span>
+            <span>Programming & Data</span>
+          </div>
+          <div class="skill-tags">
+            <span class="skill-badge">Python</span>
+            <span class="skill-badge">pandas</span>
+            <span class="skill-badge">NumPy</span>
+            <span class="skill-badge">scikit-learn</span>
+            <span class="skill-badge">SQL</span>
+            <span class="skill-badge">R (Foundations)</span>
+            <span class="skill-badge">REST APIs</span>
+          </div>
+        </div>
+
+        <div class="skill-card">
+          <div class="skill-category">
+            <span>⚙️</span>
+            <span>Optimization & Modeling</span>
+          </div>
+          <div class="skill-tags">
+            <span class="skill-badge">Gurobi Optimizer</span>
+            <span class="skill-badge">Linear Programming</span>
+            <span class="skill-badge">Integer Optimization</span>
+            <span class="skill-badge">Time-Series Forecasting</span>
+            <span class="skill-badge">Queueing Networks</span>
+            <span class="skill-badge">Monte Carlo Simulation</span>
+          </div>
+        </div>
+
+        <div class="skill-card">
+          <div class="skill-category">
+            <span>🚀</span>
+            <span>Tools & Agent Systems</span>
+          </div>
+          <div class="skill-tags">
+            <span class="skill-badge">Google Gemini API</span>
+            <span class="skill-badge">GitHub Actions (CI/CD)</span>
+            <span class="skill-badge">Git</span>
+            <span class="skill-badge">Streamlit</span>
+            <span class="skill-badge">Supply Chain Logistics</span>
+            <span class="skill-badge">Advanced Excel Modeling</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==========================================================================
+       FOOTER
+       ========================================================================== -->
+  <footer>
+    <div class="container">
+      <div class="footer-wrap">
+        <div>
+          <div style="font-weight: 700; font-size: 16px;">Paul Gibson</div>
+          <div style="font-size: 13px; color: var(--text-muted); margin-top: 2px;">
+            Industrial & Systems Engineering • Georgia Institute of Technology
+          </div>
+        </div>
+
+        <div class="footer-links">
+          <a href="https://github.com/PDub1101" target="_blank" rel="noopener" class="footer-link">GitHub</a>
+          <a href="https://www.linkedin.com" target="_blank" rel="noopener" class="footer-link">LinkedIn</a>
+          <a href="mailto:pgibson34@gatech.edu" class="footer-link">pgibson34@gatech.edu</a>
+          <a href="Paul_Gibson_Resume.pdf" target="_blank" class="footer-link">Resume (PDF)</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Theme Toggle Script -->
+  <script>
+    const themeBtn = document.getElementById('themeToggle');
+    const htmlElem = document.documentElement;
+
+    themeBtn.addEventListener('click', () => {
+      const current = htmlElem.getAttribute('data-theme');
+      const next = current === 'slate' ? 'light' : 'slate';
+      htmlElem.setAttribute('data-theme', next);
+      localStorage.setItem('theme', next);
+    });
+
+    const savedTheme = localStorage.getItem('theme');
+    if (savedTheme) {
+      htmlElem.setAttribute('data-theme', savedTheme);
+    }
+  </script>
+</body>
+</html>
