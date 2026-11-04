@@ -194,9 +194,11 @@
     }
 
     .tab-btn.active {
-      background: var(--bg-surface);
-      color: var(--text-primary);
-      box-shadow: var(--shadow-subtle);
+      background: var(--bg-surface) !important;
+      color: var(--text-primary) !important;
+      border: 1px solid var(--border-strong) !important;
+      box-shadow: var(--shadow-subtle) !important;
+      font-weight: 700 !important;
     }
 
     .tab-dot {
@@ -886,8 +888,11 @@
   <div id="view-stock-model" class="view-container">
     <div class="embedded-frame-wrap">
       <div class="frame-toolbar">
-        <a href="https://pdub1101.github.io/market-insight/" target="_blank" style="color: var(--text-muted); font-weight: 500;">
-          Open in separate window ↗
+        <button class="btn-action" onclick="switchTab('about')" style="padding: 3px 10px; font-size: 12px; cursor: pointer;">
+          &larr; About Me
+        </button>
+        <a href="https://pdub1101.github.io/market-insight/" target="_blank" style="color: var(--text-muted); font-size: 12px; font-weight: 500; margin-left: 8px;">
+          Open Fullscreen &nearr;
         </a>
       </div>
       <iframe id="frame-stock-model" class="embedded-frame" title="Market Insight $7K Stock Model"></iframe>
@@ -900,8 +905,11 @@
   <div id="view-deal-scout" class="view-container">
     <div class="embedded-frame-wrap">
       <div class="frame-toolbar">
-        <a href="https://pdub1101.github.io/deal-scout/" target="_blank" style="color: var(--text-muted); font-weight: 500;">
-          Open in separate window ↗
+        <button class="btn-action" onclick="switchTab('about')" style="padding: 3px 10px; font-size: 12px; cursor: pointer;">
+          &larr; About Me
+        </button>
+        <a href="https://pdub1101.github.io/deal-scout/" target="_blank" style="color: var(--text-muted); font-size: 12px; font-weight: 500; margin-left: 8px;">
+          Open Fullscreen &nearr;
         </a>
       </div>
       <iframe id="frame-deal-scout" class="embedded-frame" title="DealScout Flight & Price Radar"></iframe>
@@ -935,15 +943,15 @@
       if (targetView) targetView.classList.add('active-view');
       if (targetBtn) targetBtn.classList.add('active');
 
-      // 4. Lazy-load iframe source on first click so page stays ultra-fast
+      // 4. Ensure iframe source is set to target application
       if (tabName === 'stock-model') {
         const frame = document.getElementById('frame-stock-model');
-        if (!frame.src || frame.src === 'about:blank') {
+        if (!frame.src || !frame.src.startsWith(FRAME_URLS['stock-model'])) {
           frame.src = FRAME_URLS['stock-model'];
         }
       } else if (tabName === 'deal-scout') {
         const frame = document.getElementById('frame-deal-scout');
-        if (!frame.src || frame.src === 'about:blank') {
+        if (!frame.src || !frame.src.startsWith(FRAME_URLS['deal-scout'])) {
           frame.src = FRAME_URLS['deal-scout'];
         }
       }
