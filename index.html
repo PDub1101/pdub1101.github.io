@@ -895,7 +895,7 @@
           Open Fullscreen &nearr;
         </a>
       </div>
-      <iframe id="frame-stock-model" class="embedded-frame" title="Market Insight $7K Stock Model"></iframe>
+      <iframe id="frame-stock-model" class="embedded-frame" title="Market Insight $7K Stock Model" onload="onFrameLoad(this)"></iframe>
     </div>
   </div>
 
@@ -912,7 +912,7 @@
           Open Fullscreen &nearr;
         </a>
       </div>
-      <iframe id="frame-deal-scout" class="embedded-frame" title="DealScout Flight & Price Radar"></iframe>
+      <iframe id="frame-deal-scout" class="embedded-frame" title="DealScout Flight & Price Radar" onload="onFrameLoad(this)"></iframe>
     </div>
   </div>
 
@@ -924,6 +924,41 @@
       'stock-model': 'https://pdub1101.github.io/market-insight/',
       'deal-scout': 'https://pdub1101.github.io/deal-scout/'
     };
+
+    function getCurrentTheme() {
+      return document.documentElement.getAttribute('data-theme') || 'light';
+    }
+
+    function syncThemeToFrame(frame, theme) {
+      if (!frame) return;
+      theme = theme || getCurrentTheme();
+      try {
+        if (frame.contentDocument && frame.contentDocument.documentElement) {
+          frame.contentDocument.documentElement.setAttribute('data-theme', theme);
+        }
+        if (frame.contentWindow && typeof frame.contentWindow.applyTheme === 'function') {
+          frame.contentWindow.applyTheme(theme);
+        }
+      } catch (e) {}
+
+      try {
+        if (frame.contentWindow) {
+          frame.contentWindow.postMessage({ type: 'SET_THEME', theme: theme }, '*');
+        }
+      } catch (e) {}
+    }
+
+    function syncThemeToAllFrames(theme) {
+      theme = theme || getCurrentTheme();
+      ['frame-stock-model', 'frame-deal-scout'].forEach(id => {
+        const frame = document.getElementById(id);
+        syncThemeToFrame(frame, theme);
+      });
+    }
+
+    function onFrameLoad(frame) {
+      syncThemeToFrame(frame, getCurrentTheme());
+    }
 
     function switchTab(tabName) {
       // 1. Hide all views
@@ -948,11 +983,15 @@
         const frame = document.getElementById('frame-stock-model');
         if (!frame.src || !frame.src.startsWith(FRAME_URLS['stock-model'])) {
           frame.src = FRAME_URLS['stock-model'];
+        } else {
+          syncThemeToFrame(frame, getCurrentTheme());
         }
       } else if (tabName === 'deal-scout') {
         const frame = document.getElementById('frame-deal-scout');
         if (!frame.src || !frame.src.startsWith(FRAME_URLS['deal-scout'])) {
           frame.src = FRAME_URLS['deal-scout'];
+        } else {
+          syncThemeToFrame(frame, getCurrentTheme());
         }
       }
 
@@ -978,13 +1017,14 @@
     window.addEventListener('hashchange', handleHashChange);
     window.addEventListener('DOMContentLoaded', handleHashChange);
 
-    // Light / Slate Theme Toggle
+    // Light / Slate Theme Toggle with synchronized frame propagation
     function toggleTheme() {
       const html = document.documentElement;
-      const cur = html.getAttribute('data-theme') || 'light';
+      const cur = getCurrentTheme();
       const next = cur === 'light' ? 'slate' : 'light';
       html.setAttribute('data-theme', next);
       localStorage.setItem('pg_theme', next);
+      syncThemeToAllFrames(next);
     }
 
     const savedTheme = localStorage.getItem('pg_theme') || 'light';
