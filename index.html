@@ -1046,6 +1046,9 @@
         <button class="btn-action" onclick="switchTab('about')" style="padding: 3px 10px; font-size: 12px; cursor: pointer;">
           &larr; About Me
         </button>
+        <button class="btn-action" onclick="reloadEmbeddedFrame('frame-court-vision')" style="padding: 3px 10px; font-size: 12px; cursor: pointer; margin-left: 8px;">
+          🔄 Refresh Live Feed
+        </button>
         <a href="https://pdub1101.github.io/court-vision/" target="_blank" style="color: var(--text-muted); font-size: 12px; font-weight: 500; margin-left: 8px;">
           Open Fullscreen &nearr;
         </a>
@@ -1061,8 +1064,15 @@
     const FRAME_URLS = {
       'stock-model': 'https://pdub1101.github.io/market-insight/',
       'deal-scout': 'https://pdub1101.github.io/deal-scout/',
-      'court-vision': 'https://pdub1101.github.io/court-vision/'
+      'court-vision': 'https://pdub1101.github.io/court-vision/?v=20261113_3'
     };
+
+    function reloadEmbeddedFrame(frameId) {
+      const frame = document.getElementById(frameId);
+      if (!frame) return;
+      let base = frame.src.split('?')[0];
+      frame.src = base + '?t=' + Date.now();
+    }
 
     function getCurrentTheme() {
       return document.documentElement.getAttribute('data-theme') || 'light';
