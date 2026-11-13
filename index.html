@@ -1089,7 +1089,7 @@
 
     function syncThemeToAllFrames(theme) {
       theme = theme || getCurrentTheme();
-      ['frame-stock-model', 'frame-deal-scout'].forEach(id => {
+      ['frame-stock-model', 'frame-deal-scout', 'frame-court-vision'].forEach(id => {
         const frame = document.getElementById(id);
         syncThemeToFrame(frame, theme);
       });
@@ -1132,6 +1132,13 @@
         } else {
           syncThemeToFrame(frame, getCurrentTheme());
         }
+      } else if (tabName === 'court-vision') {
+        const frame = document.getElementById('frame-court-vision');
+        if (!frame.src || !frame.src.startsWith(FRAME_URLS['court-vision'])) {
+          frame.src = FRAME_URLS['court-vision'];
+        } else {
+          syncThemeToFrame(frame, getCurrentTheme());
+        }
       }
 
       // 5. Update URL hash without reload
@@ -1146,7 +1153,7 @@
     // Handle initial hash on page load or back/forward buttons
     function handleHashChange() {
       const hash = (window.location.hash || '#about').replace('#', '');
-      if (['about', 'stock-model', 'deal-scout'].includes(hash)) {
+      if (['about', 'stock-model', 'deal-scout', 'court-vision'].includes(hash)) {
         switchTab(hash);
       } else {
         switchTab('about');
