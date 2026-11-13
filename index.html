@@ -673,6 +673,9 @@
           <button class="tab-btn" id="tabBtn-deal-scout" onclick="switchTab('deal-scout')">
             DealScout
           </button>
+          <button class="tab-btn" id="tabBtn-court-vision" onclick="switchTab('court-vision')">
+            CourtVision
+          </button>
         </nav>
 
         <div class="header-actions">
@@ -747,7 +750,7 @@
           <div class="dossier-col-primary">
             <div class="dossier-col-title">
               <span>Technical Systems & Computing</span>
-              <span class="dossier-badge">4 Projects</span>
+              <span class="dossier-badge">5 Systems</span>
             </div>
 
             <!-- Project 1: Stock Model -->
@@ -799,6 +802,33 @@
                   Switch to DealScout Tab &rarr;
                 </button>
                 <a href="https://pdub1101.github.io/deal-scout/" class="btn-outline" target="_blank">
+                  Open Fullscreen ↗
+                </a>
+              </div>
+            </div>
+
+            <!-- Project: CourtVision -->
+            <div class="dossier-card">
+              <div class="dossier-card-header">
+                <div>
+                  <div class="dossier-card-title">CourtVision: Autonomous NBA Spread Radar & $1,000 Paper Bankroll</div>
+                  <div class="dossier-card-sub">Real Sportsbook Line Auditing + Gemini 2.5 Flash Context Veto</div>
+                </div>
+                <span class="dossier-tag">Production Ready</span>
+              </div>
+              <p class="dossier-card-desc">
+                Autonomous daily sports analytics pipeline that pulls real-time point spreads from legal sportsbooks (DraftKings, FanDuel, BetMGM), models expected margins of victory via rolling 10-game efficiency ratings, layers a qualitative Gemini 2.5 Flash injury veto, and tracks a transparent $1,000 paper trading simulation.
+              </p>
+              <ul class="dossier-points">
+                <li><strong>Live Line Discrepancies:</strong> Calculates objective point spread differentials against Vegas with an automated &ge; 2.5 pt value trigger.</li>
+                <li><strong>Gemini 2.5 Flash Veto:</strong> Screens official late-afternoon injury reports and rest fatigue to eliminate trap lines with confidence scoring.</li>
+                <li><strong>$1,000 Paper Desk & 30-Day Trial:</strong> Fully transparent unit-sized paper ledger ($20 / $40) auto-graded every morning with Chart.js equity tracking.</li>
+              </ul>
+              <div class="dossier-card-actions">
+                <button class="btn-switch-tab" onclick="switchTab('court-vision')">
+                  Switch to CourtVision Tab &rarr;
+                </button>
+                <a href="https://pdub1101.github.io/court-vision/" class="btn-outline" target="_blank">
                   Open Fullscreen ↗
                 </a>
               </div>
@@ -1008,12 +1038,30 @@
   </div>
 
   <!-- ==========================================================================
+       VIEW 4: COURTVISION EMBEDDED IN-PAGE (NO NEW TAB)
+       ========================================================================== -->
+  <div id="view-court-vision" class="view-container">
+    <div class="embedded-frame-wrap">
+      <div class="frame-toolbar">
+        <button class="btn-action" onclick="switchTab('about')" style="padding: 3px 10px; font-size: 12px; cursor: pointer;">
+          &larr; About Me
+        </button>
+        <a href="https://pdub1101.github.io/court-vision/" target="_blank" style="color: var(--text-muted); font-size: 12px; font-weight: 500; margin-left: 8px;">
+          Open Fullscreen &nearr;
+        </a>
+      </div>
+      <iframe id="frame-court-vision" class="embedded-frame" title="CourtVision NBA Spread Radar & Paper Bankroll" onload="onFrameLoad(this)"></iframe>
+    </div>
+  </div>
+
+  <!-- ==========================================================================
        IN-PAGE TAB SWITCHING & THEME SCRIPT
        ========================================================================== -->
   <script>
     const FRAME_URLS = {
       'stock-model': 'https://pdub1101.github.io/market-insight/',
-      'deal-scout': 'https://pdub1101.github.io/deal-scout/'
+      'deal-scout': 'https://pdub1101.github.io/deal-scout/',
+      'court-vision': 'https://pdub1101.github.io/court-vision/'
     };
 
     function getCurrentTheme() {
