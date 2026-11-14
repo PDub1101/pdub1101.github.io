@@ -407,7 +407,7 @@
       gap: 14px;
     }
 
-    /* Structured Dossier Cards */
+    /* Structured Dossier Cards (Legacy Fallback) */
     .dossier-card {
       background: var(--bg-surface);
       border: 1px solid var(--border-subtle);
@@ -415,6 +415,312 @@
       padding: 22px 24px;
       box-shadow: var(--shadow-subtle);
       transition: border-color 0.15s ease;
+    }
+
+    /* ==========================================================================
+       OPEN ARCHITECTURE STYLES (ANTI-AI CARD SOUP)
+       ========================================================================== */
+    .bio-depth-control {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-top: 14px;
+      margin-bottom: 20px;
+    }
+
+    .bio-depth-label {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--text-muted);
+      letter-spacing: 0.06em;
+    }
+
+    .bio-toggle-group {
+      display: inline-flex;
+      background: var(--bg-surface-alt);
+      border: 1px solid var(--border-subtle);
+      border-radius: 6px;
+      padding: 2px;
+    }
+
+    .bio-toggle-btn {
+      background: transparent;
+      border: none;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--text-secondary);
+      padding: 4px 12px;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+
+    .bio-toggle-btn.active {
+      background: var(--bg-surface);
+      color: var(--text-primary);
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+      font-weight: 800;
+    }
+
+    /* Open Project Stream (No Enclosing Boxes) */
+    .open-project-item {
+      padding: 22px 0 24px;
+      border-bottom: 1px solid var(--border-subtle);
+    }
+    .open-project-item:first-child {
+      padding-top: 4px;
+    }
+    .open-project-item:last-child {
+      border-bottom: none;
+    }
+
+    .open-project-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 16px;
+      margin-bottom: 6px;
+      flex-wrap: wrap;
+    }
+
+    .open-project-title {
+      font-size: 17px;
+      font-weight: 800;
+      color: var(--text-primary);
+      line-height: 1.3;
+    }
+
+    .open-project-sub {
+      font-size: 12.5px;
+      color: var(--text-muted);
+      margin-top: 3px;
+      font-weight: 500;
+    }
+
+    .open-project-desc {
+      font-size: 14px;
+      color: var(--text-secondary);
+      line-height: 1.6;
+      margin: 10px 0 14px;
+    }
+
+    .open-project-points {
+      list-style-type: none;
+      display: flex;
+      flex-direction: column;
+      gap: 7px;
+      padding: 0;
+      margin: 0 0 16px;
+    }
+
+    .open-project-points li {
+      font-size: 13px;
+      color: var(--text-secondary);
+      line-height: 1.5;
+      padding-left: 14px;
+      position: relative;
+    }
+
+    .open-project-points li::before {
+      content: "•";
+      position: absolute;
+      left: 0;
+      color: var(--accent-blue);
+      font-size: 14px;
+    }
+
+    .open-project-points strong {
+      color: var(--text-primary);
+    }
+
+    .open-project-actions {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    /* Timeline Spine Architecture (Karpathy Style) */
+    .timeline-spine {
+      position: relative;
+      padding-left: 22px;
+      display: flex;
+      flex-direction: column;
+      gap: 26px;
+      margin-top: 14px;
+    }
+
+    .timeline-spine::before {
+      content: "";
+      position: absolute;
+      top: 6px;
+      bottom: 6px;
+      left: 5px;
+      width: 1px;
+      background: var(--border-strong);
+    }
+
+    .timeline-item {
+      position: relative;
+    }
+
+    .timeline-node {
+      position: absolute;
+      top: 5px;
+      left: -22px;
+      width: 11px;
+      height: 11px;
+      border-radius: 50%;
+      background: var(--bg-page);
+      border: 2px solid var(--accent-blue);
+      box-shadow: 0 0 0 2px var(--bg-page);
+    }
+
+    .timeline-date {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--text-muted);
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      margin-bottom: 2px;
+    }
+
+    .timeline-role {
+      font-size: 15.5px;
+      font-weight: 800;
+      color: var(--text-primary);
+      line-height: 1.25;
+    }
+
+    .timeline-org {
+      font-size: 12.5px;
+      color: var(--accent-blue);
+      font-weight: 600;
+      margin-top: 2px;
+      margin-bottom: 8px;
+    }
+
+    .timeline-points {
+      list-style-type: none;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      padding: 0;
+      margin: 0;
+    }
+
+    .timeline-points li {
+      font-size: 12.5px;
+      color: var(--text-secondary);
+      line-height: 1.5;
+      padding-left: 12px;
+      position: relative;
+    }
+
+    .timeline-points li::before {
+      content: "–";
+      position: absolute;
+      left: 0;
+      color: var(--text-muted);
+    }
+
+    .timeline-points strong {
+      color: var(--text-primary);
+    }
+
+    /* Open Academic Curriculum Clusters */
+    .open-cluster-group {
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+      margin-top: 14px;
+    }
+
+    .open-cluster {
+      padding-bottom: 14px;
+      border-bottom: 1px dashed var(--border-subtle);
+    }
+    .open-cluster:last-child {
+      border-bottom: none;
+      padding-bottom: 0;
+    }
+
+    .open-cluster-title {
+      font-size: 13px;
+      font-weight: 800;
+      color: var(--text-primary);
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .open-course-row {
+      display: flex;
+      align-items: baseline;
+      gap: 10px;
+      font-size: 12.5px;
+      line-height: 1.45;
+      margin-bottom: 5px;
+    }
+
+    .open-course-tag {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10.5px;
+      font-weight: 800;
+      color: var(--accent-blue);
+      background: var(--accent-blue-bg);
+      border: 1px solid var(--accent-blue-border);
+      padding: 1px 6px;
+      border-radius: 4px;
+      flex-shrink: 0;
+    }
+
+    .open-course-desc {
+      color: var(--text-secondary);
+    }
+
+    .open-course-desc strong {
+      color: var(--text-primary);
+    }
+
+    /* Open Tooling Matrix */
+    .open-tooling-list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-top: 14px;
+    }
+
+    .open-tooling-row {
+      display: grid;
+      grid-template-columns: 85px 1fr;
+      gap: 12px;
+      align-items: baseline;
+      font-size: 12.5px;
+      padding-bottom: 8px;
+      border-bottom: 1px solid var(--border-subtle);
+    }
+    .open-tooling-row:last-child {
+      border-bottom: none;
+      padding-bottom: 0;
+    }
+
+    .open-tool-label {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10.5px;
+      font-weight: 700;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .open-tool-val {
+      color: var(--text-primary);
+      line-height: 1.45;
     }
 
     .dossier-card:hover {
@@ -695,18 +1001,35 @@
        ========================================================================== -->
   <div id="view-about" class="view-container active-view">
     
-    <!-- Dossier Executive Header -->
+    <!-- Dossier Executive Header - Open Architecture -->
     <section class="dossier-header-section">
       <div class="container">
         <div class="dossier-eyebrow">
           <span>Engineering Dossier</span>
           <span>•</span>
           <span>Georgia Tech ISyE '28</span>
+          <div class="bio-depth-control" style="margin-left: auto;">
+            <button class="bio-depth-btn active" id="btn-bio-summary" onclick="setBioDepth('summary')">Executive Summary</button>
+            <button class="bio-depth-btn" id="btn-bio-deep" onclick="setBioDepth('deep')">Technical Deep-Dive</button>
+          </div>
         </div>
         <h1 class="dossier-name">Paul Gibson</h1>
-        <p class="dossier-headline">
-          Industrial and Systems Engineering undergraduate focusing on mathematical optimization, stochastic systems modeling, and autonomous data pipelines. Experienced in warehouse distribution operations, inventory control, and forward-testing quantitative trading models.
+        
+        <!-- Executive Summary View -->
+        <p class="dossier-headline" id="bio-summary-text">
+          Industrial & Systems Engineering student at Georgia Tech ('28) building production quantitative models, stochastic simulation engines, and automated operational pipelines. Experienced in warehouse distribution logistics and forward-testing statistical equity models.
         </p>
+        
+        <!-- Technical Deep-Dive View (Initially hidden) -->
+        <div id="bio-deep-text" style="display: none; margin-bottom: 24px;">
+          <p class="dossier-headline" style="margin-bottom: 12px;">
+            Focused on first-principles applied operations research: continuous Holt-Winters exponential smoothing, multivariate OLS with out-of-sample prediction intervals ($SE_{\text{pred}}$ vs $SE_{\text{mean}}$), and mixed-integer linear programming (MILP). Builds headless serverless data infrastructure on GitHub Actions cron with real-time model audit feedback loops powered by Google Gemini 2.5 Flash.
+          </p>
+          <div style="font-family: 'JetBrains Mono', monospace; font-size: 12px; color: var(--text-secondary); display: flex; gap: 16px; flex-wrap: wrap;">
+            <span>Core Focus: Stochastic Processes • Linear Programming • Factor Arbitrage</span>
+            <span>Tooling: Python (pandas, NumPy, statsmodels) • Gurobi • PostgreSQL</span>
+          </div>
+        </div>
 
         <div class="dossier-meta-grid">
           <div class="dossier-meta-item">
@@ -746,7 +1069,7 @@
       <div class="container">
         <div class="dossier-columns">
 
-          <!-- PRIMARY COLUMN: TECHNICAL SYSTEMS & PROJECTS -->
+          <!-- PRIMARY COLUMN: TECHNICAL SYSTEMS & COMPUTING (OPEN STREAM ARCHITECTURE) -->
           <div class="dossier-col-primary">
             <div class="dossier-col-title">
               <span>Technical Systems & Computing</span>
@@ -754,230 +1077,233 @@
             </div>
 
             <!-- Project 1: Stock Model -->
-            <div class="dossier-card">
-              <div class="dossier-card-header">
+            <article class="open-project-item">
+              <header class="open-project-header">
                 <div>
-                  <div class="dossier-card-title">Market Insight: $7,000 Autonomous AI Stock Model</div>
-                  <div class="dossier-card-sub">Quantitative Technicals + Google Gemini Qualitative News Audits</div>
+                  <h3 class="open-project-title">Market Insight: $7,000 Autonomous AI Stock Model</h3>
+                  <div class="open-project-sub">Quantitative Technicals • Gemini Qualitative Audits • Serverless Cron</div>
                 </div>
-                <span class="dossier-tag">Live Simulation</span>
-              </div>
-              <p class="dossier-card-desc">
+                <span class="open-project-status">Live Forward-Test</span>
+              </header>
+              <p class="open-project-desc">
                 An autonomous forward-testing paper trading model that executes daily after market close. Benchmarks an initial $7,000 allocation across 19 liquid equities against 8 fund baselines (S&P 500, Nasdaq-100, 60/40 Portfolio, Gold, High-Yield Cash).
               </p>
-              <ul class="dossier-points">
+              <ul class="open-spec-list">
                 <li><strong>Technical Indicators:</strong> Evaluates 20/50-day moving average crossovers, 14-day RSI swing thresholds, and 20-day relative strength vs. SPY.</li>
                 <li><strong>Self-Learning Factor Audit:</strong> Dynamically adjusts factor weights based on historical accuracy, recording daily lessons learned and penalizing lagging picks.</li>
                 <li><strong>Serverless Automation:</strong> Deployed headlessly via GitHub Actions cron at 4:05 PM EST with zero ongoing hosting cost.</li>
               </ul>
-              <div class="dossier-card-actions">
-                <button class="btn-switch-tab" onclick="switchTab('stock-model')">
-                  Switch to Stock Model Tab &rarr;
+              <div class="open-project-actions">
+                <button class="open-link-btn" onclick="switchTab('stock-model')">
+                  Open Interactive Stock Tab &rarr;
                 </button>
-                <a href="https://pdub1101.github.io/market-insight/" class="btn-outline" target="_blank">
-                  Open Fullscreen ↗
+                <a href="https://pdub1101.github.io/market-insight/" class="open-link-ghost" target="_blank">
+                  Fullscreen App ↗
                 </a>
               </div>
-            </div>
+            </article>
 
             <!-- Project 2: DealScout -->
-            <div class="dossier-card">
-              <div class="dossier-card-header">
+            <article class="open-project-item">
+              <header class="open-project-header">
                 <div>
-                  <div class="dossier-card-title">DealScout: Autonomous Flight & Gear Price Intelligence</div>
-                  <div class="dossier-card-sub">90-Day Historical Percentiles + Travel Policy Gotcha Auditing</div>
+                  <h3 class="open-project-title">DealScout: Autonomous Flight & Gear Price Intelligence</h3>
+                  <div class="open-project-sub">90-Day Historical Percentiles • Travel Policy Auditing • Live SLC/ATL Corridors</div>
                 </div>
-                <span class="dossier-tag">Production Ready</span>
-              </div>
-              <p class="dossier-card-desc">
+                <span class="open-project-status">Production Pipeline</span>
+              </header>
+              <p class="open-project-desc">
                 A personal price tracking engine and live flight radar dashboard that cuts through deceptive discounts. Continuously monitors strategic corridors connecting Salt Lake City (SLC), Valdosta (VLD), Atlanta (ATL), and Charlotte (CLT), alongside high-value tech and outdoor gear.
               </p>
-              <ul class="dossier-points">
+              <ul class="open-spec-list">
                 <li><strong>Percentile Distribution:</strong> Mathematical price score isolates outlier fares in the bottom 10% to 15% of recorded 90-day pricing history.</li>
                 <li><strong>Qualitative Audit:</strong> Uses Gemini to inspect fine-print conditions, screening out restrictive Basic Economy carry-on fees and 5:00 AM departures.</li>
                 <li><strong>Savings Ledger:</strong> Tracks cumulative dollars saved against historical median prices ($950+ verified).</li>
               </ul>
-              <div class="dossier-card-actions">
-                <button class="btn-switch-tab" onclick="switchTab('deal-scout')">
-                  Switch to DealScout Tab &rarr;
+              <div class="open-project-actions">
+                <button class="open-link-btn" onclick="switchTab('deal-scout')">
+                  Open Interactive Flights Tab &rarr;
                 </button>
-                <a href="https://pdub1101.github.io/deal-scout/" class="btn-outline" target="_blank">
-                  Open Fullscreen ↗
+                <a href="https://pdub1101.github.io/deal-scout/" class="open-link-ghost" target="_blank">
+                  Fullscreen App ↗
                 </a>
               </div>
-            </div>
+            </article>
 
             <!-- Project: CourtVision -->
-            <div class="dossier-card">
-              <div class="dossier-card-header">
+            <article class="open-project-item">
+              <header class="open-project-header">
                 <div>
-                  <div class="dossier-card-title">CourtVision: ISyE 4031 NBA Forecasting Engine & $1,000 Paper Bankroll</div>
-                  <div class="dossier-card-sub">Holt EWMA + Multivariate OLS SE_pred Intervals + Self-Learning Gemini 2.5 Flash Memory</div>
+                  <h3 class="open-project-title">CourtVision: ISyE 4031 NBA Forecasting Engine & $1,000 Paper Bankroll</h3>
+                  <div class="open-project-sub">Holt EWMA • Multivariate OLS SE_pred Intervals • Self-Learning Gemini Flash Memory</div>
                 </div>
-                <span class="dossier-tag">Production Ready</span>
-              </div>
-              <p class="dossier-card-desc">
+                <span class="open-project-status">Live In-Season Engine</span>
+              </header>
+              <p class="open-project-desc">
                 Autonomous daily sports forecasting pipeline (`courtvision_ewma_ols_v1`) built on ISyE 4031 principles. Ingests live spreads from legal sportsbooks, smooths team efficiency states via Holt's Linear EWMA, computes First-Principles OLS out-of-sample prediction intervals ($SE_{\text{pred}}$ vs $SE_{\text{mean}}$), and executes +EV wagers audited by a self-learning Gemini 2.5 Flash post-mortem loop.
               </p>
-              <ul class="dossier-points">
+              <ul class="open-spec-list">
                 <li><strong>ISyE 4031 Forecasting Engine:</strong> Combines Holt EWMA ($\alpha=0.25, \beta=0.10$), AR(1) blowout mean-reversion, and strictly nested $50\%/80\%/95\%$ Student-$t$ prediction intervals.</li>
                 <li><strong>Self-Learning LLM Decision Basis:</strong> Audits morning forecast residuals ($e_t = y_t - \hat{y}_t$) and CFE/MAD Tracking Signal to write persistent situational rules (`decision_basis.json`).</li>
-                <li><strong>$1,000 Paper Desk & 30-Day Trial:</strong> Staking gated by Student-$t$ cover probability ($P(\text{Cover}) \ge 55.5\%$ vs $52.4\%$ vig breakeven) with daily auto-grading and Chart.js equity tracking.</li>
+                <li><strong>$1,000 Paper Desk & 30-Day Trial:</strong> Staking gated by Student-$t$ cover probability ($P(\text{Cover}) \ge 55.5\%$ vs $52.4\%$ vig breakeven) with daily auto-grading and equity tracking.</li>
               </ul>
-              <div class="dossier-card-actions">
-                <button class="btn-switch-tab" onclick="switchTab('court-vision')">
-                  Switch to CourtVision Tab &rarr;
+              <div class="open-project-actions">
+                <button class="open-link-btn" onclick="switchTab('court-vision')">
+                  Open Interactive CourtVision Tab &rarr;
                 </button>
-                <a href="https://pdub1101.github.io/court-vision/" class="btn-outline" target="_blank">
-                  Open Fullscreen ↗
+                <a href="https://pdub1101.github.io/court-vision/" class="open-link-ghost" target="_blank">
+                  Fullscreen App ↗
                 </a>
               </div>
-            </div>
+            </article>
 
             <!-- Project 3: Flu Nowcasting -->
-            <div class="dossier-card">
-              <div class="dossier-card-header">
+            <article class="open-project-item">
+              <header class="open-project-header">
                 <div>
-                  <div class="dossier-card-title">Georgia Flu Nowcasting & Epidemiological Modeling</div>
-                  <div class="dossier-card-sub">Time-Series Regression & CDC FluSight Benchmarking</div>
+                  <h3 class="open-project-title">Georgia Flu Nowcasting & Epidemiological Modeling</h3>
+                  <div class="open-project-sub">Time-Series Regression • CDC FluSight Benchmarking • NOAA Temperature Features</div>
                 </div>
-                <span class="dossier-tag">Research</span>
-              </div>
-              <p class="dossier-card-desc">
+                <span class="open-project-status">Research</span>
+              </header>
+              <p class="open-project-desc">
                 Constructed a real-time statistical nowcasting model predicting influenza-like illness (ILI) trajectories in Georgia using expanding training windows and NOAA temperature anomaly features.
               </p>
-              <div class="dossier-card-actions">
-                <a href="https://github.com/PDub1101/georgia-flu-nowcasting" class="btn-outline" target="_blank">
+              <div class="open-project-actions">
+                <a href="https://github.com/PDub1101/georgia-flu-nowcasting" class="open-link-ghost" target="_blank">
                   View Repository on GitHub ↗
                 </a>
               </div>
-            </div>
+            </article>
 
             <!-- Project 4: NBA Win Prediction -->
-            <div class="dossier-card">
-              <div class="dossier-card-header">
+            <article class="open-project-item">
+              <header class="open-project-header">
                 <div>
-                  <div class="dossier-card-title">NBA Game Outcome & Team Metric Predictive Modeling</div>
-                  <div class="dossier-card-sub">Multivariate Regression on Efficiency Drivers (CS 2316)</div>
+                  <h3 class="open-project-title">NBA Game Outcome & Team Metric Predictive Modeling</h3>
+                  <div class="open-project-sub">Multivariate Regression on Efficiency Drivers (CS 2316)</div>
                 </div>
-                <span class="dossier-tag">Analytics</span>
-              </div>
-              <p class="dossier-card-desc">
+                <span class="open-project-status">Analytics</span>
+              </header>
+              <p class="open-project-desc">
                 End-to-end data pipeline combining player and team stats from nba_api and Basketball-Reference. Benchmarked offensive vs defensive efficiency regression coefficients (+0.028 vs -0.027) on win probabilities.
               </p>
-              <div class="dossier-card-actions">
-                <a href="https://github.com/PDub1101/nba-win-prediction-analysis" class="btn-outline" target="_blank">
+              <div class="open-project-actions">
+                <a href="https://github.com/PDub1101/nba-win-prediction-analysis" class="open-link-ghost" target="_blank">
                   View Repository on GitHub ↗
                 </a>
               </div>
-            </div>
-
+            </article>
           </div>
 
-          <!-- SECONDARY COLUMN: WORK EXPERIENCE, COURSEWORK, & SKILLS -->
+          <!-- SECONDARY COLUMN: WORK EXPERIENCE, COURSEWORK, & SKILLS (OPEN ARCHITECTURE) -->
           <div class="dossier-col-secondary">
 
-            <!-- Group 1: Work Experience & Operations -->
+            <!-- Section 1: Work Experience & Leadership (Karpathy Timeline Spine) -->
             <div class="dossier-group">
               <div class="dossier-col-title">
                 <span>Work Experience & Leadership</span>
               </div>
 
-              <div class="dossier-card">
-                <div class="dossier-card-header">
-                  <div class="dossier-card-title">Warehouse Operations Intern</div>
-                  <span class="dossier-date">Jun 2025 - Aug 2025</span>
+              <div class="timeline-spine">
+                
+                <!-- Role 1 -->
+                <div class="timeline-item">
+                  <div class="timeline-node"></div>
+                  <div class="timeline-header">
+                    <span class="timeline-role">Warehouse Operations Intern</span>
+                    <span class="timeline-period">Jun 2025 - Aug 2025</span>
+                  </div>
+                  <div class="timeline-org">Second Harvest of South Georgia • Valdosta, GA</div>
+                  <ul class="timeline-points">
+                    <li>Audited daily order fulfillment and staging operations across regional distribution center, verifying up to 15 bulk palletized orders daily.</li>
+                    <li>Executed continuous warehouse cycle counts across hundreds of SKUs to reconcile physical counts against digital stock logs, minimizing shrinkage.</li>
+                    <li>Coordinated with warehouse supervisors on dock-door staging and pick-path sequencing to optimize floor throughput for outbound trucks.</li>
+                  </ul>
                 </div>
-                <div class="dossier-org">Second Harvest of South Georgia • Valdosta, GA</div>
-                <ul class="dossier-points">
-                  <li>Managed daily order fulfillment and staging operations across regional distribution center, auditing up to 15 bulk palletized orders daily.</li>
-                  <li>Conducted continuous warehouse cycle counts across hundreds of SKUs to reconcile physical counts against digital stock logs, minimizing shrinkage.</li>
-                  <li>Coordinated with warehouse supervisors on dock-door staging and pick-path sequencing to optimize floor throughput for outbound trucks.</li>
-                </ul>
-              </div>
 
-              <div class="dossier-card">
-                <div class="dossier-card-header">
-                  <div class="dossier-card-title">Head Social Chair</div>
-                  <span class="dossier-date">Aug 2025 - May 2026</span>
+                <!-- Role 2 -->
+                <div class="timeline-item">
+                  <div class="timeline-node"></div>
+                  <div class="timeline-header">
+                    <span class="timeline-role">Head Social Chair</span>
+                    <span class="timeline-period">Aug 2025 - May 2026</span>
+                  </div>
+                  <div class="timeline-org">Tau Kappa Epsilon Fraternity • Atlanta, GA</div>
+                  <ul class="timeline-points">
+                    <li>Directed chapter event operations, managing a <strong>$60,900 operating budget</strong> with <strong>0% budget overrun</strong> across the academic term.</li>
+                    <li>Negotiated contracts with venues, security personnel, and third-party vendors for functions serving up to 200+ attendees.</li>
+                    <li>Supervised execution teams for multiday logistical operations and transportation schedules.</li>
+                  </ul>
                 </div>
-                <div class="dossier-org">Tau Kappa Epsilon Fraternity • Atlanta, GA</div>
-                <ul class="dossier-points">
-                  <li>Directed chapter event operations, managing a <strong>$60,900 operating budget</strong> with <strong>0% budget overrun</strong> across the term.</li>
-                  <li>Negotiated contracts with venues, security personnel, and third-party vendors for functions serving up to 200+ attendees.</li>
-                  <li>Supervised execution teams for multiday logistical operations and transportation schedules.</li>
-                </ul>
+
               </div>
             </div>
 
-            <!-- Group 2: Academic Coursework -->
+            <!-- Section 2: Academic Coursework (Open Clusters) -->
             <div class="dossier-group">
               <div class="dossier-col-title">
-                <span>Academic Coursework & Disciplines</span>
+                <span>Academic Disciplines & Core Coursework</span>
               </div>
 
-              <div class="dossier-card">
-                <div class="course-cluster">
-                  <div class="course-cluster-name">Optimization & Operations Research</div>
-                  <div class="course-line">
-                    <span class="course-tag">ISyE 3133</span>
-                    <span class="course-info"><strong>Engineering Optimization:</strong> Linear & integer programming, simplex method, duality, network flows</span>
-                  </div>
-                  <div class="course-line">
-                    <span class="course-tag">ISyE 3044</span>
-                    <span class="course-info"><strong>Simulation & Stochastics:</strong> Queuing systems, discrete-event simulation, inventory control</span>
-                  </div>
+              <div class="open-cluster">
+                <div class="open-cluster-title">Optimization & Operations Research</div>
+                <div class="open-course-row">
+                  <span class="open-course-tag">ISyE 3133</span>
+                  <span class="open-course-body"><strong>Engineering Optimization:</strong> Linear & integer programming, simplex algorithm, duality theory, network flows</span>
                 </div>
-
-                <div class="course-cluster" style="margin-top: 14px; padding-top: 14px; border-top: 1px solid var(--border-subtle);">
-                  <div class="course-cluster-name">Statistical Modeling & Forecasting</div>
-                  <div class="course-line">
-                    <span class="course-tag">ISyE 4133</span>
-                    <span class="course-info"><strong>Regression & Forecasting:</strong> Time-series models, expanding windows, residual diagnostics</span>
-                  </div>
-                  <div class="course-line">
-                    <span class="course-tag">ISyE 2027</span>
-                    <span class="course-info"><strong>Probability for Engineers:</strong> Stochastic random variables, joint distributions, risk bounds</span>
-                  </div>
+                <div class="open-course-row">
+                  <span class="open-course-tag">ISyE 3044</span>
+                  <span class="open-course-body"><strong>Simulation & Stochastics:</strong> Discrete-event simulation, queuing systems, stochastic inventory modeling</span>
                 </div>
+              </div>
 
-                <div class="course-cluster" style="margin-top: 14px; padding-top: 14px; border-top: 1px solid var(--border-subtle);">
-                  <div class="course-cluster-name">Computing & Data Engineering</div>
-                  <div class="course-line">
-                    <span class="course-tag">CS 4400</span>
-                    <span class="course-info"><strong>Database Systems:</strong> Relational schema design, SQL optimization, normalization (3NF/BCNF)</span>
-                  </div>
-                  <div class="course-line">
-                    <span class="course-tag">CS 2316</span>
-                    <span class="course-info"><strong>Data Manipulation:</strong> Automated ingestion, REST APIs, JSON/CSV parsing, pandas analytics</span>
-                  </div>
+              <div class="open-cluster">
+                <div class="open-cluster-title">Statistical Modeling & Time-Series</div>
+                <div class="open-course-row">
+                  <span class="open-course-tag">ISyE 4133</span>
+                  <span class="open-course-body"><strong>Regression & Forecasting:</strong> Time-series models, expanding training windows, residual diagnostics</span>
+                </div>
+                <div class="open-course-row">
+                  <span class="open-course-tag">ISyE 2027</span>
+                  <span class="open-course-body"><strong>Probability for Engineers:</strong> Stochastic random variables, joint distributions, Chebyshev/Markov risk bounds</span>
+                </div>
+              </div>
+
+              <div class="open-cluster">
+                <div class="open-cluster-title">Computing & Data Engineering</div>
+                <div class="open-course-row">
+                  <span class="open-course-tag">CS 4400</span>
+                  <span class="open-course-body"><strong>Database Systems:</strong> Relational schema design, SQL query optimization, 3NF/BCNF normalization</span>
+                </div>
+                <div class="open-course-row">
+                  <span class="open-course-tag">CS 2316</span>
+                  <span class="open-course-body"><strong>Data Manipulation:</strong> Automated ingestion, REST APIs, JSON/CSV parsing pipelines, pandas analytics</span>
                 </div>
               </div>
             </div>
 
-            <!-- Group 3: Technical Tooling -->
+            <!-- Section 3: Technical Tooling (Open Spec Rows) -->
             <div class="dossier-group">
               <div class="dossier-col-title">
                 <span>Technical Tooling & Methods</span>
               </div>
 
-              <div class="dossier-card">
-                <div class="tooling-row">
-                  <span class="tooling-label">Languages</span>
-                  <span class="tooling-val">Python (pandas, NumPy, scikit-learn), SQL (PostgreSQL, SQLite), R, HTML/CSS/JS</span>
-                </div>
-                <div class="tooling-row">
-                  <span class="tooling-label">Solvers</span>
-                  <span class="tooling-val">Gurobi Optimizer, Mixed-Integer Linear Programming (MILP), Simplex / Duality</span>
-                </div>
-                <div class="tooling-row">
-                  <span class="tooling-label">Systems</span>
-                  <span class="tooling-val">Git, GitHub Actions CI/CD Cron, Google Gemini API, Streamlit, Advanced Excel</span>
-                </div>
-                <div class="tooling-row">
-                  <span class="tooling-label">Operations</span>
-                  <span class="tooling-val">Cycle Counting, Pick-Path Optimization, Inventory Shrinkage Control, Forward Paper Trading</span>
-                </div>
+              <div class="open-tooling-row">
+                <span class="open-tooling-key">Languages</span>
+                <span class="open-tooling-val">Python (pandas, NumPy, statsmodels, scikit-learn), SQL (PostgreSQL, SQLite), R, HTML/CSS/JS</span>
+              </div>
+              <div class="open-tooling-row">
+                <span class="open-tooling-key">Solvers</span>
+                <span class="open-tooling-val">Gurobi Optimizer, Mixed-Integer Linear Programming (MILP), Simplex Method, Duality Analysis</span>
+              </div>
+              <div class="open-tooling-row">
+                <span class="open-tooling-key">Systems</span>
+                <span class="open-tooling-val">Git, GitHub Actions CI/CD Cron, Google Gemini API, Streamlit, Advanced Excel</span>
+              </div>
+              <div class="open-tooling-row">
+                <span class="open-tooling-key">Operations</span>
+                <span class="open-tooling-val">Cycle Counting, Pick-Path Optimization, Inventory Shrinkage Control, Forward Paper Trading</span>
               </div>
             </div>
 
@@ -1064,8 +1390,28 @@
     const FRAME_URLS = {
       'stock-model': 'https://pdub1101.github.io/market-insight/',
       'deal-scout': 'https://pdub1101.github.io/deal-scout/',
-      'court-vision': 'https://pdub1101.github.io/court-vision/?v=20261113_6'
+      'court-vision': 'https://pdub1101.github.io/court-vision/?v=open_layout_1'
     };
+
+    function setBioDepth(depth) {
+      const summaryBtn = document.getElementById('btn-bio-summary');
+      const deepBtn = document.getElementById('btn-bio-deep');
+      const summaryText = document.getElementById('bio-summary-text');
+      const deepText = document.getElementById('bio-deep-text');
+      if (!summaryBtn || !deepBtn || !summaryText || !deepText) return;
+
+      if (depth === 'deep') {
+        summaryBtn.classList.remove('active');
+        deepBtn.classList.add('active');
+        summaryText.style.display = 'none';
+        deepText.style.display = 'block';
+      } else {
+        deepBtn.classList.remove('active');
+        summaryBtn.classList.add('active');
+        deepText.style.display = 'none';
+        summaryText.style.display = 'block';
+      }
+    }
 
     function reloadEmbeddedFrame(frameId) {
       const frame = document.getElementById(frameId);
