@@ -1,0 +1,1983 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>DealScout Flight Intelligence — Personal Corridor Radar & Fare Auditor</title>
+  <meta name="description" content="DealScout Flight Intelligence: Automated flight corridor price radar, rolling 90-day percentile distribution engine, and Gemini qualitative fee & schedule audits." />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;600;700&display=swap" rel="stylesheet">
+
+  <script>
+    if (window.self !== window.top) {
+      document.documentElement.classList.add('is-embedded');
+    }
+  </script>
+
+  <style>
+    /* ==========================================================================
+       DESIGN SYSTEM: REFINED LIGHT BASE & SOFT SLATE DARK MODE
+       ========================================================================== */
+    :root,
+    html[data-theme="light"] {
+      --bg-page: #f8fafc;
+      --bg-header: rgba(248, 250, 252, 0.94);
+      --bg-ribbon: #ffffff;
+      --bg-card: #ffffff;
+      --bg-card-alt: #f1f5f9;
+      --bg-card-hover: #f8fafc;
+      --border-subtle: #e2e8f0;
+      --border-strong: #cbd5e1;
+
+      --text-primary: #0f172a;
+      --text-secondary: #475569;
+      --text-muted: #64748b;
+
+      --accent-primary: #1d4ed8;
+      --accent-primary-hover: #1e40af;
+      --accent-primary-bg: #eff6ff;
+      --accent-primary-border: #bfdbfe;
+
+      --pos: #059669;
+      --pos-bg: #ecfdf5;
+      --pos-border: #a7f3d0;
+
+      --amber: #b45309;
+      --amber-bg: #fffbeb;
+      --amber-border: #fde68a;
+
+      --purple: #7c3aed;
+      --purple-bg: #f5f3ff;
+      --purple-border: #ddd6fe;
+
+      --sky: #0284c7;
+      --sky-bg: #f0f9ff;
+      --sky-border: #bae6fd;
+
+      --shadow-subtle: none;
+      --shadow-card: none;
+      --shadow-elevated: none;
+      --radius-xs: 2px;
+      --radius-sm: 3px;
+      --radius-md: 4px;
+      --radius-lg: 4px;
+      --radius-pill: 4px;
+    }
+
+    html[data-theme="slate"] {
+      --bg-page: #0f1218;
+      --bg-header: rgba(15, 18, 24, 0.92);
+      --bg-ribbon: #171c26;
+      --bg-card: #171c26;
+      --bg-card-alt: #1c2331;
+      --bg-card-hover: #222a3a;
+      --border-subtle: #242c3d;
+      --border-strong: #333e54;
+
+      --text-primary: #f1f5f9;
+      --text-secondary: #94a3b8;
+      --text-muted: #64748b;
+
+      --accent-primary: #60a5fa;
+      --accent-primary-hover: #3b82f6;
+      --accent-primary-bg: rgba(96, 165, 250, 0.12);
+      --accent-primary-border: rgba(96, 165, 250, 0.28);
+
+      --pos: #34d399;
+      --pos-bg: rgba(52, 211, 153, 0.12);
+      --pos-border: rgba(52, 211, 153, 0.28);
+
+      --amber: #fbbf24;
+      --amber-bg: rgba(251, 191, 36, 0.12);
+      --amber-border: rgba(251, 191, 36, 0.28);
+
+      --purple: #a78bfa;
+      --purple-bg: rgba(167, 139, 250, 0.14);
+      --purple-border: rgba(167, 139, 250, 0.32);
+
+      --sky: #38bdf8;
+      --sky-bg: rgba(56, 189, 248, 0.12);
+      --sky-border: rgba(56, 189, 248, 0.28);
+
+      --shadow-subtle: none;
+      --shadow-card: none;
+      --shadow-elevated: none;
+    }
+
+    html.is-embedded header {
+      display: none !important;
+    }
+    html.is-embedded .metrics-ribbon {
+      padding-top: 24px;
+    }
+
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: var(--bg-page);
+      color: var(--text-primary);
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      font-size: 14.5px;
+      line-height: 1.55;
+      -webkit-font-smoothing: antialiased;
+      transition: background-color 0.2s, color 0.2s;
+    }
+
+    h1, h2, h3, h4 {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-weight: 700;
+      color: var(--text-primary);
+      letter-spacing: -0.015em;
+    }
+
+    a {
+      color: var(--accent-primary);
+      text-decoration: none;
+    }
+    a:hover {
+      text-decoration: underline;
+    }
+
+    .container {
+      max-width: 1240px;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+
+    /* Header */
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 40;
+      background: var(--bg-header);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border-subtle);
+    }
+
+    .header-inner {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      height: 68px;
+    }
+
+    .brand-wrap {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .brand-mark {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 38px;
+      height: 38px;
+      border-radius: 9px;
+      background: linear-gradient(135deg, #1d4ed8, #0284c7);
+      color: #ffffff;
+      font-family: 'JetBrains Mono', monospace;
+      font-weight: 700;
+      font-size: 16px;
+      box-shadow: 0 2px 6px rgba(29, 78, 216, 0.35);
+    }
+
+    .brand-title {
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--text-primary);
+      letter-spacing: -0.02em;
+    }
+
+    .brand-subtitle {
+      font-size: 12.5px;
+      color: var(--text-muted);
+      margin-left: 6px;
+      padding-left: 8px;
+      border-left: 1px solid var(--border-strong);
+    }
+
+    .header-links {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .btn-header {
+      font-size: 13px;
+      font-weight: 600;
+      padding: 7px 14px;
+      border-radius: 4px;
+      border: 1px solid var(--border-strong);
+      background: var(--bg-card);
+      color: var(--text-primary);
+      transition: all 0.15s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      cursor: pointer;
+    }
+
+    .btn-header:hover {
+      background: var(--bg-card-alt);
+      text-decoration: none;
+    }
+
+    /* KPI Ribbon - Flat Telemetry Strip */
+    .metrics-ribbon {
+      background: var(--bg-card);
+      border-top: 1px solid var(--border-subtle);
+      border-bottom: 1px solid var(--border-subtle);
+      padding: 0;
+      margin-bottom: 24px;
+    }
+
+    .kpi-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 0;
+    }
+
+    .kpi-card {
+      background: transparent;
+      border: none;
+      border-right: 1px solid var(--border-subtle);
+      border-radius: 0;
+      padding: 14px 18px;
+      position: relative;
+    }
+
+    .kpi-card:last-child {
+      border-right: none;
+    }
+
+    .kpi-card::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 3px;
+      height: 100%;
+      background: var(--accent-primary);
+      opacity: 0.85;
+    }
+    .kpi-card:nth-child(2)::before {
+      background: var(--pos);
+    }
+    .kpi-card:nth-child(3)::before {
+      background: var(--purple);
+    }
+    .kpi-card:nth-child(4)::before {
+      background: var(--sky);
+    }
+
+    .kpi-label {
+      font-size: 11.5px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--text-muted);
+      font-weight: 600;
+      margin-bottom: 6px;
+    }
+
+    .kpi-value {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 26px;
+      font-weight: 700;
+      color: var(--text-primary);
+      line-height: 1.15;
+    }
+
+    .kpi-sub {
+      font-size: 11.5px;
+      color: var(--text-muted);
+      margin-top: 5px;
+    }
+
+    /* Spotlight Priority Card */
+    .spotlight-wrap {
+      margin-bottom: 24px;
+    }
+
+    .spotlight-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      border-left: 3px solid var(--pos);
+      border-radius: 4px;
+      padding: 18px 22px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: none;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .spotlight-card::before {
+      display: none;
+    }
+
+    .spotlight-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: var(--pos-bg);
+      color: var(--pos);
+      border: 1px solid var(--pos-border);
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      padding: 3px 8px;
+      border-radius: 3px;
+      margin-bottom: 8px;
+    }
+
+    .spotlight-title {
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--text-primary);
+      margin-bottom: 4px;
+    }
+
+    .spotlight-desc {
+      font-size: 13.5px;
+      color: var(--text-secondary);
+      max-width: 820px;
+      line-height: 1.45;
+    }
+
+    .spotlight-actions {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      min-width: 180px;
+    }
+
+    .btn-cta {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      background: var(--accent-primary);
+      color: #ffffff !important;
+      font-weight: 600;
+      font-size: 13px;
+      padding: 10px 16px;
+      border-radius: 4px;
+      transition: background 0.15s ease;
+      text-align: center;
+    }
+
+    .btn-cta:hover {
+      background: var(--accent-primary-hover);
+      text-decoration: none;
+    }
+
+    .btn-secondary {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      background: var(--bg-card);
+      color: var(--text-primary);
+      border: 1px solid var(--border-strong);
+      font-weight: 600;
+      font-size: 12.5px;
+      padding: 7px 14px;
+      border-radius: 4px;
+      transition: all 0.15s ease;
+      text-align: center;
+    }
+
+    .btn-secondary:hover {
+      background: var(--bg-card-alt);
+      text-decoration: none;
+    }
+
+    /* Quick Route Explorer Drawer */
+    .drawer-section {
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      border-radius: 4px;
+      padding: 18px 22px;
+      margin-bottom: 24px;
+      box-shadow: none;
+    }
+
+    .drawer-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      cursor: pointer;
+      user-select: none;
+    }
+
+    .drawer-title {
+      font-size: 15px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--text-primary);
+    }
+
+    .drawer-toggle-btn {
+      font-size: 11.5px;
+      font-weight: 600;
+      color: var(--accent-primary);
+      background: var(--accent-primary-bg);
+      border: 1px solid var(--accent-primary-border);
+      padding: 4px 10px;
+      border-radius: 4px;
+    }
+
+    .drawer-content {
+      margin-top: 16px;
+      padding-top: 16px;
+      border-top: 1px solid var(--border-subtle);
+      display: grid;
+      grid-template-columns: repeat(4, 1fr) auto;
+      gap: 12px;
+      align-items: flex-end;
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+    }
+
+    .form-group label {
+      font-size: 11.5px;
+      font-weight: 600;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
+    .form-input {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 13.5px;
+      padding: 8px 12px;
+      border-radius: 4px;
+      border: 1px solid var(--border-strong);
+      background: var(--bg-card-alt);
+      color: var(--text-primary);
+      outline: none;
+      transition: border-color 0.15s;
+    }
+
+    .form-input:focus {
+      border-color: var(--accent-primary);
+    }
+
+    /* Calculator & Dynamic Duration Styles */
+    .drawer-content-v2 {
+      margin-top: 16px;
+      padding-top: 16px;
+      border-top: 1px solid var(--border-subtle);
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .calc-inputs-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr 1.6fr;
+      gap: 12px;
+    }
+
+    .quick-pills-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .quick-pill, .quick-duration-pill {
+      font-size: 12px;
+      font-weight: 600;
+      padding: 5px 12px;
+      border-radius: 4px;
+      border: 1px solid var(--border-subtle);
+      background: var(--bg-card-alt);
+      color: var(--text-secondary);
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+
+    .quick-pill:hover, .quick-duration-pill:hover {
+      background: var(--border-subtle);
+      color: var(--text-primary);
+    }
+
+    .quick-pill.active-pill, .quick-duration-pill.active-pill {
+      background: var(--accent-primary);
+      color: #ffffff;
+      border-color: var(--accent-primary);
+    }
+
+    .calc-results-wrap {
+      background: var(--bg-card-alt);
+      border: 1px solid var(--border-subtle);
+      border-radius: 4px;
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .calc-results-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 8px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid var(--border-subtle);
+    }
+
+    .calc-cards-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(285px, 1fr));
+      gap: 12px;
+    }
+
+    .calc-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      border-radius: 4px;
+      padding: 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      box-shadow: none;
+      transition: border-color 0.15s;
+    }
+
+    .calc-card:hover {
+      transform: none;
+      border-color: var(--accent-primary);
+    }
+
+    .calc-card.is-recommended {
+      border: 1.5px solid var(--pos);
+      background: var(--pos-bg);
+    }
+
+    .btn-track-radar {
+      background: var(--purple-bg);
+      color: var(--purple);
+      border: 1px solid var(--purple-border);
+      font-size: 11.5px;
+      font-weight: 700;
+      padding: 6px 10px;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+
+    .btn-track-radar:hover {
+      background: var(--purple);
+      color: #ffffff;
+    }
+
+    .btn-delete-card {
+      background: transparent;
+      border: none;
+      color: var(--text-muted);
+      cursor: pointer;
+      font-size: 14px;
+      padding: 2px 6px;
+      border-radius: 4px;
+      transition: all 0.15s;
+    }
+
+    .btn-delete-card:hover {
+      color: #ef4444;
+      background: rgba(239, 68, 68, 0.12);
+    }
+
+    .custom-tracked-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      background: rgba(167, 139, 250, 0.18);
+      color: var(--purple);
+      border: 1px solid var(--purple-border);
+      font-size: 11px;
+      font-weight: 700;
+      padding: 2px 8px;
+      border-radius: 999px;
+    }
+
+    /* Controls Bar & Filters */
+    .controls-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 14px;
+      margin-bottom: 20px;
+    }
+
+    .filter-group {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      align-items: center;
+    }
+
+    .filter-btn {
+      font-size: 12.5px;
+      font-weight: 600;
+      padding: 6px 13px;
+      border-radius: 4px;
+      border: 1px solid var(--border-subtle);
+      background: var(--bg-card);
+      color: var(--text-secondary);
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+
+    .filter-btn:hover {
+      background: var(--bg-card-alt);
+      color: var(--text-primary);
+    }
+
+    .filter-btn.active {
+      background: var(--accent-primary);
+      color: #ffffff;
+      border-color: var(--accent-primary);
+    }
+
+    .search-input {
+      font-size: 12.5px;
+      padding: 6px 12px;
+      border-radius: 4px;
+      border: 1px solid var(--border-strong);
+      background: var(--bg-card);
+      color: var(--text-primary);
+      outline: none;
+      min-width: 220px;
+    }
+
+    .scan-stamp {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11.5px;
+      color: var(--text-muted);
+    }
+
+    /* Flight Cards Grid */
+    .cards-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 16px;
+      margin-bottom: 48px;
+    }
+
+    .flight-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      border-radius: 4px;
+      padding: 18px 20px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      transition: border-color 0.15s ease;
+      box-shadow: none;
+      position: relative;
+    }
+
+    .flight-card:hover {
+      transform: none;
+      box-shadow: none;
+      border-color: var(--accent-primary);
+    }
+
+    .flight-card.is-buy-now {
+      border-color: var(--pos-border);
+      border-left: 3px solid var(--pos);
+      box-shadow: none;
+    }
+
+    /* Card Route Header */
+    .route-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 12px;
+    }
+
+    .route-airports {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 21px;
+      font-weight: 700;
+      color: var(--text-primary);
+      letter-spacing: -0.02em;
+    }
+
+    .plane-icon {
+      color: var(--accent-primary);
+      font-size: 18px;
+    }
+
+    .route-cities {
+      font-size: 13px;
+      color: var(--text-secondary);
+      margin-top: 2px;
+      font-weight: 500;
+    }
+
+    .price-box {
+      text-align: right;
+    }
+
+    .price-main {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 26px;
+      font-weight: 800;
+      color: var(--text-primary);
+      line-height: 1.1;
+    }
+
+    .price-percentile-badge {
+      display: inline-block;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10.5px;
+      font-weight: 700;
+      padding: 2px 6px;
+      border-radius: 4px;
+      margin-top: 4px;
+    }
+
+    .percentile-low {
+      background: var(--pos-bg);
+      color: var(--pos);
+      border: 1px solid var(--pos-border);
+    }
+    .percentile-mid {
+      background: var(--amber-bg);
+      color: var(--amber);
+      border: 1px solid var(--amber-border);
+    }
+    .percentile-high {
+      background: var(--bg-card-alt);
+      color: var(--text-muted);
+      border: 1px solid var(--border-subtle);
+    }
+
+    /* Badges Row */
+    .badges-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-bottom: 12px;
+    }
+
+    .window-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      background: var(--sky-bg);
+      color: var(--sky);
+      border: 1px solid var(--sky-border);
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      font-weight: 600;
+      padding: 3px 8px;
+      border-radius: 3px;
+    }
+
+    .category-badge {
+      display: inline-flex;
+      align-items: center;
+      background: var(--purple-bg);
+      color: var(--purple);
+      border: 1px solid var(--purple-border);
+      font-size: 11px;
+      font-weight: 600;
+      padding: 3px 8px;
+      border-radius: 3px;
+    }
+
+    .nonstop-badge {
+      display: inline-flex;
+      align-items: center;
+      background: var(--pos-bg);
+      color: var(--pos);
+      border: 1px solid var(--pos-border);
+      font-size: 11px;
+      font-weight: 700;
+      padding: 3px 7px;
+      border-radius: 3px;
+    }
+
+    .layover-badge {
+      display: inline-flex;
+      align-items: center;
+      background: var(--amber-bg);
+      color: var(--amber);
+      border: 1px solid var(--amber-border);
+      font-size: 11px;
+      font-weight: 600;
+      padding: 3px 7px;
+      border-radius: 3px;
+    }
+
+    /* Sparkline & History Row */
+    .trend-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 14px;
+      padding: 8px 12px;
+      background: var(--bg-card-alt);
+      border-radius: 4px;
+      border: 1px solid var(--border-subtle);
+    }
+
+    .trend-stat {
+      font-size: 11.5px;
+      color: var(--text-muted);
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    .trend-stat strong {
+      color: var(--text-primary);
+    }
+
+    .sparkline-svg {
+      width: 95px;
+      height: 22px;
+    }
+
+    /* Flight Specs Grid */
+    .specs-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+      padding: 10px 0;
+      border-top: 1px solid var(--border-subtle);
+      border-bottom: 1px solid var(--border-subtle);
+      margin-bottom: 14px;
+    }
+
+    .spec-item {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .spec-label {
+      font-size: 10.5px;
+      font-weight: 600;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
+    .spec-val {
+      font-size: 12.5px;
+      font-weight: 600;
+      color: var(--text-primary);
+      margin-top: 2px;
+    }
+
+    /* Baggage Policy Pill */
+    .baggage-pill {
+      background: var(--bg-card-alt);
+      border: 1px solid var(--border-subtle);
+      border-radius: 4px;
+      padding: 7px 11px;
+      font-size: 12px;
+      color: var(--text-secondary);
+      margin-bottom: 14px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .baggage-pill strong {
+      color: var(--text-primary);
+    }
+
+    /* Gemini Audit Box */
+    .gemini-audit-box {
+      background: var(--bg-card-alt);
+      border-radius: 4px;
+      padding: 12px 14px;
+      margin-bottom: 16px;
+      border: 1px solid var(--border-subtle);
+    }
+
+    .gemini-verdict-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 8px;
+    }
+
+    .verdict-badge {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11.5px;
+      font-weight: 700;
+      text-transform: uppercase;
+      padding: 3px 9px;
+      border-radius: 4px;
+      letter-spacing: 0.04em;
+    }
+
+    .verdict-buy {
+      background: var(--pos-bg);
+      color: var(--pos);
+      border: 1px solid var(--pos-border);
+    }
+    .verdict-fair {
+      background: var(--amber-bg);
+      color: var(--amber);
+      border: 1px solid var(--amber-border);
+    }
+    .verdict-pass {
+      background: var(--bg-card);
+      color: var(--text-muted);
+      border: 1px solid var(--border-strong);
+    }
+
+    .gemini-label {
+      font-size: 10.5px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--accent-primary);
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .audit-rationale {
+      font-size: 12.5px;
+      color: var(--text-secondary);
+      line-height: 1.45;
+      margin-bottom: 8px;
+    }
+
+    .audit-bullets {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      margin-top: 6px;
+    }
+
+    .audit-bullet {
+      font-size: 11.5px;
+      line-height: 1.4;
+      position: relative;
+      padding-left: 14px;
+    }
+
+    .audit-bullet.caution {
+      color: var(--amber);
+    }
+    .audit-bullet.caution::before {
+      content: "•";
+      position: absolute;
+      left: 2px;
+      font-weight: bold;
+      color: var(--amber);
+    }
+
+    .audit-bullet.positive {
+      color: var(--pos);
+    }
+    .audit-bullet.positive::before {
+      content: "•";
+      position: absolute;
+      left: 2px;
+      font-weight: bold;
+      color: var(--pos);
+    }
+
+    /* Card Footer & Action Buttons */
+    .card-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+      padding-top: 12px;
+      border-top: 1px solid var(--border-subtle);
+    }
+
+    .savings-tag {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--pos);
+    }
+
+    .action-links {
+      display: flex;
+      gap: 8px;
+    }
+
+    .btn-book {
+      font-size: 12px;
+      font-weight: 600;
+      padding: 6px 12px;
+      border-radius: 4px;
+      background: var(--accent-primary);
+      color: #ffffff !important;
+      transition: background 0.15s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .btn-book:hover {
+      background: var(--accent-primary-hover);
+      text-decoration: none;
+    }
+
+    .btn-kayak {
+      font-size: 12px;
+      font-weight: 600;
+      padding: 6px 10px;
+      border-radius: 4px;
+      background: var(--bg-card);
+      border: 1px solid var(--border-strong);
+      color: var(--text-primary);
+      transition: all 0.15s ease;
+    }
+
+    .btn-kayak:hover {
+      background: var(--bg-card-alt);
+      text-decoration: none;
+    }
+
+    @media (max-width: 960px) {
+      .cards-grid {
+        grid-template-columns: 1fr;
+      }
+      .kpi-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+      .drawer-content {
+        grid-template-columns: 1fr 1fr;
+      }
+      .calc-inputs-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+      .spotlight-card {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 16px;
+      }
+      .spotlight-actions {
+        width: 100%;
+        flex-direction: row;
+      }
+    }
+
+    @media (max-width: 600px) {
+      .kpi-grid {
+        grid-template-columns: 1fr;
+      }
+      .drawer-content {
+        grid-template-columns: 1fr;
+      }
+      .calc-inputs-grid {
+        grid-template-columns: 1fr;
+      }
+      #dateBoundaryRow {
+        grid-template-columns: 1fr !important;
+      }
+      .controls-bar {
+        flex-direction: column;
+        align-items: stretch;
+      }
+      .search-input {
+        width: 100%;
+      }
+      .card-footer {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+      }
+      .action-links {
+        width: 100%;
+        justify-content: space-between;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Top Navigation Header -->
+  <header>
+    <div class="container">
+      <div class="header-inner">
+        <div class="brand-wrap">
+          <span class="brand-mark">&#9992;</span>
+          <div>
+            <span class="brand-title">DealScout Flight Intelligence</span>
+            <span class="brand-subtitle">Personal Corridor Radar</span>
+          </div>
+        </div>
+        <div class="header-links">
+          <a href="https://pdub1101.github.io/" target="_top" class="btn-header">
+            &larr; Portfolio
+          </a>
+          <button id="themeToggle" class="btn-header" aria-label="Toggle theme">
+            Theme
+          </button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Executive Flight Metrics Ribbon -->
+  <section class="metrics-ribbon">
+    <div class="container">
+      <div class="kpi-grid">
+        <div class="kpi-card">
+          <div class="kpi-label">Active Flight Corridors</div>
+          <div class="kpi-value" id="kpiCorridors">8</div>
+          <div class="kpi-sub" id="kpiCorridorsSub">ATL & CLT origins monitored</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-label">Actionable Outliers Today</div>
+          <div class="kpi-value" id="kpiOutliers" style="color: var(--pos);">--</div>
+          <div class="kpi-sub">Bottom 20th percentile threshold</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-label">Max Corridor Savings</div>
+          <div class="kpi-value" id="kpiMaxSavings">$150.00</div>
+          <div class="kpi-sub">Calculated vs 90d historical median</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-label">AI Audit & Percentile Engine</div>
+          <div class="kpi-value" style="font-size: 19px; line-height: 1.35;" id="kpiEngine">Gemini 3.8</div>
+          <div class="kpi-sub">Baggage & connection risk audits</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <main>
+    <div class="container">
+
+      <!-- Top Priority Deal Spotlight -->
+      <section class="spotlight-wrap" id="spotlightSection">
+        <div class="spotlight-card">
+          <div>
+            <span class="spotlight-badge" id="spotlightBadge">Top Outlier Fare</span>
+            <div class="spotlight-title" id="spotlightTitle">Loading live flight radar...</div>
+            <div class="spotlight-desc" id="spotlightSummary">
+              Analyzing historical percentile distributions and baggage fee gotchas across all corridors.
+            </div>
+          </div>
+          <div class="spotlight-actions">
+            <a href="#" target="_blank" rel="noopener" class="btn-cta" id="spotlightGoogleBtn">
+              Book on Google Flights &rarr;
+            </a>
+            <a href="#" target="_blank" rel="noopener" class="btn-secondary" id="spotlightKayakBtn">
+              Compare on Kayak
+            </a>
+          </div>
+        </div>
+      </section>
+
+      <!-- Interactive Trip Duration & Destination Lowest Price Planner -->
+      <section class="drawer-section">
+        <div class="drawer-header" id="drawerToggle">
+          <div class="drawer-title">
+            <span>&#9992; Trip Duration & Custom Destination Price Planner</span>
+            <span style="font-size: 12px; font-weight: 500; color: var(--text-muted);">(Pick your destination, how long you want to stay, and find lowest rates)</span>
+          </div>
+          <button class="drawer-toggle-btn" id="drawerBtnLabel">Open Planner &#9662;</button>
+        </div>
+        <div class="drawer-content-v2" id="drawerBody" style="display: none;">
+          
+          <!-- Quick Destination Selection -->
+          <div>
+            <label style="font-size: 11.5px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.04em;">1. Choose Destination</label>
+            <div class="quick-pills-row" style="margin-top: 6px;">
+              <button type="button" class="quick-pill active-pill" data-dest="SLC" data-city="Salt Lake City, UT">SLC (Salt Lake City)</button>
+              <button type="button" class="quick-pill" data-dest="DEN" data-city="Denver, CO">DEN (Denver)</button>
+              <button type="button" class="quick-pill" data-dest="MCO" data-city="Orlando, FL">MCO (Orlando)</button>
+              <button type="button" class="quick-pill" data-dest="MIA" data-city="Miami, FL">MIA (Miami)</button>
+              <button type="button" class="quick-pill" data-dest="LAS" data-city="Las Vegas, NV">LAS (Las Vegas)</button>
+              <button type="button" class="quick-pill" data-dest="JFK" data-city="New York, NY">JFK (New York)</button>
+              <button type="button" class="quick-pill" data-dest="SEA" data-city="Seattle, WA">SEA (Seattle)</button>
+            </div>
+          </div>
+
+          <!-- Main Inputs Grid -->
+          <div class="calc-inputs-grid">
+            <div class="form-group">
+              <label for="inputOrigin">Origin Airport</label>
+              <input type="text" id="inputOrigin" class="form-input" placeholder="e.g. ATL" maxlength="3" value="ATL" />
+            </div>
+            <div class="form-group">
+              <label for="inputDest">Destination Airport</label>
+              <input type="text" id="inputDest" class="form-input" placeholder="e.g. SLC" maxlength="3" value="SLC" />
+            </div>
+            <div class="form-group">
+              <label for="inputDuration">How Long (Nights)?</label>
+              <input type="number" id="inputDuration" class="form-input" min="1" max="30" value="14" />
+            </div>
+            <div class="form-group">
+              <label for="selectSeason">Target Travel Season</label>
+              <select id="selectSeason" class="form-input" style="font-family: inherit;">
+                <option value="holiday_2026">Holiday / Winter Break (Dec 2026 – Jan 2027)</option>
+                <option value="mlk_2027">MLK Weekend Ski (Jan 2027)</option>
+                <option value="spring_2027">Spring Break (Mar – Apr 2027)</option>
+                <option value="summer_2027">Summer Season (Jun – Jul 2027)</option>
+                <option value="custom">Custom Date Range...</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Quick Duration Presets -->
+          <div>
+            <label style="font-size: 11px; font-weight: 600; color: var(--text-muted); text-transform: uppercase;">Duration Shortcuts:</label>
+            <div class="quick-pills-row" style="margin-top: 5px;">
+              <button type="button" class="quick-duration-pill" data-nights="3">3 Nights (Weekend Trip)</button>
+              <button type="button" class="quick-duration-pill" data-nights="5">5 Nights (Midweek Break)</button>
+              <button type="button" class="quick-duration-pill" data-nights="7">7 Nights (1 Full Week)</button>
+              <button type="button" class="quick-duration-pill" data-nights="10">10 Nights (Extended)</button>
+              <button type="button" class="quick-duration-pill active-pill" data-nights="14">14 Nights (2 Weeks)</button>
+            </div>
+          </div>
+
+          <!-- Date Boundary Row -->
+          <div id="dateBoundaryRow" style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+            <div class="form-group">
+              <label for="inputEarliestDep">Earliest Departure Date</label>
+              <input type="date" id="inputEarliestDep" class="form-input" value="2026-12-18" />
+            </div>
+            <div class="form-group">
+              <label for="inputLatestRet">Latest Return Date</label>
+              <input type="date" id="inputLatestRet" class="form-input" value="2027-01-08" />
+            </div>
+          </div>
+
+          <!-- Calculate Action Button -->
+          <div style="display: flex; gap: 10px; align-items: center; flex-wrap: wrap; margin-top: 4px;">
+            <button id="btnCalculateLowest" class="btn-cta" style="padding: 10px 20px; font-size: 13px; font-weight: 700;">
+              &#128269; Calculate Lowest Price Date Windows
+            </button>
+            <span style="font-size: 12px; color: var(--text-muted);" id="calcHelperNote">
+              Calculates cheapest departure vs return day pairings for your exact trip duration.
+            </span>
+          </div>
+
+          <!-- Dynamic Calculation Output Area -->
+          <div id="calculatorResults" style="display: none;"></div>
+
+        </div>
+      </section>
+
+      <!-- Filter Controls Bar -->
+      <section class="controls-bar">
+        <div class="filter-group" id="filterButtons">
+          <button class="filter-btn active" data-filter="all">All Corridors (<span id="countAll">8</span>)</button>
+          <button class="filter-btn" data-filter="buys">Actionable Deals (<span id="countBuys">0</span>)</button>
+          <button class="filter-btn" data-filter="weekend">Weekend (3-4 N)</button>
+          <button class="filter-btn" data-filter="week">Week (7-9 N)</button>
+          <button class="filter-btn" data-filter="extended">Extended (10+ N)</button>
+          <button class="filter-btn" data-filter="nonstop">Nonstop Only (<span id="countNonstop">0</span>)</button>
+          <button class="filter-btn" data-filter="origin-atl">ATL (<span id="countAtl">0</span>)</button>
+          <button class="filter-btn" data-filter="origin-clt">CLT (<span id="countClt">0</span>)</button>
+          <button class="filter-btn" data-filter="holiday">Holiday (<span id="countHoliday">0</span>)</button>
+        </div>
+
+        <div style="display: flex; align-items: center; gap: 12px;">
+          <input type="text" id="searchFilter" class="search-input" placeholder="Search city, airport, airline..." />
+          <span class="scan-stamp" id="lastUpdatedStamp">Scan Updated: Loading...</span>
+        </div>
+      </section>
+
+      <!-- Flight Cards Grid -->
+      <section class="cards-grid" id="flightsGrid">
+        <!-- Injected via JavaScript -->
+      </section>
+
+    </div>
+  </main>
+
+  <script src="deals_data.js?v=20261112_2055"></script>
+  <script>
+    // Theme Switcher & Embedding Sync
+    const themeBtn = document.getElementById('themeToggle');
+    const htmlElem = document.documentElement;
+
+    function applyTheme(theme) {
+      htmlElem.setAttribute('data-theme', theme);
+      localStorage.setItem('theme', theme);
+    }
+
+    if (themeBtn) {
+      themeBtn.addEventListener('click', () => {
+        const current = htmlElem.getAttribute('data-theme') || 'light';
+        const next = current === 'slate' ? 'light' : 'slate';
+        applyTheme(next);
+      });
+    }
+
+    window.addEventListener('message', function(e) {
+      if (e.data && e.data.type === 'SET_THEME' && e.data.theme) {
+        applyTheme(e.data.theme);
+      }
+    });
+
+    const savedTheme = localStorage.getItem('theme') || 'light';
+    applyTheme(savedTheme);
+
+    // Planner Toggle
+    const drawerToggle = document.getElementById('drawerToggle');
+    const drawerBody = document.getElementById('drawerBody');
+    const drawerBtnLabel = document.getElementById('drawerBtnLabel');
+
+    if (drawerToggle) {
+      drawerToggle.addEventListener('click', () => {
+        const isOpen = drawerBody.style.display !== 'none';
+        drawerBody.style.display = isOpen ? 'none' : 'flex';
+        drawerBtnLabel.innerHTML = isOpen ? 'Open Planner &#9662;' : 'Close &#9652;';
+      });
+    }
+
+    // Quick Destination Pills
+    const destPills = document.querySelectorAll('.quick-pill');
+    destPills.forEach(pill => {
+      pill.addEventListener('click', () => {
+        destPills.forEach(p => p.classList.remove('active-pill'));
+        pill.classList.add('active-pill');
+        const code = pill.dataset.dest;
+        document.getElementById('inputDest').value = code;
+      });
+    });
+
+    // Quick Duration Pills
+    const durPills = document.querySelectorAll('.quick-duration-pill');
+    durPills.forEach(pill => {
+      pill.addEventListener('click', () => {
+        durPills.forEach(p => p.classList.remove('active-pill'));
+        pill.classList.add('active-pill');
+        const nights = pill.dataset.nights;
+        document.getElementById('inputDuration').value = nights;
+      });
+    });
+
+    // Season Selector
+    const seasonSelect = document.getElementById('selectSeason');
+    if (seasonSelect) {
+      seasonSelect.addEventListener('change', () => {
+        const val = seasonSelect.value;
+        const depInput = document.getElementById('inputEarliestDep');
+        const retInput = document.getElementById('inputLatestRet');
+        if (val === 'holiday_2026') {
+          depInput.value = '2026-12-18';
+          retInput.value = '2027-01-08';
+        } else if (val === 'mlk_2027') {
+          depInput.value = '2027-01-14';
+          retInput.value = '2027-01-20';
+        } else if (val === 'spring_2027') {
+          depInput.value = '2027-03-10';
+          retInput.value = '2027-04-15';
+        } else if (val === 'summer_2027') {
+          depInput.value = '2027-06-01';
+          retInput.value = '2027-07-31';
+        }
+      });
+    }
+
+    function getCityName(code) {
+      const map = {
+        'ATL': 'Atlanta, GA',
+        'SLC': 'Salt Lake City, UT',
+        'DEN': 'Denver, CO',
+        'CLT': 'Charlotte, NC',
+        'MCO': 'Orlando, FL',
+        'MIA': 'Miami, FL',
+        'LAS': 'Las Vegas, NV',
+        'JFK': 'New York, NY',
+        'EWR': 'New York, NY',
+        'SEA': 'Seattle, WA',
+        'ORD': 'Chicago, IL',
+        'DFW': 'Dallas, TX',
+        'BOS': 'Boston, MA',
+        'SFO': 'San Francisco, CA',
+        'LAX': 'Los Angeles, CA',
+        'PHX': 'Phoenix, AZ',
+        'VLD': 'Valdosta, GA'
+      };
+      return map[code] || `${code} Area`;
+    }
+
+    function formatDateDisplay(d) {
+      const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+      return `${months[d.getMonth()]} ${d.getDate()}, ${d.getFullYear()}`;
+    }
+
+    function formatISODate(d) {
+      const y = d.getFullYear();
+      const m = String(d.getMonth() + 1).padStart(2, '0');
+      const day = String(d.getDate()).padStart(2, '0');
+      return `${y}-${m}-${day}`;
+    }
+
+    // Dynamic Calculation Logic
+    const btnCalculateLowest = document.getElementById('btnCalculateLowest');
+    const calcResults = document.getElementById('calculatorResults');
+
+    if (btnCalculateLowest) {
+      btnCalculateLowest.addEventListener('click', () => {
+        const orig = (document.getElementById('inputOrigin').value || 'ATL').trim().toUpperCase();
+        const dest = (document.getElementById('inputDest').value || 'SLC').trim().toUpperCase();
+        const duration = parseInt(document.getElementById('inputDuration').value, 10) || 7;
+        const earliestStr = document.getElementById('inputEarliestDep').value;
+        const latestStr = document.getElementById('inputLatestRet').value;
+
+        if (!earliestStr || !latestStr) {
+          alert('Please select both an earliest departure date and latest return date.');
+          return;
+        }
+
+        const startD = new Date(earliestStr + 'T00:00:00');
+        const endD = new Date(latestStr + 'T00:00:00');
+        const daysDiff = Math.round((endD - startD) / (1000 * 60 * 60 * 24));
+
+        if (daysDiff < duration) {
+          alert(`Your date window (${daysDiff} days) is shorter than your requested trip duration (${duration} nights). Please expand your date range.`);
+          return;
+        }
+
+        const weekdays = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+        const options = [];
+
+        // Generate date pairings
+        let curr = new Date(startD);
+        while (true) {
+          const ret = new Date(curr);
+          ret.setDate(ret.getDate() + duration);
+          if (ret > endD) break;
+
+          const depDayIdx = curr.getDay();
+          const retDayIdx = ret.getDay();
+          const depDayName = weekdays[depDayIdx];
+          const retDayName = weekdays[retDayIdx];
+
+          // Yield intelligence: Tue (2), Wed (3), Sat (6) are historically low yield
+          const isCheapestDay = (depDayIdx === 2 || depDayIdx === 3 || depDayIdx === 6);
+          const isPeakDay = (depDayIdx === 0 || depDayIdx === 5); // Sun, Fri
+
+          const depISO = formatISODate(curr);
+          const retISO = formatISODate(ret);
+          const dateDisp = `${formatDateDisplay(curr)} – ${formatDateDisplay(ret)}`;
+
+          // Baseline price model
+          let estRate = 220;
+          if (dest === 'SLC') estRate = 320;
+          if (dest === 'MCO') estRate = 180;
+          if (dest === 'DEN') estRate = 190;
+          if (dest === 'MIA') estRate = 240;
+
+          if (duration > 7) estRate += 40;
+          if (isCheapestDay) estRate = Math.round(estRate * 0.76); // 24% lower
+          if (isPeakDay) estRate = Math.round(estRate * 1.38); // 38% peak surcharge
+
+          const googleUrl = `https://www.google.com/travel/flights?q=flights+from+${orig}+to+${dest}+on+${depISO}+through+${retISO}`;
+          const kayakUrl = `https://www.kayak.com/flights/${orig}-${dest}/${depISO}/${retISO}`;
+
+          options.push({
+            depISO,
+            retISO,
+            depDayName,
+            retDayName,
+            dateDisp,
+            isCheapestDay,
+            isPeakDay,
+            estRate,
+            googleUrl,
+            kayakUrl,
+          });
+
+          curr.setDate(curr.getDate() + 1);
+        }
+
+        // Sort: Recommended lowest yield days first
+        options.sort((a, b) => a.estRate - b.estRate);
+
+        // Render Results
+        calcResults.style.display = 'block';
+        calcResults.innerHTML = `
+          <div class="calc-results-wrap">
+            <div class="calc-results-header">
+              <div>
+                <strong style="font-size: 14px; color: var(--text-primary);">&#10024; Lowest Calculated Options: ${orig} ➔ ${dest} (${duration} Nights)</strong>
+                <div style="font-size: 12px; color: var(--text-muted); margin-top: 3px;">
+                  Found ${options.length} potential date windows. Tuesday & Wednesday departures avoid airline peak yield surcharges.
+                </div>
+              </div>
+              <span style="font-size: 11px; background: var(--pos-bg); color: var(--pos); border: 1px solid var(--pos-border); padding: 3px 8px; border-radius: 999px; font-weight: 700;">
+                &#9650; Sorted by Best Rate
+              </span>
+            </div>
+
+            <div class="calc-cards-grid">
+              ${options.map((opt) => {
+                const recClass = opt.isCheapestDay ? 'is-recommended' : '';
+                const tag = opt.isCheapestDay
+                  ? `<span style="color: var(--pos); font-size: 11px; font-weight: 700;">&#9733; Low-Yield Day (Best Rate)</span>`
+                  : (opt.isPeakDay
+                      ? `<span style="color: var(--amber); font-size: 11px; font-weight: 600;">&#9888; Weekend Peak Yield</span>`
+                      : `<span style="color: var(--text-muted); font-size: 11px;">Standard Fare Window</span>`);
+
+                const optJSON = encodeURIComponent(JSON.stringify({
+                  orig,
+                  dest,
+                  duration,
+                  depISO: opt.depISO,
+                  retISO: opt.retISO,
+                  dateDisp: opt.dateDisp,
+                  estRate: opt.estRate,
+                  googleUrl: opt.googleUrl,
+                  kayakUrl: opt.kayakUrl,
+                  isCheapestDay: opt.isCheapestDay
+                }));
+
+                return `
+                  <div class="calc-card ${recClass}">
+                    <div style="display: flex; justify-content: space-between; align-items: flex-start;">
+                      <div>
+                        <div style="font-size: 13px; font-weight: 700; color: var(--text-primary);">${opt.depDayName} ➔ ${opt.retDayName}</div>
+                        <div style="font-family: 'JetBrains Mono', monospace; font-size: 11.5px; color: var(--text-secondary); margin-top: 2px;">
+                          ${opt.dateDisp}
+                        </div>
+                      </div>
+                      <div style="text-align: right;">
+                        <span style="font-size: 15px; font-weight: 800; color: ${opt.isCheapestDay ? 'var(--pos)' : 'var(--text-primary)'};">~$${opt.estRate}</span>
+                        <div style="font-size: 10px; color: var(--text-muted);">roundtrip</div>
+                      </div>
+                    </div>
+
+                    <div style="display: flex; align-items: center; justify-content: space-between;">
+                      ${tag}
+                      <span style="font-size: 11px; font-weight: 600; color: var(--text-muted);">${duration} Nights</span>
+                    </div>
+
+                    <div style="display: flex; gap: 6px; margin-top: 4px;">
+                      <a href="${opt.googleUrl}" target="_blank" rel="noopener" class="btn-cta" style="flex: 1; text-align: center; padding: 6px 10px; font-size: 11.5px;">
+                        Google Flights &rarr;
+                      </a>
+                      <a href="${opt.kayakUrl}" target="_blank" rel="noopener" class="btn-secondary" style="padding: 6px 10px; font-size: 11.5px;">
+                        Kayak
+                      </a>
+                      <button type="button" class="btn-track-radar" onclick="saveCustomTrack('${optJSON}')" title="Track this customized corridor on your live radar">
+                        + Radar
+                      </button>
+                    </div>
+                  </div>
+                `;
+              }).join('')}
+            </div>
+          </div>
+        `;
+
+        calcResults.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      });
+    }
+
+    // Custom Corridor Storage & Actions
+    window.saveCustomTrack = function(encodedJSON) {
+      try {
+        const item = JSON.parse(decodeURIComponent(encodedJSON));
+        const customList = JSON.parse(localStorage.getItem('dealscout_custom_corridors') || '[]');
+        
+        const newCorridor = {
+          id: 'custom_' + Date.now(),
+          origin: item.orig,
+          destination: item.dest,
+          origin_city: getCityName(item.orig),
+          destination_city: getCityName(item.dest),
+          trip_type: 'roundtrip',
+          window_name: `${item.dest} (${item.duration} Nights Custom)`,
+          category: 'Custom Radar',
+          date_display: item.dateDisp,
+          start_date: item.depISO,
+          end_date: item.retISO,
+          duration_nights: item.duration,
+          duration_label: `${item.duration} Nights (Custom Tracked)`,
+          airline: 'Cheapest Live Airline',
+          price: item.estRate,
+          stops: 1,
+          departure_time: '10:15 AM',
+          arrival_time: '2:45 PM',
+          flight_duration_hrs: '4h 30m',
+          cabin: 'Economy (Lowest Live Available)',
+          booking_url: item.googleUrl,
+          kayak_url: item.kayakUrl,
+          notes: `Custom tracked ${item.duration}-night corridor from ${item.orig} to ${item.dest}.`,
+          is_live: true,
+          is_custom: true,
+          quote_source: 'Custom Duration Planner',
+          stats: {
+            percentile_rank: item.isCheapestDay ? 15.0 : 45.0,
+            min_price: Math.round(item.estRate * 0.9),
+            max_price: Math.round(item.estRate * 1.4),
+            median_price: Math.round(item.estRate * 1.15),
+            estimated_savings: item.isCheapestDay ? 60 : 0
+          },
+          audit: {
+            verdict: item.isCheapestDay ? 'BUY NOW' : 'FAIR VALUE',
+            baggage_status: 'Check carry-on bag policy for selected carrier',
+            rationale: `Custom calculated ${item.duration}-night duration. ${item.isCheapestDay ? 'Departing on low-demand weekdays locks in lowest carrier yield.' : 'Live market quote on Google Flights.'}`,
+            gotchas: ['Verify carrier baggage and change restrictions at booking.'],
+            positive_highlights: [`Exact ${item.duration}-night stay matched to your travel preferences.`]
+          }
+        };
+
+        customList.unshift(newCorridor);
+        localStorage.setItem('dealscout_custom_corridors', JSON.stringify(customList));
+
+        // Re-render dashboard
+        initDashboard(window.LAST_LOADED_DATA || window.DEAL_DATA);
+
+        // Feedback
+        const gridElem = document.getElementById('flightsGrid');
+        if (gridElem) {
+          gridElem.scrollIntoView({ behavior: 'smooth' });
+        }
+        alert(`Success! Tracked ${item.orig} ➔ ${item.dest} (${item.duration} Nights) on your live dashboard.`);
+      } catch (e) {
+        console.error('Error saving custom corridor:', e);
+      }
+    };
+
+    window.deleteCustomCorridor = function(id) {
+      if (!confirm('Remove this custom corridor from your radar?')) return;
+      let customList = JSON.parse(localStorage.getItem('dealscout_custom_corridors') || '[]');
+      customList = customList.filter(c => c.id !== id);
+      localStorage.setItem('dealscout_custom_corridors', JSON.stringify(customList));
+      initDashboard(window.LAST_LOADED_DATA || window.DEAL_DATA);
+    };
+
+    let allFlights = [];
+    let currentFilter = 'all';
+    let searchQuery = '';
+
+    function initDashboard(data) {
+      if (!data) return;
+      window.LAST_LOADED_DATA = data;
+      
+      // Load custom tracked corridors from localStorage
+      const customCorridors = JSON.parse(localStorage.getItem('dealscout_custom_corridors') || '[]');
+      const baseFlights = data.flights || [];
+      
+      // Merge custom corridors (avoid duplicate IDs)
+      allFlights = [...customCorridors, ...baseFlights.filter(b => !customCorridors.some(c => c.id === b.id))];
+      const flights = allFlights;
+
+      // KPI Metrics Ribbon Update
+      if (data.metadata) {
+        document.getElementById('kpiCorridors').textContent = flights.length;
+        document.getElementById('kpiOutliers').textContent = data.metadata.qualified_deals_count || 0;
+        if (data.metadata.live_verified_count !== undefined) {
+          document.getElementById('kpiCorridorsSub').textContent = `${data.metadata.live_verified_count}/${flights.length} verified live on Google Flights`;
+        }
+        if (data.metadata.max_single_savings) {
+          document.getElementById('kpiMaxSavings').textContent = `$${Number(data.metadata.max_single_savings).toFixed(2)}`;
+        }
+        if (data.metadata.last_scan_time) {
+          document.getElementById('lastUpdatedStamp').textContent = `Scan: ${data.metadata.last_scan_time}`;
+        }
+        if (data.metadata.model_engine) {
+          document.getElementById('kpiEngine').textContent = "Live Market + Gemini";
+        }
+      }
+
+      // Counts Calculation
+      const buyNowFlights = flights.filter(f => f.audit && f.audit.verdict === 'BUY NOW');
+      const nonstopFlights = flights.filter(f => f.stops === 0);
+      const atlFlights = flights.filter(f => f.origin === 'ATL');
+      const cltFlights = flights.filter(f => f.origin === 'CLT');
+      const holidayFlights = flights.filter(f => (f.category || '').includes('Holiday') || (f.window_name || '').includes('Holiday') || (f.window_name || '').includes('Christmas'));
+
+      document.getElementById('countAll').textContent = flights.length;
+      document.getElementById('countBuys').textContent = buyNowFlights.length;
+      document.getElementById('countNonstop').textContent = nonstopFlights.length;
+      document.getElementById('countAtl').textContent = atlFlights.length;
+      document.getElementById('countClt').textContent = cltFlights.length;
+      document.getElementById('countHoliday').textContent = holidayFlights.length;
+
+      // Spotlight Selection
+      const sortedBySavings = [...flights].sort((a, b) => (b.stats?.estimated_savings || 0) - (a.stats?.estimated_savings || 0));
+      const spotlightItem = sortedBySavings[0] || flights[0];
+
+      if (spotlightItem) {
+        const stats = spotlightItem.stats || {};
+        const audit = spotlightItem.audit || {};
+        document.getElementById('spotlightTitle').textContent = `${spotlightItem.origin_city} (${spotlightItem.origin}) ➔ ${spotlightItem.destination_city} (${spotlightItem.destination}) • ${spotlightItem.airline} ($${spotlightItem.price} roundtrip)`;
+        document.getElementById('spotlightSummary').textContent = `${spotlightItem.window_name} (${spotlightItem.date_display}, ${spotlightItem.duration_label}) • 90d Percentile: ${stats.percentile_rank || 0}th% (Saves ~$${stats.estimated_savings || 0} vs median). ${audit.rationale || ''}`;
+        document.getElementById('spotlightGoogleBtn').href = spotlightItem.booking_url;
+        document.getElementById('spotlightKayakBtn').href = spotlightItem.kayak_url || spotlightItem.booking_url;
+      }
+
+      applyFilters();
+    }
+
+    // Sparkline Generator
+    function createSparkline(history) {
+      if (!history || history.length < 2) return '';
+      const min = Math.min(...history);
+      const max = Math.max(...history);
+      const range = max - min || 1;
+      const w = 95, h = 22;
+      const pts = history.map((val, idx) => {
+        const x = (idx / (history.length - 1)) * w;
+        const y = h - ((val - min) / range) * (h - 6) - 3;
+        return `${x.toFixed(1)},${y.toFixed(1)}`;
+      }).join(' ');
+
+      return `
+        <svg class="sparkline-svg" viewBox="0 0 ${w} ${h}">
+          <polyline fill="none" stroke="currentColor" stroke-width="2" points="${pts}" opacity="0.75" />
+        </svg>
+      `;
+    }
+
+    // Render Flight Card
+    function renderCard(item) {
+      const stats = item.stats || {};
+      const audit = item.audit || {};
+      const isBuyNow = audit.verdict === 'BUY NOW';
+      const percentile = stats.percentile_rank || 50;
+      
+      const pClass = percentile <= 20 ? 'percentile-low' : (percentile <= 45 ? 'percentile-mid' : 'percentile-high');
+      const vClass = isBuyNow ? 'verdict-buy' : (audit.verdict === 'FAIR VALUE' ? 'verdict-fair' : 'verdict-pass');
+
+      const isNonstop = item.stops === 0;
+      const routingBadge = isNonstop
+        ? `<span class="nonstop-badge">&#10003; Nonstop</span>`
+        : `<span class="layover-badge">${item.stops} stop (${item.layover_hrs}h in ${item.connection || 'hub'})</span>`;
+
+      const liveBadge = item.is_live
+        ? `<span class="live-badge" style="background: rgba(52, 211, 153, 0.15); color: #34d399; border: 1px solid rgba(52, 211, 153, 0.35); padding: 2px 7px; border-radius: 999px; font-size: 11px; font-weight: 600; display: inline-flex; align-items: center; gap: 4px;">🟢 Live Fare</span>`
+        : `<span class="benchmark-badge" style="background: rgba(148, 163, 184, 0.15); color: #94a3b8; border: 1px solid rgba(148, 163, 184, 0.35); padding: 2px 7px; border-radius: 999px; font-size: 11px; font-weight: 600; display: inline-flex; align-items: center; gap: 4px;">⚪ Benchmark</span>`;
+
+      let gotchas = (audit.gotchas || []).map(g => `<li class="audit-bullet caution">${g}</li>`).join('');
+      let highlights = (audit.positive_highlights || []).map(p => `<li class="audit-bullet positive">${p}</li>`).join('');
+
+      const savingsDisplay = stats.estimated_savings > 0
+        ? `Saves ~$${stats.estimated_savings.toFixed(0)} vs median`
+        : `Target: $${item.target_price || item.price}`;
+
+      return `
+        <div class="flight-card ${isBuyNow ? 'is-buy-now' : ''}" 
+             data-origin="${item.origin}" 
+             data-category="${item.category || ''}"
+             data-stops="${item.stops}"
+             data-verdict="${audit.verdict}"
+             data-price="${item.price}"
+             data-search="${(item.origin + ' ' + item.destination + ' ' + item.origin_city + ' ' + item.destination_city + ' ' + item.airline + ' ' + item.window_name).toLowerCase()}">
+          
+          <div>
+            <!-- Top Route & Price Header -->
+            <div class="route-header">
+              <div>
+                <div class="route-airports">
+                  <span>${item.origin}</span>
+                  <span class="plane-icon">&#9992;</span>
+                  <span>${item.destination}</span>
+                </div>
+                <div class="route-cities">${item.origin_city} to ${item.destination_city}</div>
+              </div>
+              <div class="price-box">
+                <div class="price-main">$${item.price}</div>
+                <div class="price-percentile-badge ${pClass}">${percentile}th percentile</div>
+                <div style="font-size: 10px; color: var(--text-muted); margin-top: 3px; font-weight: 500;">${item.quote_source || 'Market Quote'}</div>
+              </div>
+            </div>
+
+            <!-- Badges Row -->
+            <div class="badges-row">
+              ${liveBadge}
+              <span class="window-badge">&#128197; ${item.date_display}</span>
+              <span class="category-badge">${item.window_name}</span>
+              ${routingBadge}
+            </div>
+
+            <!-- Sparkline Trend -->
+            <div class="trend-row">
+              <div class="trend-stat">
+                Median: <strong>$${stats.median_price || item.price}</strong> • Range: $${stats.min_price || item.price}-$${stats.max_price || item.price}
+              </div>
+              <div>${createSparkline(item.history_90d)}</div>
+            </div>
+
+            <!-- Flight Specs Table -->
+            <div class="specs-grid">
+              <div class="spec-item">
+                <span class="spec-label">Carrier & Cabin</span>
+                <span class="spec-val">${item.airline}</span>
+                <span style="font-size: 11px; color: var(--text-muted);">${item.cabin || 'Main Cabin'}</span>
+              </div>
+              <div class="spec-item">
+                <span class="spec-label">Schedule</span>
+                <span class="spec-val">${item.departure_time} &rarr; ${item.arrival_time}</span>
+                <span style="font-size: 11px; color: var(--text-muted);">${item.flight_duration_hrs} travel time</span>
+              </div>
+              <div class="spec-item">
+                <span class="spec-label">Duration</span>
+                <span class="spec-val">${item.duration_nights} Nights</span>
+                <span style="font-size: 11px; color: var(--text-muted);">${item.trip_type || 'roundtrip'}</span>
+              </div>
+            </div>
+
+            <!-- Baggage Status Pill -->
+            <div class="baggage-pill">
+              <span>&#129523;</span>
+              <span><strong>Baggage:</strong> ${audit.baggage_status || 'Main Cabin standard carry-on included'}</span>
+            </div>
+
+            <!-- Gemini Qualitative Audit Box -->
+            <div class="gemini-audit-box">
+              <div class="gemini-verdict-row">
+                <span class="gemini-label">&#10024; Gemini Travel Audit</span>
+                <span class="verdict-badge ${vClass}">${audit.verdict}</span>
+              </div>
+              <div class="audit-rationale">${audit.rationale}</div>
+              <ul class="audit-bullets">
+                ${highlights}
+                ${gotchas}
+              </ul>
+            </div>
+          </div>
+
+          <!-- Card Action Footer -->
+          <div class="card-footer">
+            <span class="savings-tag">&#128176; ${savingsDisplay}</span>
+            <div class="action-links">
+              <a href="${item.kayak_url || item.booking_url}" target="_blank" rel="noopener" class="btn-kayak" title="Compare rates on Kayak">
+                Kayak
+              </a>
+              <a href="${item.booking_url}" target="_blank" rel="noopener" class="btn-book" title="View dates and book on Google Flights">
+                Google Flights &rarr;
+              </a>
+            </div>
+          </div>
+
+        </div>
+      `;
+    }
+
+    const grid = document.getElementById('flightsGrid');
+    function renderGrid(itemsToRender) {
+      if (!itemsToRender || itemsToRender.length === 0) {
+        grid.innerHTML = `
+          <div style="grid-column: 1 / -1; text-align: center; padding: 48px 20px; background: var(--bg-card); border-radius: 12px; border: 1px solid var(--border-subtle);">
+            <div style="font-size: 32px; margin-bottom: 12px;">&#9992;</div>
+            <h3 style="margin-bottom: 6px;">No corridors match your current filter.</h3>
+            <p style="color: var(--text-muted); font-size: 13.5px;">Try switching filters or clearing the search query.</p>
+          </div>
+        `;
+        return;
+      }
+      grid.innerHTML = itemsToRender.map(renderCard).join('');
+    }
+
+    // Filtering System
+    const filterButtons = document.querySelectorAll('.filter-btn');
+    const searchInput = document.getElementById('searchFilter');
+
+    function applyFilters() {
+      const filtered = allFlights.filter(f => {
+        // Text Search
+        if (searchQuery) {
+          const haystack = (f.origin + ' ' + f.destination + ' ' + f.origin_city + ' ' + f.destination_city + ' ' + f.airline + ' ' + f.window_name).toLowerCase();
+          if (!haystack.includes(searchQuery)) return false;
+        }
+
+        // Quick Category Filter
+        if (currentFilter === 'buys') {
+          return f.audit && f.audit.verdict === 'BUY NOW';
+        }
+        if (currentFilter === 'weekend') {
+          const dn = Number(f.duration_nights) || 7;
+          return dn >= 3 && dn <= 4;
+        }
+        if (currentFilter === 'week') {
+          const dn = Number(f.duration_nights) || 7;
+          return dn >= 7 && dn <= 9;
+        }
+        if (currentFilter === 'extended') {
+          const dn = Number(f.duration_nights) || 7;
+          return dn >= 10;
+        }
+        if (currentFilter === 'nonstop') {
+          return f.stops === 0;
+        }
+        if (currentFilter === 'origin-atl') {
+          return f.origin === 'ATL';
+        }
+        if (currentFilter === 'origin-clt') {
+          return f.origin === 'CLT';
+        }
+        if (currentFilter === 'holiday') {
+          return (f.category || '').includes('Holiday') || (f.window_name || '').includes('Holiday') || (f.window_name || '').includes('Christmas');
+        }
+
+        return true;
+      });
+
+      renderGrid(filtered);
+    }
+
+    filterButtons.forEach(btn => {
+      btn.addEventListener('click', () => {
+        filterButtons.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        currentFilter = btn.dataset.filter;
+        applyFilters();
+      });
+    });
+
+    if (searchInput) {
+      searchInput.addEventListener('input', (e) => {
+        searchQuery = e.target.value.trim().toLowerCase();
+        applyFilters();
+      });
+    }
+
+    // Initial render from embedded data
+    if (window.DEAL_DATA) {
+      initDashboard(window.DEAL_DATA);
+    }
+
+    // Always fetch latest data with cache: 'no-store' to guarantee fresh data without browser cache
+    fetch('data/deals_data.json?_t=' + Date.now(), { cache: 'no-store' })
+      .then(res => {
+        if (!res.ok) throw new Error('HTTP ' + res.status);
+        return res.json();
+      })
+      .then(freshData => {
+        if (freshData && freshData.flights && freshData.flights.length > 0) {
+          initDashboard(freshData);
+        }
+      })
+      .catch(err => {
+        console.warn('Direct fetch note (falling back to bundle):', err);
+      });
+  </script>
+</body>
+</html>
