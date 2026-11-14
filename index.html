@@ -1329,6 +1329,14 @@
 
   </div>
 
+  <script>
+    function onFrameLoad(frame) {
+      if (typeof syncThemeToFrame === 'function') {
+        syncThemeToFrame(frame, typeof getCurrentTheme === 'function' ? getCurrentTheme() : 'light');
+      }
+    }
+  </script>
+
   <!-- ==========================================================================
        VIEW 2: STOCK MODEL EMBEDDED IN-PAGE (NO NEW TAB)
        ========================================================================== -->
