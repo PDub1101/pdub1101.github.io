@@ -1,0 +1,66 @@
+{
+  "model_version": "2.0-gemini-hybrid",
+  "lessons_learned": [
+    {
+      "date": "2026-10-26",
+      "lesson": "When broad tech indices consolidate, pure RSI dip-buys in high-beta tech lag behind Dividend Value (SCHD) and 60/40 Balanced funds; prioritize relative strength leaders above both 20d and 50d MAs."
+    },
+    {
+      "date": "2026-10-27",
+      "lesson": "On 2026-10-27, Dividend Value Mutual Fund led the 8-option leaderboard (+2.57%); combining relative strength (1.00x weight) with news-catalyst filtering keeps portfolio win rate at 71.4%."
+    },
+    {
+      "date": "2026-10-28",
+      "lesson": "On 2026-10-28, Dividend Value Mutual Fund led the 8-option leaderboard (+2.48%); combining relative strength (1.00x weight) with news-catalyst filtering keeps portfolio win rate at 73.3%."
+    },
+    {
+      "date": "2026-10-29",
+      "lesson": "On 2026-10-29, Dividend Value Mutual Fund led the 8-option leaderboard (+4.00%); combining relative strength (1.05x weight) with news-catalyst filtering keeps portfolio win rate at 66.7%."
+    },
+    {
+      "date": "2026-10-30",
+      "lesson": "On 2026-10-30, Dividend Value Mutual Fund led the 8-option leaderboard (+4.50%); combining relative strength (1.12x weight) with news-catalyst filtering keeps portfolio win rate at 54.5%."
+    },
+    {
+      "date": "2026-11-02",
+      "lesson": "On 2026-11-02, Dividend Value Mutual Fund led the 8-option leaderboard (+4.82%); combining relative strength (1.12x weight) with news-catalyst filtering keeps portfolio win rate at 44.0%."
+    },
+    {
+      "date": "2026-11-03",
+      "lesson": "On 2026-11-03, Dividend Value Mutual Fund led the 8-option leaderboard (+3.83%); combining relative strength (1.12x weight) with news-catalyst filtering keeps portfolio win rate at 42.3%."
+    },
+    {
+      "date": "2026-11-04",
+      "lesson": "On 2026-11-04, Dividend Value Mutual Fund led the 8-option leaderboard (+5.70%); combining relative strength (1.00x weight) with news-catalyst filtering keeps portfolio win rate at 59.3%."
+    },
+    {
+      "date": "2026-11-05",
+      "lesson": "On 2026-11-05, Dividend Value Mutual Fund led the 8-option leaderboard (+3.42%); combining relative strength (1.12x weight) with news-catalyst filtering keeps portfolio win rate at 57.1%."
+    },
+    {
+      "date": "2026-11-06",
+      "lesson": "On 2026-11-06, Dividend Value Mutual Fund led the 8-option leaderboard (+2.77%); combining relative strength (1.12x weight) with news-catalyst filtering keeps portfolio win rate at 48.3%."
+    },
+    {
+      "date": "2026-11-09",
+      "lesson": "On 2026-11-09, Dividend Value Mutual Fund led the leaderboard (+4.09%); combining relative strength (1.00x weight) with risk discipline keeps portfolio win rate at 100.0%."
+    },
+    {
+      "date": "2026-11-10",
+      "lesson": "On 2026-11-10, Dividend Value Mutual Fund led the leaderboard (+4.61%); combining relative strength (1.05x weight) with risk discipline keeps portfolio win rate at 60.0%."
+    },
+    {
+      "date": "2026-11-11",
+      "lesson": "On 2026-11-11, Dividend Value Mutual Fund led the leaderboard (+5.14%); combining relative strength (1.00x weight) with risk discipline keeps portfolio win rate at 80.0%."
+    },
+    {
+      "date": "2026-11-12",
+      "lesson": "On 2026-11-12, Dividend Value Mutual Fund led the leaderboard (+4.88%); combining relative strength (1.00x weight) with risk discipline keeps portfolio win rate at 80.0%."
+    },
+    {
+      "date": "2026-11-13",
+      "lesson": "On 2026-11-13, Dividend Value Mutual Fund led the leaderboard (+5.49%); combining relative strength (1.05x weight) with risk discipline keeps portfolio win rate at 80.0%."
+    }
+  ],
+  "veto_history": []
+}
