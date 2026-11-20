@@ -254,6 +254,17 @@ def pull_latest_cloud_state(project: str, headers: dict[str, str], logger: loggi
             basis_bytes = fetch_remote_file_bytes("court-vision", "data/decision_basis.json", headers)
             if basis_bytes:
                 (COURTVISION_DIR / "data" / "decision_basis.json").write_bytes(basis_bytes)
+            # Synchronize cloud courtvision_data.js payload as well
+            data_bytes = fetch_remote_file_bytes("court-vision", "courtvision_data.js", headers)
+            if data_bytes:
+                for target_path in [
+                    COURTVISION_DIR / "courtvision_data.js",
+                    COURTVISION_DIR / "data" / "courtvision_data.js",
+                    COURTVISION_DIR / "docs" / "courtvision_data.js",
+                    MASTER_DIR / "court-vision" / "courtvision_data.js",
+                ]:
+                    target_path.parent.mkdir(parents=True, exist_ok=True)
+                    target_path.write_bytes(data_bytes)
         else:
             logger.info("[Guard][CourtVision] Local state is current or ahead of remote.")
 
@@ -520,21 +531,24 @@ def main() -> int:
                 ok = False
 
             results[proj] = ok
-            try:
-                mirror_outputs(proj, logger)
-            except Exception as exc:
-                logger.error(f"[Mirror][{proj}] Mirroring failed: {exc}")
+            if ok:
+                try:
+                    mirror_outputs(proj, logger)
+                except Exception as exc:
+                    logger.error(f"[Mirror][{proj}] Mirroring failed: {exc}")
+            else:
+                logger.warning(f"[{proj}] Skipping mirror because pipeline run did not complete successfully.")
     else:
         for proj in projects:
             mirror_outputs(proj, logger)
             results[proj] = True
 
     repos_to_deploy = []
-    if "courtvision" in projects:
+    if "courtvision" in projects and (results.get("courtvision", False) or args.deploy_only):
         repos_to_deploy.append("court-vision")
-    if "stocks" in projects:
+    if "stocks" in projects and (results.get("stocks", False) or args.deploy_only):
         repos_to_deploy.append("market-insight")
-    if "deals" in projects:
+    if "deals" in projects and (results.get("deals", False) or args.deploy_only):
         repos_to_deploy.append("deal-scout")
     repos_to_deploy.append("pdub1101.github.io")
 
