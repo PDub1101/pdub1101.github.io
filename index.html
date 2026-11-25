@@ -1,926 +1,732 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="light">
+<html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Paul Gibson — Industrial & Systems Engineering</title>
-  <meta name="description" content="Personal portfolio of Paul Gibson. Industrial and Systems Engineering student at Georgia Tech focusing on optimization, forecasting, and data systems." />
+  <title>Paul Gibson — Industrial &amp; Systems Engineering</title>
+  <meta name="description" content="Paul Gibson — Industrial & Systems Engineering student at Georgia Tech ('28). Forecasting models, optimization tools, and automated data pipelines." />
 
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet">
+  <script>
+    (function () {
+      var hashRedirects = {
+        '#stock-model': 'market-insight/',
+        '#deal-scout': 'deal-scout/',
+        '#court-vision': 'court-vision/'
+      };
+      var dest = hashRedirects[window.location.hash];
+      if (dest) window.location.replace(dest);
+    })();
+  </script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;600&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap" rel="stylesheet" />
 
   <style>
-    /* ==========================================================================
-       DESIGN SYSTEM: REFINED LIGHT BASE & SOFT SLATE DARK THEME
-       ========================================================================== */
-    :root,
-    html[data-theme="light"] {
-      --bg-page: #f8fafc;
-      --bg-header: rgba(248, 250, 252, 0.94);
+    :root {
+      --bg-page: #faf9f6;
+      --bg-header: rgba(250, 249, 246, 0.94);
       --bg-surface: #ffffff;
-      --bg-surface-alt: #f1f5f9;
-      --bg-surface-hover: #e2e8f0;
+      --bg-subtle: #f3f1ec;
 
-      --border-subtle: #e2e8f0;
-      --border-strong: #cbd5e1;
+      --border-subtle: #e5e2da;
+      --border-strong: #cfc9bc;
 
-      --text-primary: #0f172a;
-      --text-secondary: #475569;
-      --text-muted: #475569;
+      --text-primary: #14171f;
+      --text-secondary: #4a505c;
+      --text-muted: #68707d;
 
-      --accent-gt: #003057;       /* Georgia Tech Navy */
-      --accent-gold: #b3a369;     /* Tech Gold */
-      --accent-blue: #1d4ed8;
-      --accent-blue-bg: #eff6ff;
-      --accent-blue-border: #bfdbfe;
+      --accent-navy: #003057;
+      --accent-navy-hover: #00213d;
+      --accent-gold: #8c7a3e;
+      --accent-gold-badge: #b3a369;
 
-      --status-active: #047857;
-      --status-active-bg: #ecfdf5;
+      --pos: #047857;
+      --pos-bg: #ecfdf5;
+      --neg: #b91c1c;
+      --neg-bg: #fef2f2;
 
-      --shadow-subtle: 0 1px 3px rgba(15, 23, 42, 0.05), 0 1px 2px rgba(15, 23, 42, 0.03);
-      --shadow-card: 0 4px 6px -1px rgba(15, 23, 42, 0.05), 0 2px 4px -2px rgba(15, 23, 42, 0.03);
+      --font-display: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      --font-body: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      --font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
     }
 
-    html[data-theme="slate"] {
-      --bg-page: #0f1218;
-      --bg-header: rgba(15, 18, 24, 0.92);
-      --bg-surface: #171c26;
-      --bg-surface-alt: #1c2331;
-      --bg-surface-hover: #222a3a;
-
-      --border-subtle: #242c3d;
-      --border-strong: #333e54;
-
-      --text-primary: #f1f5f9;
-      --text-secondary: #94a3b8;
-      --text-muted: #94a3b8;
-
-      --accent-gt: #93c5fd;
-      --accent-gold: #d4af37;
-      --accent-blue: #60a5fa;
-      --accent-blue-bg: rgba(96, 165, 250, 0.12);
-      --accent-blue-border: rgba(96, 165, 250, 0.28);
-
-      --status-active: #34d399;
-      --status-active-bg: rgba(52, 211, 153, 0.12);
-
-      --shadow-subtle: 0 1px 3px rgba(0, 0, 0, 0.3);
-      --shadow-card: 0 4px 12px rgba(0, 0, 0, 0.35);
-    }
-
-    /* Reset & Base Typography */
     *, *::before, *::after {
       box-sizing: border-box;
       margin: 0;
       padding: 0;
     }
 
+    html {
+      scroll-behavior: smooth;
+      scrollbar-color: var(--border-strong) var(--bg-page);
+      scrollbar-width: thin;
+    }
+
     body {
       background-color: var(--bg-page);
       color: var(--text-primary);
-      font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-      font-size: 15px;
-      line-height: 1.6;
+      font-family: var(--font-body);
+      font-size: 15.5px;
+      line-height: 1.65;
       -webkit-font-smoothing: antialiased;
-      transition: background-color 0.2s ease, color 0.2s ease;
+      text-rendering: optimizeLegibility;
+      overflow-x: hidden;
+    }
+
+    ::selection {
+      background: rgba(0, 48, 87, 0.14);
+      color: var(--text-primary);
+    }
+
+    :focus-visible {
+      outline: 2px solid var(--accent-navy);
+      outline-offset: 2px;
     }
 
     h1, h2, h3, h4 {
-      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-family: var(--font-display);
       color: var(--text-primary);
       font-weight: 700;
-      letter-spacing: -0.015em;
-    }
-
-    .font-mono {
-      font-family: 'JetBrains Mono', monospace;
     }
 
     a {
-      color: var(--accent-blue);
+      color: var(--accent-navy);
       text-decoration: none;
-      transition: opacity 0.15s;
+      text-underline-offset: 3px;
+      transition: color 0.15s ease, border-color 0.15s ease, background-color 0.15s ease;
     }
+
     a:hover {
+      color: var(--accent-navy-hover);
       text-decoration: underline;
     }
 
+    code {
+      font-family: var(--font-mono);
+      font-size: 0.88em;
+      background: var(--bg-subtle);
+      padding: 1px 5px;
+      border-radius: 3px;
+      color: var(--text-primary);
+    }
+
     .container {
-      max-width: 1140px;
+      max-width: 1080px;
       margin: 0 auto;
       padding: 0 24px;
     }
 
     /* ==========================================================================
-       HEADER & IN-PAGE TAB NAVIGATION
+       UNIFIED TOP NAVIGATION
        ========================================================================== */
-    header {
+    .site-header {
       position: sticky;
       top: 0;
-      z-index: 1000;
+      z-index: 100;
       background: var(--bg-header);
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
       border-bottom: 1px solid var(--border-subtle);
     }
 
-    .header-inner {
+    .nav-container {
+      max-width: 1080px;
+      margin: 0 auto;
+      padding: 0 24px;
+      height: 62px;
       display: flex;
       align-items: center;
       justify-content: space-between;
-      height: 64px;
-      gap: 16px;
+      gap: 20px;
     }
 
-    .brand-group {
-      display: flex;
+    .nav-brand {
+      display: inline-flex;
       align-items: center;
       gap: 10px;
-      text-decoration: none;
-      color: inherit;
+      color: var(--text-primary);
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: 16px;
+      letter-spacing: -0.015em;
+      flex-shrink: 0;
     }
 
-    .gt-badge {
+    .nav-brand:hover {
+      text-decoration: none;
+      color: var(--accent-navy);
+    }
+
+    .gt-logo-pill {
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      width: 32px;
-      height: 32px;
-      background: #003057;
-      color: #b3a369;
-      font-family: 'Plus Jakarta Sans', sans-serif;
+      width: 28px;
+      height: 28px;
+      background: var(--accent-navy);
+      color: var(--accent-gold-badge);
+      font-family: var(--font-display);
       font-weight: 800;
-      font-size: 13px;
-      border-radius: 6px;
-      letter-spacing: 0.02em;
-    }
-
-    .brand-title {
-      font-size: 16px;
-      font-weight: 700;
-      letter-spacing: -0.01em;
-    }
-
-    /* In-Page Navigation Switcher */
-    .tab-nav {
-      display: flex;
-      align-items: center;
-      background: var(--bg-surface-alt);
-      padding: 3px;
-      border-radius: 8px;
-      border: 1px solid var(--border-subtle);
-    }
-
-    .tab-btn {
-      background: transparent;
-      border: none;
-      padding: 6px 14px;
-      border-radius: 6px;
-      font-size: 13.5px;
-      font-weight: 600;
-      color: var(--text-secondary);
-      cursor: pointer;
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      transition: all 0.15s ease;
-      font-family: inherit;
-      text-decoration: none;
-    }
-
-    .tab-btn:hover {
-      color: var(--text-primary);
-    }
-
-    .tab-btn.active {
-      background: var(--bg-surface) !important;
-      color: var(--text-primary) !important;
-      border: 1px solid var(--border-strong) !important;
-      box-shadow: var(--shadow-subtle) !important;
-      font-weight: 700 !important;
-    }
-
-    .tab-dot {
-      width: 6px;
-      height: 6px;
-      border-radius: 50%;
-      background: var(--status-active);
-    }
-
-    .header-actions {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-
-    .btn-action {
-      font-size: 13px;
-      font-weight: 600;
-      padding: 6px 12px;
-      border-radius: 6px;
-      border: 1px solid var(--border-strong);
-      background: var(--bg-surface);
-      color: var(--text-primary);
-      cursor: pointer;
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      text-decoration: none;
-    }
-    .btn-action:hover {
-      background: var(--bg-surface-alt);
-      text-decoration: none;
-    }
-
-    .theme-toggle {
-      width: 34px;
-      height: 34px;
-      padding: 0;
-      justify-content: center;
-    }
-
-    /* ==========================================================================
-       VIEW CONTAINER (IN-PAGE SWITCHING)
-       ========================================================================== */
-    .view-container {
-      display: none;
-      width: 100%;
-    }
-
-    .view-container.active-view {
-      display: block;
-    }
-
-    /* Embedded Project View Frames */
-    .embedded-frame-wrap {
-      width: 100%;
-      height: calc(100vh - 64px);
-      position: relative;
-      background: var(--bg-page);
-    }
-
-    .embedded-frame {
-      width: 100%;
-      height: 100%;
-      border: none;
-      display: block;
-    }
-
-    .frame-toolbar {
-      position: absolute;
-      top: 12px;
-      right: 24px;
-      z-index: 10;
-      background: var(--bg-surface);
-      border: 1px solid var(--border-subtle);
-      border-radius: 6px;
-      padding: 4px 10px;
-      font-size: 12px;
-      box-shadow: var(--shadow-subtle);
-    }
-
-    /* ==========================================================================
-       ENGINEERING DOSSIER VIEW STYLING (TWO-COLUMN ARCHITECTURE)
-       ========================================================================== */
-    .dossier-header-section {
-      padding: 44px 0 32px;
-      border-bottom: 1px solid var(--border-subtle);
-    }
-
-    .dossier-eyebrow {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      font-family: 'JetBrains Mono', monospace;
       font-size: 11.5px;
-      font-weight: 600;
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
-      color: var(--accent-blue);
-      background: var(--accent-blue-bg);
-      border: 1px solid var(--accent-blue-border);
-      padding: 3px 10px;
-      border-radius: 4px;
-      margin-bottom: 14px;
-    }
-
-    .dossier-name {
-      font-size: 34px;
-      font-weight: 800;
-      letter-spacing: -0.025em;
-      color: var(--text-primary);
-      margin-bottom: 8px;
-      line-height: 1.2;
-    }
-
-    .dossier-headline {
-      font-size: 16px;
-      color: var(--text-secondary);
-      max-width: 820px;
-      line-height: 1.6;
-      margin-bottom: 22px;
-    }
-
-    .dossier-meta-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-      gap: 12px 20px;
-      padding-top: 18px;
-      border-top: 1px solid var(--border-subtle);
-    }
-
-    .dossier-meta-item {
-      display: flex;
-      flex-direction: column;
-      gap: 2px;
-    }
-
-    .dossier-meta-label {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 11px;
-      color: var(--text-muted);
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
-    }
-
-    .dossier-meta-val {
-      font-size: 13.5px;
-      color: var(--text-primary);
-    }
-
-    .dossier-meta-val a {
-      color: var(--accent-blue);
-      text-decoration: none;
-      font-weight: 500;
-    }
-    .dossier-meta-val a:hover {
-      text-decoration: underline;
-    }
-
-    /* Two-Column Dossier Body */
-    .dossier-body-section {
-      padding: 36px 0 60px;
-    }
-
-    .dossier-columns {
-      display: grid;
-      grid-template-columns: 1.15fr 0.85fr;
-      gap: 36px;
-      align-items: start;
-    }
-
-    .dossier-col-primary,
-    .dossier-col-secondary {
-      display: flex;
-      flex-direction: column;
-      gap: 28px;
-    }
-
-    .dossier-col-title {
-      display: flex;
-      justify-content: space-between;
-      align-items: baseline;
-      padding-bottom: 10px;
-      border-bottom: 1px solid var(--border-strong);
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 12.5px;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 0.07em;
-      color: var(--text-primary);
-    }
-
-    .dossier-badge {
-      font-size: 11px;
-      font-weight: 600;
-      color: var(--text-muted);
-      background: var(--bg-surface-alt);
-      border: 1px solid var(--border-subtle);
-      padding: 2px 6px;
-      border-radius: 4px;
-    }
-
-    .dossier-group {
-      display: flex;
-      flex-direction: column;
-      gap: 14px;
-    }
-
-    /* Structured Dossier Cards (Legacy Fallback) */
-    .dossier-card {
-      background: var(--bg-surface);
-      border: 1px solid var(--border-subtle);
-      border-radius: 8px;
-      padding: 22px 24px;
-      box-shadow: var(--shadow-subtle);
-      transition: border-color 0.15s ease;
-    }
-
-    /* ==========================================================================
-       OPEN ARCHITECTURE STYLES (ANTI-AI CARD SOUP)
-       ========================================================================== */
-    .bio-depth-control {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      margin-top: 14px;
-      margin-bottom: 20px;
-    }
-
-    .bio-depth-label {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 11px;
-      font-weight: 700;
-      color: var(--text-muted);
-      letter-spacing: 0.06em;
-    }
-
-    .bio-toggle-group {
-      display: inline-flex;
-      background: var(--bg-surface-alt);
-      border: 1px solid var(--border-subtle);
-      border-radius: 6px;
-      padding: 2px;
-    }
-
-    .bio-toggle-btn {
-      background: transparent;
-      border: none;
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 11px;
-      font-weight: 600;
-      color: var(--text-secondary);
-      padding: 4px 12px;
-      border-radius: 4px;
-      cursor: pointer;
-      transition: all 0.15s ease;
-    }
-
-    .bio-toggle-btn.active {
-      background: var(--bg-surface);
-      color: var(--text-primary);
-      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
-      font-weight: 800;
-    }
-
-    /* Open Project Stream (No Enclosing Boxes) */
-    .open-project-item {
-      padding: 22px 0 24px;
-      border-bottom: 1px solid var(--border-subtle);
-    }
-    .open-project-item:first-child {
-      padding-top: 4px;
-    }
-    .open-project-item:last-child {
-      border-bottom: none;
-    }
-
-    .open-project-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-start;
-      gap: 16px;
-      margin-bottom: 6px;
-      flex-wrap: wrap;
-    }
-
-    .open-project-title {
-      font-size: 17px;
-      font-weight: 800;
-      color: var(--text-primary);
-      line-height: 1.3;
-    }
-
-    .open-project-sub {
-      font-size: 12.5px;
-      color: var(--text-muted);
-      margin-top: 3px;
-      font-weight: 500;
-    }
-
-    .open-project-desc {
-      font-size: 14px;
-      color: var(--text-secondary);
-      line-height: 1.6;
-      margin: 10px 0 14px;
-    }
-
-    .open-project-points {
-      list-style-type: none;
-      display: flex;
-      flex-direction: column;
-      gap: 7px;
-      padding: 0;
-      margin: 0 0 16px;
-    }
-
-    .open-project-points li {
-      font-size: 13px;
-      color: var(--text-secondary);
-      line-height: 1.5;
-      padding-left: 14px;
-      position: relative;
-    }
-
-    .open-project-points li::before {
-      content: "•";
-      position: absolute;
-      left: 0;
-      color: var(--accent-blue);
-      font-size: 14px;
-    }
-
-    .open-project-points strong {
-      color: var(--text-primary);
-    }
-
-    .open-project-actions {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      flex-wrap: wrap;
-    }
-
-    /* Timeline Spine Architecture (Karpathy Style) */
-    .timeline-spine {
-      position: relative;
-      padding-left: 22px;
-      display: flex;
-      flex-direction: column;
-      gap: 26px;
-      margin-top: 14px;
-    }
-
-    .timeline-spine::before {
-      content: "";
-      position: absolute;
-      top: 6px;
-      bottom: 6px;
-      left: 5px;
-      width: 1px;
-      background: var(--border-strong);
-    }
-
-    .timeline-item {
-      position: relative;
-    }
-
-    .timeline-node {
-      position: absolute;
-      top: 5px;
-      left: -22px;
-      width: 11px;
-      height: 11px;
-      border-radius: 50%;
-      background: var(--bg-page);
-      border: 2px solid var(--accent-blue);
-      box-shadow: 0 0 0 2px var(--bg-page);
-    }
-
-    .timeline-date {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 11px;
-      font-weight: 700;
-      color: var(--text-muted);
-      letter-spacing: 0.05em;
-      text-transform: uppercase;
-      margin-bottom: 2px;
-    }
-
-    .timeline-role {
-      font-size: 15.5px;
-      font-weight: 800;
-      color: var(--text-primary);
-      line-height: 1.25;
-    }
-
-    .timeline-org {
-      font-size: 12.5px;
-      color: var(--accent-blue);
-      font-weight: 600;
-      margin-top: 2px;
-      margin-bottom: 8px;
-    }
-
-    .timeline-points {
-      list-style-type: none;
-      display: flex;
-      flex-direction: column;
-      gap: 6px;
-      padding: 0;
-      margin: 0;
-    }
-
-    .timeline-points li {
-      font-size: 12.5px;
-      color: var(--text-secondary);
-      line-height: 1.5;
-      padding-left: 12px;
-      position: relative;
-    }
-
-    .timeline-points li::before {
-      content: "–";
-      position: absolute;
-      left: 0;
-      color: var(--text-muted);
-    }
-
-    .timeline-points strong {
-      color: var(--text-primary);
-    }
-
-    /* Open Academic Curriculum Clusters */
-    .open-cluster-group {
-      display: flex;
-      flex-direction: column;
-      gap: 18px;
-      margin-top: 14px;
-    }
-
-    .open-cluster {
-      padding-bottom: 14px;
-      border-bottom: 1px dashed var(--border-subtle);
-    }
-    .open-cluster:last-child {
-      border-bottom: none;
-      padding-bottom: 0;
-    }
-
-    .open-cluster-title {
-      font-size: 13px;
-      font-weight: 800;
-      color: var(--text-primary);
-      margin-bottom: 8px;
-      display: flex;
-      align-items: center;
-      gap: 6px;
-    }
-
-    .open-course-row {
-      display: flex;
-      align-items: baseline;
-      gap: 10px;
-      font-size: 12.5px;
-      line-height: 1.45;
-      margin-bottom: 5px;
-    }
-
-    .open-course-tag {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 11.5px;
-      font-weight: 800;
-      color: var(--accent-blue);
-      background: var(--accent-blue-bg);
-      border: 1px solid var(--accent-blue-border);
-      padding: 1px 6px;
+      letter-spacing: 0.03em;
       border-radius: 4px;
       flex-shrink: 0;
     }
 
-    .open-course-desc {
-      color: var(--text-secondary);
-    }
-
-    .open-course-desc strong {
-      color: var(--text-primary);
-    }
-
-    /* Open Tooling Matrix */
-    .open-tooling-list {
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-      margin-top: 14px;
-    }
-
-    .open-tooling-row {
-      display: grid;
-      grid-template-columns: 85px 1fr;
-      gap: 12px;
-      align-items: baseline;
-      font-size: 12.5px;
-      padding-bottom: 8px;
-      border-bottom: 1px solid var(--border-subtle);
-    }
-    .open-tooling-row:last-child {
-      border-bottom: none;
-      padding-bottom: 0;
-    }
-
-    .open-tool-label {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 11.5px;
-      font-weight: 700;
+    .brand-sub {
       color: var(--text-muted);
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
-    }
-
-    .open-tool-val {
-      color: var(--text-primary);
-      line-height: 1.45;
-    }
-
-    .dossier-card:hover {
-      border-color: var(--border-strong);
-    }
-
-    .dossier-card-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-start;
-      gap: 12px;
-      margin-bottom: 6px;
-      flex-wrap: wrap;
-    }
-
-    .dossier-card-title {
-      font-size: 16.5px;
-      font-weight: 700;
-      color: var(--text-primary);
-      line-height: 1.35;
-    }
-
-    .dossier-card-sub {
-      font-size: 13px;
-      color: var(--text-muted);
-      margin-top: 3px;
-    }
-
-    .dossier-tag {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 11px;
-      font-weight: 600;
-      padding: 2px 7px;
-      border-radius: 4px;
-      background: var(--accent-blue-bg);
-      color: var(--accent-blue);
-      border: 1px solid var(--accent-blue-border);
-      white-space: nowrap;
-    }
-
-    .dossier-date {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 12px;
-      color: var(--text-muted);
-      white-space: nowrap;
-    }
-
-    .dossier-org {
-      font-size: 13.5px;
-      color: var(--text-secondary);
       font-weight: 500;
-      margin-bottom: 10px;
+      font-size: 13.5px;
+      margin-left: 4px;
     }
 
-    .dossier-card-desc {
-      font-size: 14px;
-      color: var(--text-secondary);
-      line-height: 1.55;
-      margin: 10px 0 14px;
-    }
-
-    .dossier-points {
-      list-style-type: none;
+    .nav-links {
       display: flex;
-      flex-direction: column;
-      gap: 7px;
-      padding: 0;
-      margin: 0 0 16px;
+      align-items: stretch;
+      height: 100%;
+      gap: 24px;
     }
 
-    .dossier-points li {
-      font-size: 13px;
+    .nav-link {
+      display: inline-flex;
+      align-items: center;
+      height: 100%;
+      font-size: 14px;
+      font-weight: 500;
       color: var(--text-secondary);
-      line-height: 1.5;
-      padding-left: 14px;
-      position: relative;
+      border-bottom: 2px solid transparent;
+      white-space: nowrap;
+      padding: 0 2px;
     }
 
-    .dossier-points li::before {
-      content: "•";
-      position: absolute;
-      left: 0;
-      color: var(--accent-blue);
-      font-size: 13px;
-    }
-
-    .dossier-points strong {
+    .nav-link:hover {
       color: var(--text-primary);
+      text-decoration: none;
     }
 
-    .dossier-card-actions {
+    .nav-link.active {
+      color: var(--text-primary);
+      font-weight: 700;
+      border-bottom-color: var(--accent-navy);
+    }
+
+    .nav-actions {
       display: flex;
       align-items: center;
       gap: 10px;
-      padding-top: 14px;
-      border-top: 1px solid var(--border-subtle);
-      flex-wrap: wrap;
+      flex-shrink: 0;
     }
 
-    .btn-switch-tab {
-      background: var(--accent-blue);
-      color: #ffffff;
-      border: none;
-      padding: 7px 14px;
-      border-radius: 6px;
-      font-size: 13px;
-      font-weight: 600;
-      cursor: pointer;
+    .nav-icon-link {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 34px;
+      height: 34px;
+      border-radius: 4px;
+      color: var(--text-secondary);
+      border: 1px solid transparent;
+    }
+
+    .nav-icon-link:hover {
+      color: var(--accent-navy);
+      background: var(--bg-subtle);
+      text-decoration: none;
+    }
+
+    .nav-resume-btn {
       display: inline-flex;
       align-items: center;
       gap: 6px;
-      font-family: inherit;
-      transition: opacity 0.15s;
-    }
-    .btn-switch-tab:hover {
-      opacity: 0.92;
-    }
-
-    .btn-outline {
-      background: transparent;
-      color: var(--text-secondary);
-      border: 1px solid var(--border-strong);
-      padding: 6px 12px;
-      border-radius: 6px;
+      height: 34px;
+      padding: 0 12px;
       font-size: 13px;
-      font-weight: 500;
-      text-decoration: none;
-      transition: all 0.15s;
-    }
-    .btn-outline:hover {
+      font-weight: 600;
       color: var(--text-primary);
-      background: var(--bg-surface-alt);
+      background: var(--bg-surface);
+      border: 1px solid var(--border-strong);
+      border-radius: 4px;
+    }
+
+    .nav-resume-btn:hover {
+      border-color: var(--accent-navy);
+      color: var(--accent-navy);
       text-decoration: none;
     }
 
-    /* Coursework Cluster */
-    .course-cluster-name {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 11.5px;
+    /* ==========================================================================
+       HERO SECTION
+       ========================================================================== */
+    .hero-section {
+      padding: 64px 0 48px;
+      border-bottom: 1px solid var(--border-subtle);
+    }
+
+    .hero-title {
+      font-size: clamp(2.5rem, 5vw, 3.35rem);
+      font-weight: 800;
+      letter-spacing: -0.035em;
+      line-height: 1.08;
+      margin-bottom: 18px;
+    }
+
+    .hero-bio {
+      font-size: 18px;
+      line-height: 1.65;
+      color: var(--text-secondary);
+      max-width: 64ch;
+      margin-bottom: 28px;
+    }
+
+    .hero-meta-bar {
+      padding-top: 20px;
+      border-top: 1px solid var(--border-subtle);
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px 24px;
+      font-size: 14px;
+    }
+
+    .hero-credentials {
+      color: var(--text-secondary);
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .hero-credentials strong {
+      color: var(--text-primary);
+      font-weight: 600;
+    }
+
+    .meta-sep {
+      color: var(--border-strong);
+    }
+
+    .hero-links {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 18px;
+      font-weight: 600;
+    }
+
+    .hero-links a {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    /* ==========================================================================
+       SHARED SECTION RHYTHM
+       ========================================================================== */
+    .editorial-section {
+      padding: 48px 0;
+      border-bottom: 1px solid var(--border-subtle);
+    }
+
+    .section-head {
+      margin-bottom: 28px;
+    }
+
+    .section-head h2 {
+      font-size: 24px;
+      font-weight: 800;
+      letter-spacing: -0.025em;
+      line-height: 1.2;
+      margin-bottom: 6px;
+    }
+
+    .section-sub {
+      font-size: 14.5px;
+      color: var(--text-secondary);
+      max-width: 66ch;
+    }
+
+    /* ==========================================================================
+       LIVE AUTOMATED SYSTEMS (EDITORIAL ROWS + TELEMETRY PANELS)
+       ========================================================================== */
+    .systems-list {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .system-row {
+      display: grid;
+      grid-template-columns: 1.2fr 0.9fr;
+      gap: 36px;
+      align-items: start;
+      padding: 32px 0;
+      border-top: 1px solid var(--border-subtle);
+    }
+
+    .system-row:last-child {
+      padding-bottom: 8px;
+    }
+
+    .system-narrative h3 {
+      font-size: 20px;
       font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
-      color: var(--accent-blue);
+      letter-spacing: -0.02em;
+      margin-bottom: 10px;
+    }
+
+    .system-narrative p {
+      font-size: 15px;
+      color: var(--text-secondary);
+      line-height: 1.65;
+      max-width: 62ch;
+      margin-bottom: 14px;
+    }
+
+    .system-stack {
+      font-family: var(--font-mono);
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--text-muted);
+      margin-bottom: 16px;
+    }
+
+    .system-cta {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--accent-navy);
+      padding: 6px 0;
+      border-bottom: 1px solid transparent;
+    }
+
+    .system-cta:hover {
+      text-decoration: none;
+      border-bottom-color: var(--accent-navy);
+    }
+
+    /* Crisp 1px Telemetry Panel */
+    .telemetry-panel {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-subtle);
+      border-radius: 4px;
+    }
+
+    .telemetry-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    .telemetry-cell {
+      padding: 14px 16px;
+      border-bottom: 1px solid var(--border-subtle);
+    }
+
+    .telemetry-cell:nth-child(odd) {
+      border-right: 1px solid var(--border-subtle);
+    }
+
+    .telemetry-cell-wide {
+      grid-column: 1 / -1;
+      border-right: none !important;
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .telemetry-label {
+      font-size: 11.5px;
+      font-weight: 600;
+      color: var(--text-muted);
+      letter-spacing: 0.01em;
+      margin-bottom: 4px;
+    }
+
+    .telemetry-cell-wide .telemetry-label {
+      margin-bottom: 0;
+    }
+
+    .telemetry-value {
+      font-family: var(--font-mono);
+      font-variant-numeric: tabular-nums;
+      font-size: 17px;
+      font-weight: 600;
+      color: var(--text-primary);
+      line-height: 1.25;
+    }
+
+    .telemetry-sub {
+      font-family: var(--font-mono);
+      font-variant-numeric: tabular-nums;
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--text-secondary);
+      margin-top: 3px;
+    }
+
+    .val-pos {
+      color: var(--pos);
+    }
+
+    .val-neg {
+      color: var(--neg);
+    }
+
+    .telemetry-footer {
+      padding: 10px 16px;
+      background: var(--bg-subtle);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      font-family: var(--font-mono);
+      font-variant-numeric: tabular-nums;
+      font-size: 11.5px;
+      color: var(--text-muted);
+    }
+
+    .telemetry-status {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+    }
+
+    .status-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--pos);
+      flex-shrink: 0;
+    }
+
+    /* ==========================================================================
+       ACADEMIC & COURSEWORK PROJECTS (2x2 HAIRLINE GRID)
+       ========================================================================== */
+    .projects-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      border-top: 1px solid var(--border-subtle);
+    }
+
+    .project-cell {
+      padding: 24px 0;
+      border-bottom: 1px solid var(--border-subtle);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .project-cell:nth-child(odd) {
+      padding-right: 28px;
+      border-right: 1px solid var(--border-subtle);
+    }
+
+    .project-cell:nth-child(even) {
+      padding-left: 28px;
+    }
+
+    .project-meta {
+      font-family: var(--font-mono);
+      font-variant-numeric: tabular-nums;
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--accent-gold);
+      margin-bottom: 6px;
+    }
+
+    .project-cell h3 {
+      font-size: 17px;
+      font-weight: 700;
+      letter-spacing: -0.015em;
+      line-height: 1.3;
       margin-bottom: 8px;
     }
 
-    .course-line {
+    .project-cell p {
+      font-size: 14.5px;
+      color: var(--text-secondary);
+      line-height: 1.6;
+    }
+
+    .project-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 13.5px;
+      font-weight: 600;
+      align-self: flex-start;
+    }
+
+    /* ==========================================================================
+       EXPERIENCE & LEADERSHIP (CHRONOLOGICAL HAIRLINE ROWS)
+       ========================================================================== */
+    .experience-list {
+      border-top: 1px solid var(--border-subtle);
+    }
+
+    .experience-row {
       display: grid;
-      grid-template-columns: 78px 1fr;
-      gap: 10px;
-      padding: 6px 0;
-      font-size: 13px;
-      line-height: 1.45;
+      grid-template-columns: 220px 1fr;
+      gap: 28px;
+      padding: 26px 0;
+      border-bottom: 1px solid var(--border-subtle);
+      align-items: start;
     }
 
-    .course-tag {
-      font-family: 'JetBrains Mono', monospace;
+    .exp-when {
+      font-family: var(--font-mono);
+      font-variant-numeric: tabular-nums;
+      font-size: 12.5px;
+      font-weight: 500;
+      color: var(--text-muted);
+      line-height: 1.5;
+    }
+
+    .exp-where {
+      font-size: 13.5px;
+      color: var(--text-secondary);
+      margin-top: 2px;
+    }
+
+    .exp-content h3 {
+      font-size: 17.5px;
       font-weight: 700;
-      font-size: 12px;
-      color: var(--text-primary);
+      letter-spacing: -0.015em;
+      margin-bottom: 2px;
     }
 
-    .course-info {
+    .exp-org {
+      font-size: 14.5px;
+      font-weight: 600;
+      color: var(--accent-navy);
+      margin-bottom: 10px;
+    }
+
+    .exp-bullets {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      max-width: 68ch;
+    }
+
+    .exp-bullets li {
+      font-size: 14.5px;
+      color: var(--text-secondary);
+      padding-left: 14px;
+      position: relative;
+      line-height: 1.55;
+    }
+
+    .exp-bullets li::before {
+      content: "–";
+      position: absolute;
+      left: 0;
+      color: var(--border-strong);
+      font-weight: 600;
+    }
+
+    /* ==========================================================================
+       EDUCATION, COURSEWORK & TOOLING (2-COLUMN EDITORIAL REFERENCE)
+       ========================================================================== */
+    .reference-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 44px;
+      align-items: start;
+    }
+
+    .edu-block {
+      padding-bottom: 20px;
+      margin-bottom: 20px;
+      border-bottom: 1px solid var(--border-subtle);
+    }
+
+    .edu-block h3 {
+      font-size: 17.5px;
+      font-weight: 700;
+      margin-bottom: 4px;
+    }
+
+    .edu-degree {
+      font-size: 14.5px;
+      color: var(--text-secondary);
+      margin-bottom: 6px;
+    }
+
+    .edu-stats {
+      font-family: var(--font-mono);
+      font-variant-numeric: tabular-nums;
+      font-size: 12.5px;
+      color: var(--text-muted);
+    }
+
+    .course-list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .course-item {
+      display: grid;
+      grid-template-columns: 88px 1fr;
+      gap: 12px;
+      align-items: baseline;
+      font-size: 14px;
+      line-height: 1.5;
+    }
+
+    .course-code {
+      font-family: var(--font-mono);
+      font-variant-numeric: tabular-nums;
+      font-size: 12.5px;
+      font-weight: 600;
+      color: var(--accent-navy);
+    }
+
+    .course-name {
       color: var(--text-secondary);
     }
-    .course-info strong {
+
+    .course-name strong {
       color: var(--text-primary);
+      font-weight: 600;
     }
 
-    /* Tooling Table */
+    .tooling-table {
+      border-top: 1px solid var(--border-subtle);
+    }
+
     .tooling-row {
       display: grid;
-      grid-template-columns: 100px 1fr;
-      gap: 12px;
-      padding: 8px 0;
-      border-top: 1px solid var(--border-subtle);
-      font-size: 13px;
-      line-height: 1.45;
-    }
-    .tooling-row:first-child {
-      border-top: none;
-      padding-top: 0;
-    }
-    .tooling-label {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 11.5px;
-      font-weight: 700;
-      color: var(--text-muted);
-      text-transform: uppercase;
-      letter-spacing: 0.04em;
-    }
-    .tooling-val {
-      color: var(--text-secondary);
+      grid-template-columns: 150px 1fr;
+      gap: 16px;
+      padding: 14px 0;
+      border-bottom: 1px solid var(--border-subtle);
+      align-items: baseline;
+      font-size: 14px;
     }
 
-    /* Footer */
-    footer {
-      padding: 36px 0;
-      background: var(--bg-surface);
-      border-top: 1px solid var(--border-subtle);
+    .tooling-key {
+      font-weight: 600;
+      color: var(--text-primary);
+    }
+
+    .tooling-val {
+      color: var(--text-secondary);
+      line-height: 1.55;
+    }
+
+    /* ==========================================================================
+       FOOTER
+       ========================================================================== */
+    .site-footer {
+      padding: 28px 0 40px;
       font-size: 13.5px;
       color: var(--text-muted);
     }
@@ -930,617 +736,616 @@
       justify-content: space-between;
       align-items: center;
       flex-wrap: wrap;
+      gap: 12px 24px;
+    }
+
+    .footer-links {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
       gap: 16px;
     }
 
-    @media (max-width: 960px) {
-      .dossier-columns {
+    .footer-links a {
+      color: var(--text-secondary);
+      font-weight: 500;
+    }
+
+    .footer-links a:hover {
+      color: var(--accent-navy);
+    }
+
+    /* ==========================================================================
+       RESPONSIVE BREAKPOINTS
+       ========================================================================== */
+    @media (max-width: 860px) {
+      .system-row {
+        grid-template-columns: 1fr;
+        gap: 20px;
+      }
+
+      .reference-grid {
         grid-template-columns: 1fr;
         gap: 36px;
       }
     }
-    @media (max-width: 640px) {
-      .brand-title {
+
+    @media (max-width: 768px) {
+      .nav-container {
+        height: auto;
+        padding: 10px 16px 0;
+        flex-wrap: wrap;
+        gap: 8px 12px;
+      }
+
+      .nav-brand {
+        order: 1;
+      }
+
+      .nav-actions {
+        order: 2;
+      }
+
+      .nav-links {
+        order: 3;
+        width: 100%;
+        height: auto;
+        border-top: 1px solid var(--border-subtle);
+        margin-top: 4px;
+        gap: 12px;
+        justify-content: space-between;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+      }
+
+      .nav-link {
+        height: 40px;
+        font-size: 13px;
+      }
+
+      .brand-sub {
         display: none;
       }
-      .course-line {
-        grid-template-columns: 1fr;
-        gap: 2px;
+
+      .container {
+        padding: 0 16px;
       }
+
+      .hero-section {
+        padding: 40px 0 36px;
+      }
+
+      .hero-bio {
+        font-size: 16.5px;
+      }
+
+      .projects-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .project-cell:nth-child(odd) {
+        padding-right: 0;
+        border-right: none;
+      }
+
+      .project-cell:nth-child(even) {
+        padding-left: 0;
+      }
+
+      .experience-row {
+        grid-template-columns: 1fr;
+        gap: 8px;
+      }
+
       .tooling-row {
         grid-template-columns: 1fr;
-        gap: 2px;
+        gap: 4px;
       }
     }
   </style>
 </head>
 <body>
 
-  <!-- ==========================================================================
-       TOP NAVIGATION BAR WITH IN-PAGE TAB SWITCHING
-       ========================================================================== -->
-  <header>
-    <div class="container">
-      <div class="header-inner">
-        <a href="#about" class="brand-group" onclick="switchTab('about')">
-          <div class="gt-badge">GT</div>
-          <span class="brand-title">Paul Gibson</span>
+  <header class="site-header">
+    <div class="nav-container">
+      <a href="./" class="nav-brand">
+        <span class="gt-logo-pill">GT</span>
+        <span class="brand-text">Paul Gibson <span class="brand-sub">ISyE '28</span></span>
+      </a>
+
+      <nav class="nav-links" aria-label="Main Navigation">
+        <a href="./" class="nav-link active" aria-current="page">Overview</a>
+        <a href="market-insight/" class="nav-link">Market Insight</a>
+        <a href="deal-scout/" class="nav-link">DealScout</a>
+        <a href="court-vision/" class="nav-link">CourtVision</a>
+      </nav>
+
+      <div class="nav-actions">
+        <a href="https://github.com/PDub1101" target="_blank" rel="noopener" class="nav-icon-link" title="GitHub Profile" aria-label="GitHub Profile">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
         </a>
-
-        <!-- In-Page Tab Switcher (No New Tabs) -->
-        <nav class="tab-nav" aria-label="Page Sections">
-          <button class="tab-btn active" id="tabBtn-about" onclick="switchTab('about')">
-            About Me
-          </button>
-          <button class="tab-btn" id="tabBtn-stock-model" onclick="switchTab('stock-model')">
-            <span class="tab-dot"></span>
-            Stock Model
-          </button>
-          <button class="tab-btn" id="tabBtn-deal-scout" onclick="switchTab('deal-scout')">
-            DealScout
-          </button>
-          <button class="tab-btn" id="tabBtn-court-vision" onclick="switchTab('court-vision')">
-            CourtVision
-          </button>
-        </nav>
-
-        <div class="header-actions">
-          <a href="Paul_Gibson_Resume.pdf" target="_blank" class="btn-action" title="Download Resume PDF">
-            Resume
-          </a>
-          <button id="themeToggleBtn" class="btn-action theme-toggle" onclick="toggleTheme()" title="Toggle Light/Dark Theme" aria-label="Toggle theme">
-            🌓
-          </button>
-        </div>
+        <a href="https://www.linkedin.com/in/paul-gibson-079b44326/" target="_blank" rel="noopener" class="nav-icon-link" title="LinkedIn Profile" aria-label="LinkedIn Profile">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg>
+        </a>
+        <a href="Paul_Gibson_Resume.pdf" target="_blank" rel="noopener" class="nav-resume-btn">
+          <span>Resume</span>
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M7 17L17 7M17 7H7M17 7V17"/></svg>
+        </a>
       </div>
     </div>
   </header>
 
-  <!-- ==========================================================================
-       VIEW 1: ABOUT ME & PORTFOLIO (ENGINEERING DOSSIER)
-       ========================================================================== -->
-  <div id="view-about" class="view-container active-view">
-    
-    <!-- Dossier Executive Header - Open Architecture -->
-    <section class="dossier-header-section">
+  <main>
+    <!-- Hero -->
+    <section class="hero-section">
       <div class="container">
-        <div class="dossier-eyebrow">
-          <span>Engineering Dossier</span>
-          <span>•</span>
-          <span>Georgia Tech ISyE '28</span>
-          <div class="bio-depth-control" style="margin-left: auto; margin-top: 0; margin-bottom: 0;">
-            <div class="bio-toggle-group">
-              <button class="bio-toggle-btn active" id="btn-bio-summary" onclick="setBioDepth('summary')">Executive Summary</button>
-              <button class="bio-toggle-btn" id="btn-bio-deep" onclick="setBioDepth('deep')">Technical Deep-Dive</button>
-            </div>
-          </div>
-        </div>
-        <h1 class="dossier-name">Paul Gibson</h1>
-        
-        <!-- Executive Summary View -->
-        <p class="dossier-headline" id="bio-summary-text">
-          Industrial & Systems Engineering student at Georgia Tech ('28) building production quantitative models, stochastic simulation engines, and automated operational pipelines. Experienced in warehouse distribution logistics and forward-testing statistical equity models.
+        <h1 class="hero-title">Paul Gibson</h1>
+        <p class="hero-bio">
+          I'm an Industrial &amp; Systems Engineering student at Georgia Tech ('28). I build forecasting models, optimization tools, and automated data pipelines that run daily in the real world—and track where they hold up and where they break.
         </p>
-        
-        <!-- Technical Deep-Dive View (Initially hidden) -->
-        <div id="bio-deep-text" style="display: none; margin-bottom: 24px;">
-          <p class="dossier-headline" style="margin-bottom: 12px;">
-            Focused on first-principles applied operations research: continuous Holt-Winters exponential smoothing, multivariate OLS with out-of-sample prediction intervals ($SE_{\text{pred}}$ vs $SE_{\text{mean}}$), and mixed-integer linear programming (MILP). Builds headless serverless data infrastructure on GitHub Actions cron with real-time model audit feedback loops powered by Google Gemini 2.5 Flash.
-          </p>
-          <div style="font-family: 'JetBrains Mono', monospace; font-size: 12px; color: var(--text-secondary); display: flex; gap: 16px; flex-wrap: wrap;">
-            <span>Core Focus: Stochastic Processes • Linear Programming • Factor Arbitrage</span>
-            <span>Tooling: Python (pandas, NumPy, statsmodels) • Gurobi • PostgreSQL</span>
+        <div class="hero-meta-bar">
+          <div class="hero-credentials">
+            <span><strong>B.S. Industrial &amp; Systems Engineering</strong>, Expected May 2028</span>
+            <span class="meta-sep" aria-hidden="true">/</span>
+            <span>GPA <strong>3.55 / 4.00</strong> (Dean's List)</span>
+            <span class="meta-sep" aria-hidden="true">/</span>
+            <span>Atlanta, GA</span>
           </div>
-        </div>
-
-        <div class="dossier-meta-grid">
-          <div class="dossier-meta-item">
-            <span class="dossier-meta-label">Degree & Major</span>
-            <span class="dossier-meta-val">B.S. Industrial & Systems Engineering</span>
-          </div>
-          <div class="dossier-meta-item">
-            <span class="dossier-meta-label">Institution</span>
-            <span class="dossier-meta-val">Georgia Institute of Technology ('28)</span>
-          </div>
-          <div class="dossier-meta-item">
-            <span class="dossier-meta-label">Academic Standing</span>
-            <span class="dossier-meta-val">GPA: <strong>3.55 / 4.00</strong> (Dean's List)</span>
-          </div>
-          <div class="dossier-meta-item">
-            <span class="dossier-meta-label">Location</span>
-            <span class="dossier-meta-val">Atlanta, GA</span>
-          </div>
-          <div class="dossier-meta-item">
-            <span class="dossier-meta-label">Direct Contact</span>
-            <span class="dossier-meta-val"><a href="mailto:pgibson34@gatech.edu">pgibson34@gatech.edu</a></span>
-          </div>
-          <div class="dossier-meta-item">
-            <span class="dossier-meta-label">Profiles & Artifacts</span>
-            <span class="dossier-meta-val">
-              <a href="https://github.com/PDub1101" target="_blank">GitHub</a> • 
-              <a href="https://www.linkedin.com" target="_blank">LinkedIn</a> • 
-              <a href="Paul_Gibson_Resume.pdf" target="_blank">Resume PDF ↗</a>
-            </span>
+          <div class="hero-links">
+            <a href="mailto:pgibson34@gatech.edu">pgibson34@gatech.edu</a>
+            <a href="https://github.com/PDub1101" target="_blank" rel="noopener">GitHub</a>
+            <a href="https://www.linkedin.com/in/paul-gibson-079b44326/" target="_blank" rel="noopener">LinkedIn</a>
+            <a href="Paul_Gibson_Resume.pdf" target="_blank" rel="noopener">Resume PDF
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M7 17L17 7M17 7H7M17 7V17"/></svg>
+            </a>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- Two-Column Engineering Dossier Body -->
-    <section class="dossier-body-section">
+    <!-- Section 1: Live Automated Systems -->
+    <section class="editorial-section">
       <div class="container">
-        <div class="dossier-columns">
+        <div class="section-head">
+          <h2>Live Systems</h2>
+          <p class="section-sub">Automated daily pipelines running on GitHub Actions, hydrated below from their latest data runs.</p>
+        </div>
 
-          <!-- PRIMARY COLUMN: TECHNICAL SYSTEMS & COMPUTING (OPEN STREAM ARCHITECTURE) -->
-          <div class="dossier-col-primary">
-            <div class="dossier-col-title">
-              <span>Technical Systems & Computing</span>
-              <span class="dossier-badge">5 Systems</span>
+        <div class="systems-list">
+          <!-- System 1: Market Insight -->
+          <article class="system-row">
+            <div class="system-narrative">
+              <h3>Market Insight</h3>
+              <p>
+                An autonomous $7,000 paper-trading forward test across 19 liquid equities, benchmarked every market close against the S&amp;P 500 and seven passive allocations. After watching the original v1 baseline eat full market drawdowns during a choppy tape, I forked v2.0 to enforce strict -7% stop-losses and a dynamic cash defense shield whenever SPY trades below its 50-day trend.
+              </p>
+              <div class="system-stack">Python &middot; GitHub Actions &middot; Gemini API &middot; Benchmark Telemetry</div>
+              <a href="market-insight/" class="system-cta">Open Market Insight
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+              </a>
             </div>
-
-            <!-- Project 1: Stock Model -->
-            <article class="open-project-item">
-              <header class="open-project-header">
-                <div>
-                  <h2 class="open-project-title">Market Insight: $7,000 Autonomous AI Stock Model</h2>
-                  <div class="open-project-sub">Quantitative Technicals • Gemini Qualitative Audits • Serverless Cron</div>
+            <div class="telemetry-panel" aria-label="Market Insight live telemetry">
+              <div class="telemetry-grid">
+                <div class="telemetry-cell">
+                  <div class="telemetry-label">Portfolio Value (v2.0)</div>
+                  <div class="telemetry-value" id="mi-val">$6,673.00</div>
+                  <div class="telemetry-sub val-neg" id="mi-pnl">-$327.00 (-4.67%)</div>
                 </div>
-                <span class="open-project-status">Live Forward-Test</span>
-              </header>
-              <p class="open-project-desc">
-                An autonomous forward-testing paper trading model that executes daily after market close. Benchmarks an initial $7,000 allocation across 19 liquid equities against 8 fund baselines (S&P 500, Nasdaq-100, 60/40 Portfolio, Gold, High-Yield Cash).
-              </p>
-              <ul class="open-spec-list">
-                <li><strong>Technical Indicators:</strong> Evaluates 20/50-day moving average crossovers, 14-day RSI swing thresholds, and 20-day relative strength vs. SPY.</li>
-                <li><strong>Self-Learning Factor Audit:</strong> Dynamically adjusts factor weights based on historical accuracy, recording daily lessons learned and penalizing lagging picks.</li>
-                <li><strong>Serverless Automation:</strong> Deployed headlessly via GitHub Actions cron at 4:05 PM EST with zero ongoing hosting cost.</li>
-              </ul>
-              <div class="open-project-actions">
-                <button class="open-link-btn" onclick="switchTab('stock-model')">
-                  Open Interactive Stock Tab &rarr;
-                </button>
-                <a href="https://pdub1101.github.io/market-insight/" class="open-link-ghost" target="_blank">
-                  Fullscreen App ↗
-                </a>
+                <div class="telemetry-cell">
+                  <div class="telemetry-label">vs. S&amp;P 500</div>
+                  <div class="telemetry-value val-pos" id="mi-alpha">+1.55%</div>
+                  <div class="telemetry-sub">Relative alpha</div>
+                </div>
+                <div class="telemetry-cell telemetry-cell-wide">
+                  <div class="telemetry-label">Cash Defense</div>
+                  <div class="telemetry-value" id="mi-cash" style="font-size: 14.5px;">65.8% &middot; 5 equities</div>
+                </div>
               </div>
-            </article>
-
-            <!-- Project 2: DealScout -->
-            <article class="open-project-item">
-              <header class="open-project-header">
-                <div>
-                  <h2 class="open-project-title">DealScout: Autonomous Flight & Gear Price Intelligence</h2>
-                  <div class="open-project-sub">90-Day Historical Percentiles • Travel Policy Auditing • Live SLC/ATL Corridors</div>
-                </div>
-                <span class="open-project-status">Production Pipeline</span>
-              </header>
-              <p class="open-project-desc">
-                A personal price tracking engine and live flight radar dashboard that cuts through deceptive discounts. Continuously monitors strategic corridors connecting Salt Lake City (SLC), Valdosta (VLD), Atlanta (ATL), and Charlotte (CLT), alongside high-value tech and outdoor gear.
-              </p>
-              <ul class="open-spec-list">
-                <li><strong>Percentile Distribution:</strong> Mathematical price score isolates outlier fares in the bottom 10% to 15% of recorded 90-day pricing history.</li>
-                <li><strong>Qualitative Audit:</strong> Uses Gemini to inspect fine-print conditions, screening out restrictive Basic Economy carry-on fees and 5:00 AM departures.</li>
-                <li><strong>Savings Ledger:</strong> Tracks cumulative dollars saved against historical median prices ($950+ verified).</li>
-              </ul>
-              <div class="open-project-actions">
-                <button class="open-link-btn" onclick="switchTab('deal-scout')">
-                  Open Interactive Flights Tab &rarr;
-                </button>
-                <a href="https://pdub1101.github.io/deal-scout/" class="open-link-ghost" target="_blank">
-                  Fullscreen App ↗
-                </a>
-              </div>
-            </article>
-
-            <!-- Project: CourtVision -->
-            <article class="open-project-item">
-              <header class="open-project-header">
-                <div>
-                  <h2 class="open-project-title">CourtVision: ISyE 4031 NBA Forecasting Engine & $1,000 Paper Bankroll</h2>
-                  <div class="open-project-sub">Holt EWMA • Multivariate OLS SE_pred Intervals • Self-Learning Gemini Flash Memory</div>
-                </div>
-                <span class="open-project-status">Live In-Season Engine</span>
-              </header>
-              <p class="open-project-desc">
-                Autonomous daily sports forecasting pipeline (`courtvision_ewma_ols_v1`) built on ISyE 4031 principles. Ingests live spreads from legal sportsbooks, smooths team efficiency states via Holt's Linear EWMA, computes First-Principles OLS out-of-sample prediction intervals ($SE_{\text{pred}}$ vs $SE_{\text{mean}}$), and executes +EV wagers audited by a self-learning Gemini 2.5 Flash post-mortem loop.
-              </p>
-              <ul class="open-spec-list">
-                <li><strong>ISyE 4031 Forecasting Engine:</strong> Combines Holt EWMA ($\alpha=0.25, \beta=0.10$), AR(1) blowout mean-reversion, and strictly nested $50\%/80\%/95\%$ Student-$t$ prediction intervals.</li>
-                <li><strong>Self-Learning LLM Decision Basis:</strong> Audits morning forecast residuals ($e_t = y_t - \hat{y}_t$) and CFE/MAD Tracking Signal to write persistent situational rules (`decision_basis.json`).</li>
-                <li><strong>$1,000 Paper Desk & 30-Day Trial:</strong> Staking gated by Student-$t$ cover probability ($P(\text{Cover}) \ge 55.5\%$ vs $52.4\%$ vig breakeven) with daily auto-grading and equity tracking.</li>
-              </ul>
-              <div class="open-project-actions">
-                <button class="open-link-btn" onclick="switchTab('court-vision')">
-                  Open Interactive CourtVision Tab &rarr;
-                </button>
-                <a href="https://pdub1101.github.io/court-vision/" class="open-link-ghost" target="_blank">
-                  Fullscreen App ↗
-                </a>
-              </div>
-            </article>
-
-            <!-- Project 3: Flu Nowcasting -->
-            <article class="open-project-item">
-              <header class="open-project-header">
-                <div>
-                  <h2 class="open-project-title">Georgia Flu Nowcasting & Epidemiological Modeling</h2>
-                  <div class="open-project-sub">Time-Series Regression • CDC FluSight Benchmarking • NOAA Temperature Features</div>
-                </div>
-                <span class="open-project-status">Research</span>
-              </header>
-              <p class="open-project-desc">
-                Constructed a real-time statistical nowcasting model predicting influenza-like illness (ILI) trajectories in Georgia using expanding training windows and NOAA temperature anomaly features.
-              </p>
-              <div class="open-project-actions">
-                <a href="https://github.com/PDub1101/georgia-flu-nowcasting" class="open-link-ghost" target="_blank">
-                  View Repository on GitHub ↗
-                </a>
-              </div>
-            </article>
-
-            <!-- Project 4: NBA Win Prediction -->
-            <article class="open-project-item">
-              <header class="open-project-header">
-                <div>
-                  <h2 class="open-project-title">NBA Game Outcome & Team Metric Predictive Modeling</h2>
-                  <div class="open-project-sub">Multivariate Regression on Efficiency Drivers (CS 2316)</div>
-                </div>
-                <span class="open-project-status">Analytics</span>
-              </header>
-              <p class="open-project-desc">
-                End-to-end data pipeline combining player and team stats from nba_api and Basketball-Reference. Benchmarked offensive vs defensive efficiency regression coefficients (+0.028 vs -0.027) on win probabilities.
-              </p>
-              <div class="open-project-actions">
-                <a href="https://github.com/PDub1101/nba-win-prediction-analysis" class="open-link-ghost" target="_blank">
-                  View Repository on GitHub ↗
-                </a>
-              </div>
-            </article>
-          </div>
-
-          <!-- SECONDARY COLUMN: WORK EXPERIENCE, COURSEWORK, & SKILLS (OPEN ARCHITECTURE) -->
-          <div class="dossier-col-secondary">
-
-            <!-- Section 1: Work Experience & Leadership (Karpathy Timeline Spine) -->
-            <div class="dossier-group">
-              <div class="dossier-col-title">
-                <span>Work Experience & Leadership</span>
-              </div>
-
-              <div class="timeline-spine">
-                
-                <!-- Role 1 -->
-                <div class="timeline-item">
-                  <div class="timeline-node"></div>
-                  <div class="timeline-header">
-                    <span class="timeline-role">Warehouse Operations Intern</span>
-                    <span class="timeline-period">Jun 2025 - Aug 2025</span>
-                  </div>
-                  <div class="timeline-org">Second Harvest of South Georgia • Valdosta, GA</div>
-                  <ul class="timeline-points">
-                    <li>Audited daily order fulfillment and staging operations across regional distribution center, verifying up to 15 bulk palletized orders daily.</li>
-                    <li>Executed continuous warehouse cycle counts across hundreds of SKUs to reconcile physical counts against digital stock logs, minimizing shrinkage.</li>
-                    <li>Coordinated with warehouse supervisors on dock-door staging and pick-path sequencing to optimize floor throughput for outbound trucks.</li>
-                  </ul>
-                </div>
-
-                <!-- Role 2 -->
-                <div class="timeline-item">
-                  <div class="timeline-node"></div>
-                  <div class="timeline-header">
-                    <span class="timeline-role">Head Social Chair</span>
-                    <span class="timeline-period">Aug 2025 - May 2026</span>
-                  </div>
-                  <div class="timeline-org">Tau Kappa Epsilon Fraternity • Atlanta, GA</div>
-                  <ul class="timeline-points">
-                    <li>Directed chapter event operations, managing a <strong>$60,900 operating budget</strong> with <strong>0% budget overrun</strong> across the academic term.</li>
-                    <li>Negotiated contracts with venues, security personnel, and third-party vendors for functions serving up to 200+ attendees.</li>
-                    <li>Supervised execution teams for multiday logistical operations and transportation schedules.</li>
-                  </ul>
-                </div>
-
+              <div class="telemetry-footer">
+                <span class="telemetry-status"><span class="status-dot" aria-hidden="true"></span>Daily post-close run</span>
+                <span id="mi-updated">2026-11-25 09:16 AM ET</span>
               </div>
             </div>
+          </article>
 
-            <!-- Section 2: Academic Coursework (Open Clusters) -->
-            <div class="dossier-group">
-              <div class="dossier-col-title">
-                <span>Academic Disciplines & Core Coursework</span>
+          <!-- System 2: DealScout -->
+          <article class="system-row">
+            <div class="system-narrative">
+              <h3>DealScout</h3>
+              <p>
+                A flight corridor radar I built to separate genuine fare drops from fake airline "sales" on routes I actually fly between Atlanta, Salt Lake City, Charlotte, and Valdosta. Each morning it pulls live Google Flights quotes, ranks them against rolling 90-day fare distributions, and flags fine-print gotchas like Basic Economy carry-on fees and tight layovers before I book.
+              </p>
+              <div class="system-stack">Python &middot; Google Flights Ingestion &middot; 90-Day Percentiles</div>
+              <a href="deal-scout/" class="system-cta">Open DealScout
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+              </a>
+            </div>
+            <div class="telemetry-panel" aria-label="DealScout live telemetry">
+              <div class="telemetry-grid">
+                <div class="telemetry-cell">
+                  <div class="telemetry-label">Top Outlier</div>
+                  <div class="telemetry-value" id="ds-route">ATL &rarr; SLC &middot; $268</div>
+                  <div class="telemetry-sub">Lowest holiday fare</div>
+                </div>
+                <div class="telemetry-cell">
+                  <div class="telemetry-label">Historical Rank</div>
+                  <div class="telemetry-value val-pos" id="ds-pct">11th pct</div>
+                  <div class="telemetry-sub" id="ds-savings">-$185 vs median</div>
+                </div>
+                <div class="telemetry-cell telemetry-cell-wide">
+                  <div class="telemetry-label">Qualified Deals</div>
+                  <div class="telemetry-value" id="ds-deals" style="font-size: 14.5px;">6 of 9 corridors</div>
+                </div>
               </div>
-
-              <div class="open-cluster">
-                <div class="open-cluster-title">Optimization & Operations Research</div>
-                <div class="open-course-row">
-                  <span class="open-course-tag">ISyE 3133</span>
-                  <span class="open-course-body"><strong>Engineering Optimization:</strong> Linear & integer programming, simplex algorithm, duality theory, network flows</span>
-                </div>
-                <div class="open-course-row">
-                  <span class="open-course-tag">ISyE 3044</span>
-                  <span class="open-course-body"><strong>Simulation & Stochastics:</strong> Discrete-event simulation, queuing systems, stochastic inventory modeling</span>
-                </div>
-              </div>
-
-              <div class="open-cluster">
-                <div class="open-cluster-title">Statistical Modeling & Time-Series</div>
-                <div class="open-course-row">
-                  <span class="open-course-tag">ISyE 4133</span>
-                  <span class="open-course-body"><strong>Regression & Forecasting:</strong> Time-series models, expanding training windows, residual diagnostics</span>
-                </div>
-                <div class="open-course-row">
-                  <span class="open-course-tag">ISyE 2027</span>
-                  <span class="open-course-body"><strong>Probability for Engineers:</strong> Stochastic random variables, joint distributions, Chebyshev/Markov risk bounds</span>
-                </div>
-              </div>
-
-              <div class="open-cluster">
-                <div class="open-cluster-title">Computing & Data Engineering</div>
-                <div class="open-course-row">
-                  <span class="open-course-tag">CS 4400</span>
-                  <span class="open-course-body"><strong>Database Systems:</strong> Relational schema design, SQL query optimization, 3NF/BCNF normalization</span>
-                </div>
-                <div class="open-course-row">
-                  <span class="open-course-tag">CS 2316</span>
-                  <span class="open-course-body"><strong>Data Manipulation:</strong> Automated ingestion, REST APIs, JSON/CSV parsing pipelines, pandas analytics</span>
-                </div>
+              <div class="telemetry-footer">
+                <span class="telemetry-status"><span class="status-dot" aria-hidden="true"></span>Corridor radar</span>
+                <span id="ds-updated">Nov 25, 2026 &middot; 09:17 AM</span>
               </div>
             </div>
+          </article>
 
-            <!-- Section 3: Technical Tooling (Open Spec Rows) -->
-            <div class="dossier-group">
-              <div class="dossier-col-title">
-                <span>Technical Tooling & Methods</span>
+          <!-- System 3: CourtVision -->
+          <article class="system-row">
+            <div class="system-narrative">
+              <h3>CourtVision</h3>
+              <p>
+                An ISyE 4031 NBA spread forecasting engine using Holt exponential smoothing (&alpha; = 0.25, &beta; = 0.10), multivariate OLS out-of-sample prediction intervals (SE<sub>pred</sub>), and a $1,000 paper bankroll. Because raw Student-t cover probabilities can diverge sharply from closing sportsbook lines when late injury or rest news isn't in box-score inputs, the pipeline audits closing line value (CLV) and CFE/MAD tracking signals every morning.
+              </p>
+              <div class="system-stack">ISyE 4031 &middot; Holt EWMA &middot; OLS SE<sub>pred</sub> &middot; Student-t Calibration</div>
+              <a href="court-vision/" class="system-cta">Open CourtVision
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+              </a>
+            </div>
+            <div class="telemetry-panel" aria-label="CourtVision live telemetry">
+              <div class="telemetry-grid">
+                <div class="telemetry-cell">
+                  <div class="telemetry-label">Paper Bankroll</div>
+                  <div class="telemetry-value" id="cv-bankroll">$1,179.90</div>
+                  <div class="telemetry-sub val-pos" id="cv-roi">+$179.90 (+18.0%)</div>
+                </div>
+                <div class="telemetry-cell">
+                  <div class="telemetry-label">ATS Record</div>
+                  <div class="telemetry-value" id="cv-record">30&ndash;22</div>
+                  <div class="telemetry-sub" id="cv-winrate">57.7% win rate</div>
+                </div>
+                <div class="telemetry-cell telemetry-cell-wide">
+                  <div class="telemetry-label">CLV Beat Rate</div>
+                  <div class="telemetry-value" id="cv-clv" style="font-size: 14.5px;">66.7% &middot; 52 bets</div>
+                </div>
               </div>
-
-              <div class="open-tooling-row">
-                <span class="open-tooling-key">Languages</span>
-                <span class="open-tooling-val">Python (pandas, NumPy, statsmodels, scikit-learn), SQL (PostgreSQL, SQLite), R, HTML/CSS/JS</span>
-              </div>
-              <div class="open-tooling-row">
-                <span class="open-tooling-key">Solvers</span>
-                <span class="open-tooling-val">Gurobi Optimizer, Mixed-Integer Linear Programming (MILP), Simplex Method, Duality Analysis</span>
-              </div>
-              <div class="open-tooling-row">
-                <span class="open-tooling-key">Systems</span>
-                <span class="open-tooling-val">Git, GitHub Actions CI/CD Cron, Google Gemini API, Streamlit, Advanced Excel</span>
-              </div>
-              <div class="open-tooling-row">
-                <span class="open-tooling-key">Operations</span>
-                <span class="open-tooling-val">Cycle Counting, Pick-Path Optimization, Inventory Shrinkage Control, Forward Paper Trading</span>
+              <div class="telemetry-footer">
+                <span class="telemetry-status"><span class="status-dot" aria-hidden="true"></span>Out-of-sample trial</span>
+                <span id="cv-updated">2026-11-25 14:15 UTC</span>
               </div>
             </div>
-
-          </div>
-
+          </article>
         </div>
       </div>
     </section>
 
-    <!-- Footer -->
-    <footer>
+    <!-- Section 2: Academic & Coursework Projects -->
+    <section class="editorial-section">
       <div class="container">
-        <div class="footer-inner">
-          <div>
-            <strong>Paul Gibson</strong> • Georgia Institute of Technology
+        <div class="section-head">
+          <h2>Engineering &amp; Coursework Projects</h2>
+          <p class="section-sub">Applied operations research, statistical calibration, and data engineering builds from Georgia Tech.</p>
+        </div>
+
+        <div class="projects-grid">
+          <article class="project-cell">
+            <div>
+              <div class="project-meta">ISyE 4031 &middot; Fall 2026</div>
+              <h3>Healthcare Capacity &amp; Influenza Admissions Nowcasting</h3>
+              <p>
+                Built an expanding-window OLS forecasting pipeline across 210 weeks of CDC NHSN hospital respiratory admissions and NOAA temperature shifts. Enforced strict temporal cutoff quarantines, FluSight version control, and 50%/80%/95% Student-t prediction intervals validated via residual diagnostics and Cook's distance sensitivity refits.
+              </p>
+            </div>
+            <a href="https://github.com/PDub1101/georgia-flu-nowcasting" target="_blank" rel="noopener" class="project-link">
+              View on GitHub
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M7 17L17 7M17 7H7M17 7V17"/></svg>
+            </a>
+          </article>
+
+          <article class="project-cell">
+            <div>
+              <div class="project-meta">ISyE 3133 &middot; Fall 2026</div>
+              <h3>Multi-Plant Production, Inventory &amp; Facility Location</h3>
+              <p>
+                Formulated a 4-week multi-plant, multi-product linear and mixed-integer program in Python (<code>gurobipy</code>) minimizing production, freight, holding, and overtime costs ($43.8k optimal plan) at 100% demand fulfillment. Performed shadow-price bottleneck analysis and benchmarked Primal vs. Dual Simplex up to 90,000 variables.
+              </p>
+            </div>
+          </article>
+
+          <article class="project-cell">
+            <div>
+              <div class="project-meta">CS 4400 &middot; Fall 2026</div>
+              <h3>ACC Football Conference Operations Database</h3>
+              <p>
+                Designed a normalized 16-table MySQL relational schema from an Enhanced Entity-Relationship Diagram (EERD) to manage ACC team rosters, stadiums, and game schedules. Enforced 19 foreign-key referential constraints and built 9 analytical SQL views automating conference standings, tiebreakers, and availability conflicts.
+              </p>
+            </div>
+          </article>
+
+          <article class="project-cell">
+            <div>
+              <div class="project-meta">CS 2316 &middot; Spring 2026</div>
+              <h3>NBA Game Outcome &amp; Team Metric Predictive Analysis</h3>
+              <p>
+                Engineered an automated ingestion pipeline combining multi-season team and player statistics from <code>nba_api</code> in <code>pandas</code>, training <code>scikit-learn</code> multivariate regressions to quantify offensive vs. defensive efficiency weights on win differentials.
+              </p>
+            </div>
+            <a href="https://github.com/PDub1101/nba-win-prediction-analysis" target="_blank" rel="noopener" class="project-link">
+              View on GitHub
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M7 17L17 7M17 7H7M17 7V17"/></svg>
+            </a>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- Section 3: Experience & Leadership -->
+    <section class="editorial-section">
+      <div class="container">
+        <div class="section-head">
+          <h2>Experience &amp; Leadership</h2>
+        </div>
+
+        <div class="experience-list">
+          <div class="experience-row">
+            <div>
+              <div class="exp-when">Jun 2025 &ndash; Aug 2025</div>
+              <div class="exp-where">Valdosta, GA</div>
+            </div>
+            <div class="exp-content">
+              <h3>Warehouse Operations Intern</h3>
+              <div class="exp-org">Second Harvest of South Georgia</div>
+              <ul class="exp-bullets">
+                <li>Fulfilled and staged up to 15 bulk palletized orders daily (~10+ tons of freight) across the distribution facility using electric pallet jacks.</li>
+                <li>Managed partner agency intake by categorizing stock by cost tier, running bulk weigh-ins, and logging web portal inventory transactions.</li>
+                <li>Conducted routine cycle counts across hundreds of SKUs to reconcile physical inventory against digital logs, and audited outgoing dock-door manifests with warehouse leads.</li>
+              </ul>
+            </div>
           </div>
-          <div>
-            Atlanta, GA • <a href="mailto:pgibson34@gatech.edu">pgibson34@gatech.edu</a>
+
+          <div class="experience-row">
+            <div>
+              <div class="exp-when">Aug 2025 &ndash; May 2026</div>
+              <div class="exp-where">Atlanta, GA</div>
+            </div>
+            <div class="exp-content">
+              <h3>Head Social Chair (prev. Assistant Social Chair)</h3>
+              <div class="exp-org">Tau Kappa Epsilon Fraternity</div>
+              <ul class="exp-bullets">
+                <li>Directed chapter event operations, managing a $60,900 operating budget with 0% budget overrun across the academic term.</li>
+                <li>Negotiated venue, security, and third-party vendor contracts for functions serving 200+ attendees while maintaining risk compliance.</li>
+                <li>Coordinated multi-organization events for up to 70 attendees, overseeing logistics, vendor scheduling, and execution timelines.</li>
+              </ul>
+            </div>
           </div>
         </div>
       </div>
-    </footer>
+    </section>
 
-  </div>
+    <!-- Section 4: Education, Coursework & Tooling -->
+    <section class="editorial-section" style="border-bottom: none;">
+      <div class="container">
+        <div class="reference-grid">
+          <div>
+            <div class="section-head" style="margin-bottom: 20px;">
+              <h2>Education &amp; Coursework</h2>
+            </div>
+
+            <div class="edu-block">
+              <h3>Georgia Institute of Technology</h3>
+              <div class="edu-degree">B.S. in Industrial &amp; Systems Engineering &middot; Atlanta, GA</div>
+              <div class="edu-stats">Expected May 2028 &middot; GPA 3.55 / 4.00 &middot; Dean's List</div>
+            </div>
+
+            <div class="course-list">
+              <div class="course-item">
+                <span class="course-code">ISyE 3133</span>
+                <span class="course-name"><strong>Engineering Optimization</strong> &mdash; Linear &amp; mixed-integer programming (Gurobi), simplex, duality, network flows</span>
+              </div>
+              <div class="course-item">
+                <span class="course-code">ISyE 3044</span>
+                <span class="course-name"><strong>Simulation &amp; Stochastics</strong> &mdash; Discrete-event simulation, queueing systems, stochastic inventory control</span>
+              </div>
+              <div class="course-item">
+                <span class="course-code">ISyE 4031</span>
+                <span class="course-name"><strong>Regression &amp; Forecasting</strong> &mdash; Holt exponential smoothing, time-series models, OLS prediction intervals</span>
+              </div>
+              <div class="course-item">
+                <span class="course-code">ISyE 2027</span>
+                <span class="course-name"><strong>Probability for Engineers</strong> &mdash; Random variables, joint distributions, Chebyshev/Markov bounds</span>
+              </div>
+              <div class="course-item">
+                <span class="course-code">CS 4400</span>
+                <span class="course-name"><strong>Database Systems</strong> &mdash; EERD relational schema design, SQL query optimization, 3NF/BCNF</span>
+              </div>
+              <div class="course-item">
+                <span class="course-code">CS 2316</span>
+                <span class="course-name"><strong>Data Manipulation</strong> &mdash; Automated ingestion, REST APIs, JSON/CSV pipelines, pandas analytics</span>
+              </div>
+            </div>
+          </div>
+
+          <div>
+            <div class="section-head" style="margin-bottom: 20px;">
+              <h2>Technical Tooling</h2>
+            </div>
+
+            <div class="tooling-table">
+              <div class="tooling-row">
+                <div class="tooling-key">Languages &amp; Solvers</div>
+                <div class="tooling-val">Python (<code>pandas</code>, <code>NumPy</code>, <code>scikit-learn</code>, <code>gurobipy</code>, <code>statsmodels</code>), SQL (MySQL, PostgreSQL, SQLite), Gurobi Optimizer, R, HTML/CSS/JS</div>
+              </div>
+              <div class="tooling-row">
+                <div class="tooling-key">Analytics &amp; Systems</div>
+                <div class="tooling-val">MS Excel (Pivot Tables, Data Modeling), Matplotlib, Seaborn, REST APIs, Git / GitHub, GitHub Actions CI/CD</div>
+              </div>
+              <div class="tooling-row">
+                <div class="tooling-key">Operations Focus</div>
+                <div class="tooling-val">Supply Chain Optimization, Demand Forecasting, Warehouse Logistics, Inventory Control, Material Handling</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer" style="border-top: 1px solid var(--border-subtle);">
+    <div class="container">
+      <div class="footer-inner">
+        <div>Paul Gibson &middot; Georgia Tech ISyE '28 &middot; Atlanta, GA</div>
+        <div class="footer-links">
+          <a href="mailto:pgibson34@gatech.edu">pgibson34@gatech.edu</a>
+          <a href="https://github.com/PDub1101" target="_blank" rel="noopener">GitHub</a>
+          <a href="https://www.linkedin.com/in/paul-gibson-079b44326/" target="_blank" rel="noopener">LinkedIn</a>
+          <a href="Paul_Gibson_Resume.pdf" target="_blank" rel="noopener">Resume PDF</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="market-insight/portfolio_data.js" defer></script>
+  <script src="deal-scout/deals_data.js" defer></script>
+  <script src="court-vision/courtvision_data.js" defer></script>
 
   <script>
-    function onFrameLoad(frame) {
-      if (typeof syncThemeToFrame === 'function') {
-        syncThemeToFrame(frame, typeof getCurrentTheme === 'function' ? getCurrentTheme() : 'light');
-      }
-    }
-  </script>
+    document.addEventListener('DOMContentLoaded', function () {
+      var fmtCurrency = function (n) {
+        return '$' + Number(n).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+      };
 
-  <!-- ==========================================================================
-       VIEW 2: STOCK MODEL EMBEDDED IN-PAGE (NO NEW TAB)
-       ========================================================================== -->
-  <div id="view-stock-model" class="view-container">
-    <div class="embedded-frame-wrap">
-      <div class="frame-toolbar">
-        <button class="btn-action" onclick="switchTab('about')" style="padding: 3px 10px; font-size: 12px; cursor: pointer;">
-          &larr; About Me
-        </button>
-        <a href="https://pdub1101.github.io/market-insight/" target="_blank" style="color: var(--text-muted); font-size: 12px; font-weight: 500; margin-left: 8px;">
-          Open Fullscreen &nearr;
-        </a>
-      </div>
-      <iframe id="frame-stock-model" class="embedded-frame" title="Market Insight $7K Stock Model" onload="onFrameLoad(this)"></iframe>
-    </div>
-  </div>
+      var fmtSignedCurrency = function (n) {
+        var val = Number(n);
+        return (val >= 0 ? '+$' : '-$') + Math.abs(val).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+      };
 
-  <!-- ==========================================================================
-       VIEW 3: DEALSCOUT EMBEDDED IN-PAGE (NO NEW TAB)
-       ========================================================================== -->
-  <div id="view-deal-scout" class="view-container">
-    <div class="embedded-frame-wrap">
-      <div class="frame-toolbar">
-        <button class="btn-action" onclick="switchTab('about')" style="padding: 3px 10px; font-size: 12px; cursor: pointer;">
-          &larr; About Me
-        </button>
-        <a href="https://pdub1101.github.io/deal-scout/" target="_blank" style="color: var(--text-muted); font-size: 12px; font-weight: 500; margin-left: 8px;">
-          Open Fullscreen &nearr;
-        </a>
-      </div>
-      <iframe id="frame-deal-scout" class="embedded-frame" title="DealScout Flight & Price Radar" onload="onFrameLoad(this)"></iframe>
-    </div>
-  </div>
+      var fmtSignedPct = function (n, digits) {
+        var val = Number(n);
+        return (val >= 0 ? '+' : '') + val.toFixed(digits) + '%';
+      };
 
-  <!-- ==========================================================================
-       VIEW 4: COURTVISION EMBEDDED IN-PAGE (NO NEW TAB)
-       ========================================================================== -->
-  <div id="view-court-vision" class="view-container">
-    <div class="embedded-frame-wrap">
-      <div class="frame-toolbar">
-        <button class="btn-action" onclick="switchTab('about')" style="padding: 3px 10px; font-size: 12px; cursor: pointer;">
-          &larr; About Me
-        </button>
-        <button class="btn-action" onclick="reloadEmbeddedFrame('frame-court-vision')" style="padding: 3px 10px; font-size: 12px; cursor: pointer; margin-left: 8px;">
-          🔄 Refresh Live Feed
-        </button>
-        <a href="https://pdub1101.github.io/court-vision/" target="_blank" style="color: var(--text-muted); font-size: 12px; font-weight: 500; margin-left: 8px;">
-          Open Fullscreen &nearr;
-        </a>
-      </div>
-      <iframe id="frame-court-vision" class="embedded-frame" title="CourtVision NBA Spread Radar & Paper Bankroll" onload="onFrameLoad(this)"></iframe>
-    </div>
-  </div>
+      var ordinal = function (n) {
+        var s = ['th', 'st', 'nd', 'rd'];
+        var v = n % 100;
+        return n + (s[(v - 20) % 10] || s[v] || s[0]);
+      };
 
-  <!-- ==========================================================================
-       IN-PAGE TAB SWITCHING & THEME SCRIPT
-       ========================================================================== -->
-  <script>
-    const FRAME_URLS = {
-      'stock-model': 'https://pdub1101.github.io/market-insight/?v=open_layout_1',
-      'deal-scout': 'https://pdub1101.github.io/deal-scout/?v=open_layout_1',
-      'court-vision': 'https://pdub1101.github.io/court-vision/?v=20261119_live'
-    };
+      var setDeltaClass = function (el, val) {
+        if (!el) return;
+        el.classList.remove('val-pos', 'val-neg');
+        el.classList.add(Number(val) >= 0 ? 'val-pos' : 'val-neg');
+      };
 
-    function setBioDepth(depth) {
-      const summaryBtn = document.getElementById('btn-bio-summary');
-      const deepBtn = document.getElementById('btn-bio-deep');
-      const summaryText = document.getElementById('bio-summary-text');
-      const deepText = document.getElementById('bio-deep-text');
-      if (!summaryBtn || !deepBtn || !summaryText || !deepText) return;
-
-      if (depth === 'deep') {
-        summaryBtn.classList.remove('active');
-        deepBtn.classList.add('active');
-        summaryText.style.display = 'none';
-        deepText.style.display = 'block';
-      } else {
-        deepBtn.classList.remove('active');
-        summaryBtn.classList.add('active');
-        deepText.style.display = 'none';
-        summaryText.style.display = 'block';
-      }
-    }
-
-    function reloadEmbeddedFrame(frameId) {
-      const frame = document.getElementById(frameId);
-      if (!frame) return;
-      let base = frame.src.split('?')[0];
-      frame.src = base + '?t=' + Date.now();
-    }
-
-    function getCurrentTheme() {
-      return document.documentElement.getAttribute('data-theme') || 'light';
-    }
-
-    function syncThemeToFrame(frame, theme) {
-      if (!frame) return;
-      theme = theme || getCurrentTheme();
+      // 1. Hydrate Market Insight
       try {
-        if (frame.contentDocument && frame.contentDocument.documentElement) {
-          frame.contentDocument.documentElement.setAttribute('data-theme', theme);
-        }
-        if (frame.contentWindow && typeof frame.contentWindow.applyTheme === 'function') {
-          frame.contentWindow.applyTheme(theme);
+        var mi = window.MARKET_INSIGHT_DATA;
+        if (mi && Array.isArray(mi.day_tabs) && mi.day_tabs.length > 0) {
+          var lastTab = mi.day_tabs[mi.day_tabs.length - 1];
+          var p2 = lastTab.portfolio_v2 || lastTab.portfolio;
+          if (p2) {
+            var valEl = document.getElementById('mi-val');
+            var pnlEl = document.getElementById('mi-pnl');
+            var alphaEl = document.getElementById('mi-alpha');
+            var cashEl = document.getElementById('mi-cash');
+            var updEl = document.getElementById('mi-updated');
+
+            if (valEl && typeof p2.total_value === 'number') {
+              valEl.textContent = fmtCurrency(p2.total_value);
+            }
+            if (pnlEl && typeof p2.total_gain_dollars === 'number' && typeof p2.total_gain_pct === 'number') {
+              pnlEl.textContent = fmtSignedCurrency(p2.total_gain_dollars) + ' (' + fmtSignedPct(p2.total_gain_pct, 2) + ')';
+              setDeltaClass(pnlEl, p2.total_gain_dollars);
+            }
+            if (alphaEl && typeof p2.alpha_pct === 'number') {
+              alphaEl.textContent = fmtSignedPct(p2.alpha_pct, 2);
+              setDeltaClass(alphaEl, p2.alpha_pct);
+            }
+            if (cashEl && typeof p2.cash_reserve === 'number' && p2.total_value > 0) {
+              var cashPct = ((p2.cash_reserve / p2.total_value) * 100).toFixed(1);
+              var holdingsList = lastTab.holdings_v2 || lastTab.holdings || [];
+              cashEl.textContent = cashPct + '% \u00b7 ' + holdingsList.length + ' equities';
+            }
+            if (updEl && mi.last_updated) {
+              updEl.textContent = mi.last_updated;
+            }
+          }
         }
       } catch (e) {}
 
+      // 2. Hydrate DealScout
       try {
-        if (frame.contentWindow) {
-          frame.contentWindow.postMessage({ type: 'SET_THEME', theme: theme }, '*');
+        var ds = window.DEAL_DATA;
+        if (ds && Array.isArray(ds.flights) && ds.flights.length > 0) {
+          var sorted = ds.flights.slice().sort(function (a, b) {
+            return ((b.stats && b.stats.estimated_savings) || 0) - ((a.stats && a.stats.estimated_savings) || 0);
+          });
+          var top = sorted[0];
+          var meta = ds.metadata || {};
+
+          var routeEl = document.getElementById('ds-route');
+          var pctEl = document.getElementById('ds-pct');
+          var savEl = document.getElementById('ds-savings');
+          var dealsEl = document.getElementById('ds-deals');
+          var dsUpdEl = document.getElementById('ds-updated');
+
+          if (routeEl && top) {
+            routeEl.textContent = top.origin + ' \u2192 ' + top.destination + ' \u00b7 $' + Math.round(top.price);
+          }
+          if (pctEl && top && top.stats && typeof top.stats.percentile_rank === 'number') {
+            pctEl.textContent = ordinal(Math.round(top.stats.percentile_rank)) + ' pct';
+          }
+          if (savEl && top && top.stats && typeof top.stats.estimated_savings === 'number') {
+            savEl.textContent = '-$' + Math.round(top.stats.estimated_savings) + ' vs median';
+          }
+          if (dealsEl && typeof meta.qualified_deals_count === 'number' && typeof meta.total_corridors === 'number') {
+            dealsEl.textContent = meta.qualified_deals_count + ' of ' + meta.total_corridors + ' corridors';
+          }
+          if (dsUpdEl && meta.last_scan_time) {
+            dsUpdEl.textContent = meta.last_scan_time;
+          }
         }
       } catch (e) {}
-    }
 
-    function syncThemeToAllFrames(theme) {
-      theme = theme || getCurrentTheme();
-      ['frame-stock-model', 'frame-deal-scout', 'frame-court-vision'].forEach(id => {
-        const frame = document.getElementById(id);
-        syncThemeToFrame(frame, theme);
-      });
-    }
+      // 3. Hydrate CourtVision
+      try {
+        var cv = window.COURTVISION_DATA;
+        if (cv && cv.bankroll_state) {
+          var b = cv.bankroll_state.bankroll;
+          var m = cv.bankroll_state.metrics;
 
-    function onFrameLoad(frame) {
-      syncThemeToFrame(frame, getCurrentTheme());
-    }
+          var brEl = document.getElementById('cv-bankroll');
+          var roiEl = document.getElementById('cv-roi');
+          var recEl = document.getElementById('cv-record');
+          var wrEl = document.getElementById('cv-winrate');
+          var clvEl = document.getElementById('cv-clv');
+          var cvUpdEl = document.getElementById('cv-updated');
 
-    function switchTab(tabName) {
-      // 1. Hide all views
-      document.querySelectorAll('.view-container').forEach(el => {
-        el.classList.remove('active-view');
-      });
-
-      // 2. Remove active class from tab buttons
-      document.querySelectorAll('.tab-btn').forEach(btn => {
-        btn.classList.remove('active');
-      });
-
-      // 3. Activate target view
-      const targetView = document.getElementById(`view-${tabName}`);
-      const targetBtn = document.getElementById(`tabBtn-${tabName}`);
-
-      if (targetView) targetView.classList.add('active-view');
-      if (targetBtn) targetBtn.classList.add('active');
-
-      // 4. Ensure iframe source is set to target application
-      if (tabName === 'stock-model') {
-        const frame = document.getElementById('frame-stock-model');
-        if (!frame.src || !frame.src.startsWith(FRAME_URLS['stock-model'])) {
-          frame.src = FRAME_URLS['stock-model'];
-        } else {
-          syncThemeToFrame(frame, getCurrentTheme());
+          if (brEl && b && typeof b.current_balance === 'number') {
+            brEl.textContent = fmtCurrency(b.current_balance);
+          }
+          if (roiEl && b && typeof b.total_profit_loss === 'number' && typeof b.roi_percent === 'number') {
+            roiEl.textContent = fmtSignedCurrency(b.total_profit_loss) + ' (' + fmtSignedPct(b.roi_percent, 1) + ')';
+            setDeltaClass(roiEl, b.total_profit_loss);
+          }
+          if (recEl && m && typeof m.wins === 'number' && typeof m.losses === 'number') {
+            recEl.textContent = m.wins + '\u2013' + m.losses + (m.pushes ? '\u2013' + m.pushes : '');
+          }
+          if (wrEl && m && typeof m.win_rate_percent === 'number') {
+            wrEl.textContent = m.win_rate_percent.toFixed(1) + '% win rate';
+          }
+          if (clvEl && m && typeof m.clv_beat_rate_percent === 'number' && typeof m.total_bets === 'number') {
+            clvEl.textContent = m.clv_beat_rate_percent.toFixed(1) + '% \u00b7 ' + m.total_bets + ' bets';
+          }
+          if (cvUpdEl && cv.generated_at) {
+            cvUpdEl.textContent = cv.generated_at;
+          }
         }
-      } else if (tabName === 'deal-scout') {
-        const frame = document.getElementById('frame-deal-scout');
-        if (!frame.src || !frame.src.startsWith(FRAME_URLS['deal-scout'])) {
-          frame.src = FRAME_URLS['deal-scout'];
-        } else {
-          syncThemeToFrame(frame, getCurrentTheme());
-        }
-      } else if (tabName === 'court-vision') {
-        const frame = document.getElementById('frame-court-vision');
-        if (!frame.src || !frame.src.startsWith(FRAME_URLS['court-vision'])) {
-          frame.src = FRAME_URLS['court-vision'];
-        } else {
-          syncThemeToFrame(frame, getCurrentTheme());
-        }
-      }
-
-      // 5. Update URL hash without reload
-      if (window.location.hash !== `#${tabName}`) {
-        history.pushState(null, '', `#${tabName}`);
-      }
-
-      // Scroll to top
-      window.scrollTo(0, 0);
-    }
-
-    // Handle initial hash on page load or back/forward buttons
-    function handleHashChange() {
-      const hash = (window.location.hash || '#about').replace('#', '');
-      if (['about', 'stock-model', 'deal-scout', 'court-vision'].includes(hash)) {
-        switchTab(hash);
-      } else {
-        switchTab('about');
-      }
-    }
-
-    window.addEventListener('hashchange', handleHashChange);
-    window.addEventListener('DOMContentLoaded', handleHashChange);
-
-    // Light / Slate Theme Toggle with synchronized frame propagation
-    function toggleTheme() {
-      const html = document.documentElement;
-      const cur = getCurrentTheme();
-      const next = cur === 'light' ? 'slate' : 'light';
-      html.setAttribute('data-theme', next);
-      localStorage.setItem('pg_theme', next);
-      syncThemeToAllFrames(next);
-    }
-
-    const savedTheme = localStorage.getItem('pg_theme') || 'light';
-    document.documentElement.setAttribute('data-theme', savedTheme);
+      } catch (e) {}
+    });
   </script>
 </body>
 </html>
