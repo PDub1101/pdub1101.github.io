@@ -55,8 +55,6 @@ REPO_FILES: dict[str, tuple[Path, list[str]]] = {
     "court-vision": (
         COURTVISION_DIR,
         [
-            "index.html",
-            "app.js",
             "courtvision_data.js",
             "README.md",
             "requirements.txt",
@@ -67,8 +65,6 @@ REPO_FILES: dict[str, tuple[Path, list[str]]] = {
             "data/bankroll_state.json",
             "data/decision_basis.json",
             "data/courtvision_data.js",
-            "docs/index.html",
-            "docs/app.js",
             "docs/courtvision_data.js",
             "docs/.nojekyll",
             "src/data_fetcher.py",
@@ -82,7 +78,6 @@ REPO_FILES: dict[str, tuple[Path, list[str]]] = {
     "market-insight": (
         MARKET_INSIGHT_DIR,
         [
-            "index.html",
             "portfolio_data.js",
             "portfolio_state.json",
             "model_memory.json",
@@ -95,7 +90,6 @@ REPO_FILES: dict[str, tuple[Path, list[str]]] = {
     "deal-scout": (
         DEALSCOUT_DIR,
         [
-            "index.html",
             "deals_data.js",
             "README.md",
             "scout_deals.py",
@@ -106,7 +100,6 @@ REPO_FILES: dict[str, tuple[Path, list[str]]] = {
             "engine/percentile.py",
             "engine/gemini_auditor.py",
             "scouts/flight_scout.py",
-            "frontend/index.html",
             "frontend/deals_data.js",
             ".github/workflows/daily_scout.yml",
             ".nojekyll",
@@ -360,7 +353,7 @@ def mirror_outputs(project: str, logger: logging.Logger) -> None:
             logger.info("[Mirror][CourtVision] Synced courtvision_data.js to root, data/, and master hub.")
 
     elif project == "stocks":
-        files = ("portfolio_state.json", "model_memory.json", "portfolio_data.js", "index.html")
+        files = ("portfolio_state.json", "model_memory.json", "portfolio_data.js")
         for fname in files:
             src = MARKET_INSIGHT_DIR / fname
             if not src.exists():
@@ -368,7 +361,7 @@ def mirror_outputs(project: str, logger: logging.Logger) -> None:
             for dst_dir in (SHARP_NEWTON_DIR, MASTER_DIR / "market-insight"):
                 dst_dir.mkdir(parents=True, exist_ok=True)
                 shutil.copy2(src, dst_dir / fname)
-        logger.info("[Mirror][Stocks] Synced portfolio state, memory, data, and UI across all 3 folders.")
+        logger.info("[Mirror][Stocks] Synced portfolio state, memory, and data across all 3 folders (preserving redesigned UI).")
 
     elif project == "deals":
         src = DEALSCOUT_DIR / "frontend" / "deals_data.js"
