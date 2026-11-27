@@ -670,6 +670,137 @@
       padding: 2px 0;
     }
 
+    .chart-toolbar-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-bottom: 12px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid var(--border-subtle);
+    }
+    .chart-window-group {
+      display: inline-flex;
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-sm);
+      background: var(--bg-card);
+      overflow: hidden;
+    }
+    .chart-win-btn {
+      min-height: 32px;
+      padding: 0 12px;
+      border: none;
+      border-right: 1px solid var(--border-subtle);
+      background: transparent;
+      color: var(--text-secondary);
+      font-family: var(--font-mono);
+      font-size: 12px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: background 0.15s ease, color 0.15s ease;
+    }
+    .chart-win-btn:last-child {
+      border-right: none;
+    }
+    .chart-win-btn:hover {
+      background: var(--bg-card-hover);
+      color: var(--text-primary);
+    }
+    .chart-win-btn.active {
+      background: var(--accent-navy);
+      color: #ffffff;
+    }
+    .chart-range-readout {
+      font-family: var(--font-mono);
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--text-secondary);
+    }
+    .chart-range-readout strong {
+      color: var(--text-primary);
+    }
+    .chart-slider-panel {
+      margin-top: 12px;
+      padding-top: 12px;
+      border-top: 1px solid var(--border-subtle);
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .chart-slider-controls {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .chart-step-btn {
+      min-height: 32px;
+      min-width: 32px;
+      padding: 0 10px;
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--border-strong);
+      background: var(--bg-card);
+      color: var(--text-primary);
+      font-family: var(--font-mono);
+      font-size: 12px;
+      font-weight: 700;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      transition: border-color 0.15s ease, color 0.15s ease, background 0.15s ease;
+    }
+    .chart-step-btn:hover:not(:disabled) {
+      border-color: var(--accent-navy);
+      color: var(--accent-navy);
+      background: var(--bg-card-hover);
+    }
+    .chart-step-btn:disabled {
+      opacity: 0.4;
+      cursor: not-allowed;
+    }
+    .chart-range-slider {
+      flex: 1;
+      height: 6px;
+      -webkit-appearance: none;
+      appearance: none;
+      background: var(--border-strong);
+      border-radius: 3px;
+      outline: none;
+      cursor: pointer;
+      accent-color: var(--accent-navy);
+    }
+    .chart-range-slider::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      background: var(--accent-navy);
+      border: 2px solid #ffffff;
+      box-shadow: 0 0 0 1px var(--accent-navy);
+      cursor: pointer;
+    }
+    .chart-range-slider::-moz-range-thumb {
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      background: var(--accent-navy);
+      border: 2px solid #ffffff;
+      box-shadow: 0 0 0 1px var(--accent-navy);
+      cursor: pointer;
+    }
+    .chart-slider-meta {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 8px;
+      font-family: var(--font-mono);
+      font-size: 11.5px;
+      color: var(--text-muted);
+    }
+
         /* Koyfin / Morningstar Comparative Benchmark Matrix */
     .compare-kpi-bar {
       display: grid;
@@ -1624,6 +1755,9 @@
     let showRawMath = false;
     let tradeFilter = 'all';    // 'all' | 'buy' | 'trim' | 'win' | 'lag'
     let watchFilter = 'all';    // 'all' | 'BUY' | 'HOLD' | 'TRIM'
+    let chartWindowSize = 10;   // 7 | 10 | 15 | 'all'
+    let chartWindowStart = null; // start day index for windowed mode (null = snap to latest)
+    let chartAllEndIdx = null;   // end day index for 'all' cumulative progression mode (null = latest)
 
     function getActivePortfolio(tab) {
       if (activeModel === 'v2' && tab && tab.portfolio_v2) {
@@ -1978,6 +2112,23 @@
 
     function selectView(view) {
       selectedView = view;
+      if (typeof view === 'number' && appData && appData.day_tabs && appData.day_tabs.length > 0) {
+        const total = appData.day_tabs.length;
+        if (chartWindowSize === 'all') {
+          if (chartAllEndIdx !== null && view > chartAllEndIdx) {
+            chartAllEndIdx = view;
+          }
+        } else {
+          const winSize = Math.min(chartWindowSize, total);
+          const maxStart = Math.max(0, total - winSize);
+          const curStart = chartWindowStart === null ? maxStart : Math.max(0, Math.min(maxStart, chartWindowStart));
+          if (view < curStart) {
+            chartWindowStart = view;
+          } else if (view >= curStart + winSize) {
+            chartWindowStart = Math.min(maxStart, view - winSize + 1);
+          }
+        }
+      }
       renderDayTabs();
       renderCurrentView();
       window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -2212,16 +2363,38 @@
               <div class="chapter-eyebrow">Section 2 • Head-to-Head Comparison</div>
               <h2 class="chapter-title">Comparative Asset Allocation &amp; Benchmark Tracking</h2>
               <p class="chapter-desc">
-                All 9 options started with the exact same ${fmtMoney(scaled(p.starting_capital))} on Day 1 (${escapeHtml(appData.created_at || '2026-10-19')}). Hover over the chart to compare any day, or click the colored pills to turn lines on and off.
+                All 9 options started with the exact same ${fmtMoney(scaled(p.starting_capital))} on Day 1 (${escapeHtml(appData.created_at || '2026-10-19')}). Use the date window buttons or progression slider to pan across sessions and read every date cleanly, hover to inspect daily values, or click the colored pills to toggle lines.
               </p>
             </div>
           </div>
 
           <div class="chart-box">
+            <div class="chart-toolbar-row">
+              <div class="chart-window-group" id="chartWindowButtons" role="group" aria-label="Chart date window">
+                <button type="button" class="chart-win-btn" data-win="7" onclick="setChartWindowSize(7)">7D</button>
+                <button type="button" class="chart-win-btn" data-win="10" onclick="setChartWindowSize(10)">10D</button>
+                <button type="button" class="chart-win-btn" data-win="15" onclick="setChartWindowSize(15)">15D</button>
+                <button type="button" class="chart-win-btn" data-win="all" onclick="setChartWindowSize('all')">All</button>
+              </div>
+              <div class="chart-range-readout" id="chartRangeReadout"></div>
+            </div>
             <div class="chart-toggles" id="chartSeriesPills"></div>
             <div class="chart-svg-wrap">
               <div class="chart-tooltip" id="chartHoverTooltip"></div>
-              <svg class="chart-svg" id="comparisonChartSvg" viewBox="0 0 920 290"></svg>
+              <svg class="chart-svg" id="comparisonChartSvg" viewBox="0 0 920 295"></svg>
+            </div>
+            <div class="chart-slider-panel" id="chartSliderPanel">
+              <div class="chart-slider-controls">
+                <button type="button" class="chart-step-btn" id="chartPrevBtn" onclick="stepChartWindow(-1)" title="Earlier day" aria-label="Step one day earlier">&lsaquo;</button>
+                <input type="range" class="chart-range-slider" id="chartWindowSlider" min="0" max="0" value="0" oninput="onChartSliderInput(this.value)" aria-label="Scroll or scrub chart date progression" />
+                <button type="button" class="chart-step-btn" id="chartNextBtn" onclick="stepChartWindow(1)" title="Later day" aria-label="Step one day later">&rsaquo;</button>
+                <button type="button" class="chart-step-btn" id="chartLatestBtn" onclick="jumpChartLatest()" title="Jump to latest date">Latest</button>
+              </div>
+              <div class="chart-slider-meta">
+                <span id="chartSliderMinLabel"></span>
+                <span id="chartSliderHintLabel"></span>
+                <span id="chartSliderMaxLabel"></span>
+              </div>
             </div>
           </div>
 
@@ -2545,6 +2718,95 @@
       }).join('');
     }
 
+    function formatChartDateShort(isoDate) {
+      if (!isoDate) return '';
+      const parts = String(isoDate).split('-');
+      if (parts.length !== 3) return String(isoDate);
+      const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+      const mIdx = parseInt(parts[1], 10) - 1;
+      const dayNum = parseInt(parts[2], 10);
+      if (mIdx >= 0 && mIdx < 12 && !isNaN(dayNum)) {
+        return `${months[mIdx]} ${dayNum}`;
+      }
+      return String(isoDate).slice(5);
+    }
+
+    function getCurrentChartDayIdx() {
+      if (typeof selectedView === 'number') return selectedView;
+      return appData && appData.day_tabs ? appData.day_tabs.length - 1 : 0;
+    }
+
+    function setChartWindowSize(size) {
+      if (!appData || !appData.day_tabs) return;
+      const days = appData.day_tabs;
+      const total = days.length;
+      const prevSize = chartWindowSize;
+      let prevEndIdx = total - 1;
+      if (prevSize === 'all' || total <= prevSize) {
+        prevEndIdx = chartAllEndIdx === null ? total - 1 : Math.max(0, Math.min(total - 1, chartAllEndIdx));
+      } else {
+        const prevWin = Math.min(prevSize, total);
+        const prevMaxStart = Math.max(0, total - prevWin);
+        const prevStart = chartWindowStart === null ? prevMaxStart : Math.max(0, Math.min(prevMaxStart, chartWindowStart));
+        prevEndIdx = Math.min(total - 1, prevStart + prevWin - 1);
+      }
+
+      chartWindowSize = size;
+      if (size === 'all') {
+        chartAllEndIdx = total - 1;
+      } else {
+        const win = Math.min(size, total);
+        const maxStart = Math.max(0, total - win);
+        const curDay = getCurrentChartDayIdx();
+        let nextStart = Math.max(0, Math.min(maxStart, prevEndIdx - win + 1));
+        if (curDay < nextStart) {
+          nextStart = Math.min(maxStart, curDay);
+        } else if (curDay >= nextStart + win) {
+          nextStart = Math.min(maxStart, curDay - win + 1);
+        }
+        chartWindowStart = nextStart;
+      }
+      renderInteractiveChart(getCurrentChartDayIdx());
+    }
+
+    function onChartSliderInput(val) {
+      if (!appData || !appData.day_tabs) return;
+      const total = appData.day_tabs.length;
+      const v = parseInt(val, 10);
+      if (isNaN(v)) return;
+      if (chartWindowSize === 'all' || total <= chartWindowSize) {
+        const minEnd = Math.min(1, total - 1);
+        chartAllEndIdx = Math.max(minEnd, Math.min(total - 1, v));
+      } else {
+        const win = Math.min(chartWindowSize, total);
+        const maxStart = Math.max(0, total - win);
+        chartWindowStart = Math.max(0, Math.min(maxStart, v));
+      }
+      renderInteractiveChart(getCurrentChartDayIdx());
+    }
+
+    function stepChartWindow(delta) {
+      if (!appData || !appData.day_tabs) return;
+      const total = appData.day_tabs.length;
+      if (chartWindowSize === 'all' || total <= chartWindowSize) {
+        const minEnd = Math.min(1, total - 1);
+        const curEnd = chartAllEndIdx === null ? total - 1 : chartAllEndIdx;
+        chartAllEndIdx = Math.max(minEnd, Math.min(total - 1, curEnd + delta));
+      } else {
+        const win = Math.min(chartWindowSize, total);
+        const maxStart = Math.max(0, total - win);
+        const curStart = chartWindowStart === null ? maxStart : chartWindowStart;
+        chartWindowStart = Math.max(0, Math.min(maxStart, curStart + delta));
+      }
+      renderInteractiveChart(getCurrentChartDayIdx());
+    }
+
+    function jumpChartLatest() {
+      chartWindowStart = null;
+      chartAllEndIdx = null;
+      renderInteractiveChart(getCurrentChartDayIdx());
+    }
+
     function toggleChartSeries(seriesId) {
       const item = CHART_SERIES_META.find(s => s.id === seriesId);
       if (!item) return;
@@ -2572,11 +2834,79 @@
         `).join('');
 
       const days = appData.day_tabs;
+      const total = days.length;
+      if (total === 0) return;
+
+      let startIdx = 0;
+      let endIdx = total - 1;
+      const isAllMode = chartWindowSize === 'all' || total <= chartWindowSize;
+
+      if (isAllMode) {
+        const minEnd = Math.min(1, total - 1);
+        endIdx = chartAllEndIdx === null ? total - 1 : Math.max(minEnd, Math.min(total - 1, chartAllEndIdx));
+        chartAllEndIdx = endIdx;
+      } else {
+        const win = Math.min(chartWindowSize, total);
+        const maxStart = Math.max(0, total - win);
+        startIdx = chartWindowStart === null ? maxStart : Math.max(0, Math.min(maxStart, chartWindowStart));
+        chartWindowStart = startIdx;
+        endIdx = Math.min(total - 1, startIdx + win - 1);
+      }
+
+      const visibleDays = days.slice(startIdx, endIdx + 1);
+
+      // Sync window preset buttons, readout, and slider controls
+      document.querySelectorAll('#chartWindowButtons .chart-win-btn').forEach(btn => {
+        btn.classList.toggle('active', String(chartWindowSize) === btn.dataset.win);
+      });
+
+      const readoutEl = document.getElementById('chartRangeReadout');
+      if (readoutEl) {
+        const firstD = visibleDays[0];
+        const lastD = visibleDays[visibleDays.length - 1];
+        readoutEl.innerHTML = `Days ${firstD.day_index}&ndash;${lastD.day_index} of ${total} &bull; <strong>${escapeHtml(formatChartDateShort(firstD.date))} &rarr; ${escapeHtml(formatChartDateShort(lastD.date))}</strong>`;
+      }
+
+      const slider = document.getElementById('chartWindowSlider');
+      const prevBtn = document.getElementById('chartPrevBtn');
+      const nextBtn = document.getElementById('chartNextBtn');
+      const latestBtn = document.getElementById('chartLatestBtn');
+      const minLbl = document.getElementById('chartSliderMinLabel');
+      const hintLbl = document.getElementById('chartSliderHintLabel');
+      const maxLbl = document.getElementById('chartSliderMaxLabel');
+
+      if (slider) {
+        if (isAllMode) {
+          const minEnd = Math.min(1, total - 1);
+          slider.min = minEnd;
+          slider.max = Math.max(0, total - 1);
+          slider.value = endIdx;
+          slider.disabled = total <= 2;
+          if (prevBtn) prevBtn.disabled = endIdx <= minEnd;
+          if (nextBtn) nextBtn.disabled = endIdx >= total - 1;
+          if (latestBtn) latestBtn.disabled = endIdx >= total - 1;
+          if (hintLbl) hintLbl.textContent = 'Drag slider to scrub progression from Day 1';
+        } else {
+          const win = Math.min(chartWindowSize, total);
+          const maxStart = Math.max(0, total - win);
+          slider.min = 0;
+          slider.max = maxStart;
+          slider.value = startIdx;
+          slider.disabled = maxStart <= 0;
+          if (prevBtn) prevBtn.disabled = startIdx <= 0;
+          if (nextBtn) nextBtn.disabled = startIdx >= maxStart;
+          if (latestBtn) latestBtn.disabled = startIdx >= maxStart;
+          if (hintLbl) hintLbl.textContent = 'Drag slider to pan date window';
+        }
+      }
+      if (minLbl) minLbl.textContent = `${formatChartDateShort(days[0].date)} (Day 1)`;
+      if (maxLbl) maxLbl.textContent = `${formatChartDateShort(days[total - 1].date)} (Day ${total})`;
+
       const activeSeries = CHART_SERIES_META.filter(s => s.on);
 
-      // Extract scaled values per day for each series
+      // Extract scaled values per visible day for each series
       const seriesPoints = activeSeries.map(s => {
-        const pts = days.map(d => {
+        const pts = visibleDays.map(d => {
           const opt = (d.alternative_options || []).find(a => a.id === s.id);
           if (s.id === 'model_v2') {
             return opt ? scaled(opt.value) : null;
@@ -2587,8 +2917,8 @@
         return { ...s, pts };
       });
 
-      let minV = scaled(6950);
-      let maxV = scaled(7050);
+      let minV = Infinity;
+      let maxV = -Infinity;
       seriesPoints.forEach(s => {
         s.pts.forEach(v => {
           if (v !== null && v !== undefined && !isNaN(v)) {
@@ -2597,15 +2927,19 @@
           }
         });
       });
-      const padRange = Math.max((maxV - minV) * 0.14, scaled(18));
+      if (!isFinite(minV) || !isFinite(maxV)) {
+        minV = scaled(6950);
+        maxV = scaled(7050);
+      }
+      const padRange = Math.max((maxV - minV) * 0.14, scaled(15));
       minV -= padRange;
       maxV += padRange;
 
-      const W = 920, H = 290, padL = 74, padR = 24, padT = 22, padB = 34;
+      const W = 920, H = 295, padL = 74, padR = 28, padT = 22, padB = 38;
       const plotW = W - padL - padR;
       const plotH = H - padT - padB;
 
-      const getX = i => days.length <= 1 ? padL + plotW / 2 : padL + (i / (days.length - 1)) * plotW;
+      const getX = i => visibleDays.length <= 1 ? padL + plotW / 2 : padL + (i / (visibleDays.length - 1)) * plotW;
       const getY = v => padT + plotH - ((v - minV) / (maxV - minV)) * plotH;
 
       let out = '';
@@ -2621,22 +2955,28 @@
         `;
       }
 
-      // Highlight vertical marker for the currently selected day tab
-      if (typeof upToDayIdx === 'number' && upToDayIdx >= 0 && upToDayIdx < days.length) {
-        const selX = getX(upToDayIdx);
+      // Highlight vertical marker for the currently selected day tab if inside visible range
+      if (typeof upToDayIdx === 'number' && upToDayIdx >= startIdx && upToDayIdx <= endIdx) {
+        const selX = getX(upToDayIdx - startIdx);
         out += `<line x1="${selX.toFixed(1)}" y1="${padT}" x2="${selX.toFixed(1)}" y2="${H - padB}" stroke="var(--accent-primary)" stroke-width="1.5" stroke-dasharray="4,4" opacity="0.65" />`;
       }
 
-      // X-axis date labels (suppress last tick if within 52px of previous tick)
-      const labelInterval = Math.max(1, Math.ceil(days.length / 6));
+      // X-axis date labels (strict minimum pixel spacing so dates never collide)
+      const minLabelSpacing = 62;
+      const labelInterval = visibleDays.length <= 1 ? 1 : Math.max(1, Math.ceil(((visibleDays.length - 1) * minLabelSpacing) / plotW));
       let lastRenderedX = -999;
-      days.forEach((d, i) => {
-        const isLast = i === days.length - 1;
+      visibleDays.forEach((d, i) => {
+        const isLast = i === visibleDays.length - 1;
+        const isFirst = i === 0;
         const isStep = i % labelInterval === 0;
         const x = getX(i);
-        if (isStep || isLast) {
-          if (isLast && (x - lastRenderedX < 52)) return;
-          out += `<text x="${x.toFixed(1)}" y="${H - 10}" fill="var(--text-muted)" font-size="11" font-family="var(--font-mono)" text-anchor="middle">${d.date.slice(5)}</text>`;
+        if (isFirst || isStep || isLast) {
+          if (!isFirst && !isLast && (x - lastRenderedX < minLabelSpacing - 4)) return;
+          if (isLast && !isFirst && (x - lastRenderedX < 54)) return;
+          // Also avoid drawing a step label right next to the final label
+          if (!isLast && visibleDays.length > 1 && (getX(visibleDays.length - 1) - x < 54)) return;
+          out += `<line x1="${x.toFixed(1)}" y1="${H - padB}" x2="${x.toFixed(1)}" y2="${H - padB + 4}" stroke="var(--border-strong)" stroke-width="1" />`;
+          out += `<text x="${x.toFixed(1)}" y="${H - 12}" fill="var(--text-muted)" font-size="11.5" font-family="var(--font-mono)" text-anchor="middle">${escapeHtml(formatChartDateShort(d.date))}</text>`;
           lastRenderedX = x;
         }
       });
@@ -2683,7 +3023,7 @@
         const relX = ((clientX - rect.left) / rect.width) * W;
         let bestIdx = 0;
         let bestDist = Infinity;
-        days.forEach((_, i) => {
+        visibleDays.forEach((_, i) => {
           const dist = Math.abs(getX(i) - relX);
           if (dist < bestDist) { bestDist = dist; bestIdx = i; }
         });
@@ -2694,7 +3034,7 @@
           hoverLine.style.display = 'block';
         }
         if (tooltip) {
-          const dayObj = days[bestIdx];
+          const dayObj = visibleDays[bestIdx];
           const rows = seriesPoints
             .map(s => ({ name: s.name, color: s.color, val: s.pts[bestIdx] }))
             .filter(r => r.val !== null && r.val !== undefined && !isNaN(r.val))
