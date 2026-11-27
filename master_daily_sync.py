@@ -55,7 +55,13 @@ REPO_FILES: dict[str, tuple[Path, list[str]]] = {
     "court-vision": (
         COURTVISION_DIR,
         [
+            "index.html",
+            "app.js",
             "courtvision_data.js",
+            "docs/index.html",
+            "docs/app.js",
+            "docs/courtvision_data.js",
+            "docs/.nojekyll",
             "README.md",
             "requirements.txt",
             "update_model.py",
@@ -65,8 +71,6 @@ REPO_FILES: dict[str, tuple[Path, list[str]]] = {
             "data/bankroll_state.json",
             "data/decision_basis.json",
             "data/courtvision_data.js",
-            "docs/courtvision_data.js",
-            "docs/.nojekyll",
             "src/data_fetcher.py",
             "src/quant_model.py",
             "src/gemini_veto.py",
